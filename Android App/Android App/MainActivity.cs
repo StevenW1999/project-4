@@ -4,11 +4,11 @@ using Android.OS;
 
 namespace Android_App
 {
-    [Activity(Label = "Android_App", MainLauncher = true, Icon = "@mipmap/icon")]
+    // "Theme = "@android:style/Theme.NoTitleBar"" added to remove title bar on top of application
+    [Activity(Label = "Android_App", MainLauncher = true, Icon = "@mipmap/icon" , Theme = "@android:style/Theme.NoTitleBar")]
     public class MainActivity : Activity
     {
         int count = 1;
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
