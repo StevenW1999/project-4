@@ -63,20 +63,26 @@ namespace Android_App
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070002
-			public const int editText1 = 2131165186;
-			
-			// aapt resource value: 0x7f070004
-			public const int editText2 = 2131165188;
-			
-			// aapt resource value: 0x7f070000
-			public const int myButton = 2131165184;
-			
-			// aapt resource value: 0x7f070001
-			public const int textView1 = 2131165185;
+			// aapt resource value: 0x7f070005
+			public const int LoginButton = 2131165189;
 			
 			// aapt resource value: 0x7f070003
-			public const int textView2 = 2131165187;
+			public const int PasswordField = 2131165187;
+			
+			// aapt resource value: 0x7f070006
+			public const int SignUpButton = 2131165190;
+			
+			// aapt resource value: 0x7f070001
+			public const int UsernameField = 2131165185;
+			
+			// aapt resource value: 0x7f070004
+			public const int gridLayout1 = 2131165188;
+			
+			// aapt resource value: 0x7f070000
+			public const int textView1 = 2131165184;
+			
+			// aapt resource value: 0x7f070002
+			public const int textView2 = 2131165186;
 			
 			static Id()
 			{

@@ -3,23 +3,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <Button
-        android:id="@+id/myButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello" />
     <TextView
         android:text="Username:"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
         android:id="@+id/textView1"
-        android:layout_marginTop="100dp"
-        android:gravity="center" />
+        android:layout_marginTop="200dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <EditText
         android:inputType="textPersonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText1" />
+        android:id="@+id/UsernameField" />
     <TextView
         android:text="Password:"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -31,5 +27,19 @@
         android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2" />
+        android:id="@+id/PasswordField"
+        android:gravity="center" />
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/gridLayout1">
+        <Button
+            android:text="Login"
+            android:id="@+id/LoginButton"
+            android:layout_marginLeft="90dp" />
+        <Button
+            android:text="Sign Up"
+            android:id="@+id/SignUpButton"
+            android:layout_marginRight="40dp" />
+    </GridLayout>
 </LinearLayout>

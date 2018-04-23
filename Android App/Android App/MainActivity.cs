@@ -5,7 +5,7 @@ using Android.OS;
 namespace Android_App
 {
     // "Theme = "@android:style/Theme.NoTitleBar"" added to remove title bar on top of application
-    [Activity(Label = "Android_App", MainLauncher = true, Icon = "@mipmap/icon" , Theme = "@android:style/Theme.NoTitleBar")]
+    [Activity(Label = "Android_App", MainLauncher = true, Icon = "@mipmap/icon" , Theme = "@style/Theme.Custom")]
     public class MainActivity : Activity
     {
         int count = 1;
@@ -18,9 +18,9 @@ namespace Android_App
 
             // Get our button from the layout resource,
             // and attach an event to it
-            Button button = FindViewById<Button>(Resource.Id.myButton);
+            //Button button = FindViewById<Button>(Resource.Id.myButton);
 
-            button.Click += delegate { button.Text = string.Format("{0} clicks!", count++); };
+            //button.Click += delegate { button.Text = string.Format("{0} clicks!", count++); };
         }
     }
 }
