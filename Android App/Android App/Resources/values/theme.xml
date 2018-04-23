@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="theme_custom_background">#ff757575</color><color name="theme_material_noactionbar_background">#ff757575</color>
+  <style name="Theme.Custom" parent="@android:style/Theme.Material.NoActionBar">
+    <item name="android:colorBackground">@color/theme_custom_background</item>
+    <item name="android:windowBackground">?android:attr/colorBackground</item>
+  </style>
+</resources>
