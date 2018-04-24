@@ -15,7 +15,8 @@
         android:inputType="textPersonName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/UsernameField" />
+        android:id="@+id/UsernameField"
+        android:gravity="center" />
     <TextView
         android:text="Password:"
         android:textAppearance="?android:attr/textAppearanceMedium"
