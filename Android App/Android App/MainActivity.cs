@@ -2,6 +2,9 @@
 using Android.Widget;
 using Android.OS;
 using System.Diagnostics;
+using System;
+using System.Text;
+
 namespace Android_App
 {
     // Theme = "style/Theme.Name" to load custom theme.
@@ -18,11 +21,12 @@ namespace Android_App
 
             // Set our view from the "main" layout resource and getting the information from this field.
             SetContentView(Resource.Layout.Main);
-
-            // Get our button from the layout resource and attach an event to it
+            
+            // Get our button from the layout resourceand attach an event to it
             Button loginButton = FindViewById<Button>(Resource.Id.LoginButton);
             //Added a function to the click action of a the button
             loginButton.Click += delegate { loginAction(); };
+
         }
 
         /// <summary>
@@ -36,6 +40,14 @@ namespace Android_App
             EditText passwordField = FindViewById<EditText>(Resource.Id.PasswordField);
             string password = passwordField.Text;
             System.Diagnostics.Debug.WriteLine($"Given Username : {username} and password : {password}");
+
+            //CUSTOM MESSAGE BOX BUILDER!
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.SetTitle("Error");
+            alert.SetMessage("Wrong username and/or password");
+            alert.SetPositiveButton("Ok", handler: null);
+            Dialog dialog = alert.Create();
+            dialog.Show();
         }
     }
 }

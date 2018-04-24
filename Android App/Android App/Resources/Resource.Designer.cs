@@ -44,11 +44,11 @@ namespace Android_App
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f050000
-			public const int theme_custom_background = 2131034112;
+			// aapt resource value: 0x7f060000
+			public const int theme_custom_background = 2131099648;
 			
-			// aapt resource value: 0x7f050001
-			public const int theme_material_noactionbar_background = 2131034113;
+			// aapt resource value: 0x7f060001
+			public const int theme_material_noactionbar_background = 2131099649;
 			
 			static Color()
 			{
@@ -60,29 +60,48 @@ namespace Android_App
 			}
 		}
 		
+		public partial class Drawable
+		{
+			
+			// aapt resource value: 0x7f020000
+			public const int HRImage = 2130837504;
+			
+			static Drawable()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Drawable()
+			{
+			}
+		}
+		
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070005
-			public const int LoginButton = 2131165189;
+			// aapt resource value: 0x7f080006
+			public const int LoginButton = 2131230726;
 			
-			// aapt resource value: 0x7f070003
-			public const int PasswordField = 2131165187;
+			// aapt resource value: 0x7f080004
+			public const int PasswordField = 2131230724;
 			
-			// aapt resource value: 0x7f070006
-			public const int SignUpButton = 2131165190;
+			// aapt resource value: 0x7f080007
+			public const int SignUpButton = 2131230727;
 			
-			// aapt resource value: 0x7f070001
-			public const int UsernameField = 2131165185;
+			// aapt resource value: 0x7f080002
+			public const int UsernameField = 2131230722;
 			
-			// aapt resource value: 0x7f070004
-			public const int gridLayout1 = 2131165188;
+			// aapt resource value: 0x7f080005
+			public const int gridLayout1 = 2131230725;
 			
-			// aapt resource value: 0x7f070000
-			public const int textView1 = 2131165184;
+			// aapt resource value: 0x7f080000
+			public const int imageView = 2131230720;
 			
-			// aapt resource value: 0x7f070002
-			public const int textView2 = 2131165186;
+			// aapt resource value: 0x7f080001
+			public const int textView1 = 2131230721;
+			
+			// aapt resource value: 0x7f080003
+			public const int textView2 = 2131230723;
 			
 			static Id()
 			{
@@ -97,8 +116,8 @@ namespace Android_App
 		public partial class Layout
 		{
 			
-			// aapt resource value: 0x7f030000
-			public const int Main = 2130903040;
+			// aapt resource value: 0x7f040000
+			public const int Main = 2130968576;
 			
 			static Layout()
 			{
@@ -113,8 +132,8 @@ namespace Android_App
 		public partial class Mipmap
 		{
 			
-			// aapt resource value: 0x7f020000
-			public const int Icon = 2130837504;
+			// aapt resource value: 0x7f030000
+			public const int Icon = 2130903040;
 			
 			static Mipmap()
 			{
@@ -129,11 +148,11 @@ namespace Android_App
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040001
-			public const int app_name = 2130968577;
+			// aapt resource value: 0x7f050001
+			public const int app_name = 2131034113;
 			
-			// aapt resource value: 0x7f040000
-			public const int hello = 2130968576;
+			// aapt resource value: 0x7f050000
+			public const int hello = 2131034112;
 			
 			static String()
 			{
@@ -148,8 +167,8 @@ namespace Android_App
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f060000
-			public const int Theme_Custom = 2131099648;
+			// aapt resource value: 0x7f070000
+			public const int Theme_Custom = 2131165184;
 			
 			static Style()
 			{
