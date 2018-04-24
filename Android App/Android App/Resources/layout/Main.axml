@@ -16,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/UsernameField"
-        android:gravity="center" />
+        android:gravity="center"
+        android:maxLength="20" />
     <TextView
         android:text="Password:"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -29,7 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/PasswordField"
-        android:gravity="center" />
+        android:gravity="center"
+        android:maxLength="20" />
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
