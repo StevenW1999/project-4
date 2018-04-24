@@ -4,6 +4,7 @@ using Android.OS;
 using System.Diagnostics;
 using System;
 using System.Text;
+using Android.Content;
 
 namespace Android_App
 {
@@ -27,6 +28,19 @@ namespace Android_App
             //Added a function to the click action of a the button
             loginButton.Click += delegate { loginAction(); };
 
+            //Add a sign up button and define an action to be executed
+            Button signUpButton = FindViewById<Button>(Resource.Id.SignUpButton);
+            //Added a function to the click action of a the button
+            signUpButton.Click += delegate { LoadSignUpPage(); };
+
+        }
+
+        private void LoadSignUpPage()
+        {
+            //Init new Activity page / new android form
+            Intent signUp = new Intent(this,typeof(SignUpActivity));
+            //Starting new activity page
+            StartActivity(signUp);
         }
 
         /// <summary>

@@ -79,6 +79,12 @@ namespace Android_App
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f08000e
+			public const int Cancel = 2131230734;
+			
+			// aapt resource value: 0x7f08000d
+			public const int CreateAccount = 2131230733;
+			
 			// aapt resource value: 0x7f080006
 			public const int LoginButton = 2131230726;
 			
@@ -91,17 +97,32 @@ namespace Android_App
 			// aapt resource value: 0x7f080002
 			public const int UsernameField = 2131230722;
 			
+			// aapt resource value: 0x7f08000a
+			public const int editText1 = 2131230730;
+			
+			// aapt resource value: 0x7f08000c
+			public const int editText2 = 2131230732;
+			
 			// aapt resource value: 0x7f080005
 			public const int gridLayout1 = 2131230725;
 			
 			// aapt resource value: 0x7f080000
 			public const int imageView = 2131230720;
 			
+			// aapt resource value: 0x7f080008
+			public const int linearLayout1 = 2131230728;
+			
 			// aapt resource value: 0x7f080001
 			public const int textView1 = 2131230721;
 			
 			// aapt resource value: 0x7f080003
 			public const int textView2 = 2131230723;
+			
+			// aapt resource value: 0x7f080009
+			public const int textView3 = 2131230729;
+			
+			// aapt resource value: 0x7f08000b
+			public const int textView4 = 2131230731;
 			
 			static Id()
 			{
@@ -118,6 +139,9 @@ namespace Android_App
 			
 			// aapt resource value: 0x7f040000
 			public const int Main = 2130968576;
+			
+			// aapt resource value: 0x7f040001
+			public const int SignUpPage = 2130968577;
 			
 			static Layout()
 			{
