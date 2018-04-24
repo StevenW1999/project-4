@@ -19,7 +19,7 @@ namespace Android_App
             // Set our view from the "main" layout resource and getting the information from this field.
             SetContentView(Resource.Layout.Main);
 
-            // Get our button from the layout resource,and attach an event to it
+            // Get our button from the layout resource and attach an event to it
             Button loginButton = FindViewById<Button>(Resource.Id.LoginButton);
             //Added a function to the click action of a the button
             loginButton.Click += delegate { loginAction(); };
