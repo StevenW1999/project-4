@@ -85,23 +85,23 @@ namespace Android_App
 			// aapt resource value: 0x7f08000d
 			public const int CreateAccount = 2131230733;
 			
+			// aapt resource value: 0x7f08000a
+			public const int FirstPasswordEntry = 2131230730;
+			
 			// aapt resource value: 0x7f080006
 			public const int LoginButton = 2131230726;
 			
 			// aapt resource value: 0x7f080004
 			public const int PasswordField = 2131230724;
 			
+			// aapt resource value: 0x7f08000c
+			public const int SecondPasswordEntry = 2131230732;
+			
 			// aapt resource value: 0x7f080007
 			public const int SignUpButton = 2131230727;
 			
 			// aapt resource value: 0x7f080002
 			public const int UsernameField = 2131230722;
-			
-			// aapt resource value: 0x7f08000a
-			public const int editText1 = 2131230730;
-			
-			// aapt resource value: 0x7f08000c
-			public const int editText2 = 2131230732;
 			
 			// aapt resource value: 0x7f080005
 			public const int gridLayout1 = 2131230725;
