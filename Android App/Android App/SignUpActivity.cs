@@ -67,8 +67,8 @@ namespace Android_App
                 alert.SetPositiveButton("Ok", handler: null);
                 Dialog dialog = alert.Create();
                 dialog.Show();
-                Wait(5000);
                 Finish();
+
             }
             else
             {
