@@ -31,7 +31,6 @@ namespace Android_App
 
             // Create your application here
             SetContentView(Resource.Layout.SignUpPage);
-
             //Define text entry fields
             TextView usernameField = FindViewById<TextView>(Resource.Id.UsernameField);
             TextView passwordField1 = FindViewById<TextView>(Resource.Id.FirstPasswordEntry);
@@ -52,13 +51,7 @@ namespace Android_App
 
         private void CheckUsernameAvailibility(TextView usernameField)
         {
-            string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; Database = AndroidApp; Integrated Security = True;";
-            //using (SqlConnection connection = new SqlConnection(connectionString))
-            //{
-            //    //connection.Open();
-            //    //System.Diagnostics.Debug.WriteLine("Connection open");
-            //    // Do work here; connection closed on following line.
-            //};
+
         }
 
         private void CheckPasswordCombination(TextView passwordField1 , TextView passwordField2)
