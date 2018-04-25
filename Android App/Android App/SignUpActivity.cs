@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
+using System.Timers;
+using System.Diagnostics;
 
 using Android.App;
 using Android.Content;
@@ -21,6 +23,7 @@ namespace Android_App
     [Activity(Label = "SignUpActivity", Theme = "@style/Theme.Custom")]
     public class SignUpActivity : Activity
     {
+        private bool passwordsMatch = false;
         
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -33,6 +36,8 @@ namespace Android_App
             TextView usernameField = FindViewById<TextView>(Resource.Id.UsernameField);
             TextView passwordField1 = FindViewById<TextView>(Resource.Id.FirstPasswordEntry);
             TextView passwordField2 = FindViewById<TextView>(Resource.Id.SecondPasswordEntry);
+            //Check password combination when text field input changes
+            passwordField2.TextChanged += delegate { CheckPasswordCombination(passwordField1, passwordField2); };
 
             //Add button action
             Button cancel = FindViewById<Button>(Resource.Id.Cancel);
@@ -42,6 +47,19 @@ namespace Android_App
             Button createAccount = FindViewById<Button>(Resource.Id.CreateAccount);
             createAccount.Click += delegate { CreateAccount(usernameField,passwordField1,passwordField2); };
 
+        }
+
+        private void CheckPasswordCombination(TextView passwordField1 , TextView passwordField2)
+        {
+            if(passwordField1.Text != passwordField2.Text)
+            {
+                passwordField2.SetError("Passwords dont match",null);
+                this.passwordsMatch = false;
+            }
+            else
+            {
+                this.passwordsMatch = true;
+            }
         }
 
         private void CancelAction()
@@ -68,12 +86,9 @@ namespace Android_App
             {
                 username.SetError("Username already exists", null);
             }
-
-            //Check password
-            if (password.Text == password2.Text)
+            else if(ValidateUsername(username.Text) == true && passwordsMatch == true)
             {
                 //TODO Call database to create a new user with specified parameters
-
                 //CUSTOM MESSAGE BOX BUILDER!
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.SetTitle("Account created");
@@ -82,10 +97,6 @@ namespace Android_App
                 });
                 Dialog dialog = alert.Create();
                 dialog.Show();              
-            }
-            else
-            {
-                password2.SetError("Passwords dont match", null);
             }
         }
     }
