@@ -11,7 +11,11 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Graphics;
-
+/// <summary>
+/// TODO
+/// Add reference to timer event from the system class
+/// Initiate this with checking passwords to eachother
+/// </summary>
 namespace Android_App
 {
     [Activity(Label = "SignUpActivity", Theme = "@style/Theme.Custom")]
