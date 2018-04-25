@@ -38,7 +38,8 @@ namespace Android_App
             TextView passwordField2 = FindViewById<TextView>(Resource.Id.SecondPasswordEntry);
             //Check password combination when text field input changes
             passwordField2.TextChanged += delegate { CheckPasswordCombination(passwordField1, passwordField2); };
-
+            //Check username availibility
+            usernameField.TextChanged += delegate { CheckUsernameAvailibility(usernameField); };
             //Add button action
             Button cancel = FindViewById<Button>(Resource.Id.Cancel);
             cancel.Click += delegate { CancelAction(); };
@@ -47,6 +48,17 @@ namespace Android_App
             Button createAccount = FindViewById<Button>(Resource.Id.CreateAccount);
             createAccount.Click += delegate { CreateAccount(usernameField,passwordField1,passwordField2); };
 
+        }
+
+        private void CheckUsernameAvailibility(TextView usernameField)
+        {
+            string connectionString = @"Data Source = (LocalDB)\MSSQLLocalDB; Database = AndroidApp; Integrated Security = True;";
+            //using (SqlConnection connection = new SqlConnection(connectionString))
+            //{
+            //    //connection.Open();
+            //    //System.Diagnostics.Debug.WriteLine("Connection open");
+            //    // Do work here; connection closed on following line.
+            //};
         }
 
         private void CheckPasswordCombination(TextView passwordField1 , TextView passwordField2)
