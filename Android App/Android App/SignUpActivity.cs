@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.SqlClient;
 
 using Android.App;
 using Android.Content;
@@ -9,12 +10,14 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Graphics;
 
 namespace Android_App
 {
     [Activity(Label = "SignUpActivity", Theme = "@style/Theme.Custom")]
     public class SignUpActivity : Activity
     {
+        
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -45,17 +48,23 @@ namespace Android_App
 
         private void CreateAccount(TextView username, TextView password, TextView password2)
         {
-            //Functie to check username availibility
-            Func<string,bool> ValidateUsername = usernameGiven => { return true;  };
-            //Check username
-            if(ValidateUsername(username.Text) == true)
-            {
 
-            }
-            else
+            //Functie to check username availibility
+            Func<string,bool> ValidateUsername = usernameGiven => 
             {
-                username.SetError("Username already exists",null);
+                //using (SqlConnection connection = new SqlConnection(connectionString))
+                //{
+                //    connection.Open();
+                //    // Do work here; connection closed on following line.
+                //};
+                return true;
+            };
+            //Check username
+            if(ValidateUsername(username.Text) == false)
+            {
+                username.SetError("Username already exists", null);
             }
+
             //Check password
             if (password.Text == password2.Text)
             {
