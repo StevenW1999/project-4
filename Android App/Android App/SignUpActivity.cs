@@ -64,11 +64,11 @@ namespace Android_App
                 //CUSTOM MESSAGE BOX BUILDER!
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
                 alert.SetTitle("Account created");
-                alert.SetPositiveButton("Ok", handler: null);
+                alert.SetPositiveButton("Ok", (s,e)=> {
+                    Finish();
+                });
                 Dialog dialog = alert.Create();
-                dialog.Show();
-                Finish();
-
+                dialog.Show();              
             }
             else
             {
