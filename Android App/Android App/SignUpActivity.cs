@@ -5,6 +5,7 @@ using System.Text;
 using System.Data.SqlClient;
 using System.Timers;
 using System.Diagnostics;
+using Mono.Data.Sqlite;
 
 using Android.App;
 using Android.Content;
@@ -13,6 +14,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Graphics;
+
 /// <summary>
 /// TODO
 /// Add reference to timer event from the system class
@@ -24,13 +26,15 @@ namespace Android_App
     public class SignUpActivity : Activity
     {
         private bool passwordsMatch = false;
-        
+        static TodoItemDatabase database;
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            
             base.OnCreate(savedInstanceState);
-
             // Create your application here
             SetContentView(Resource.Layout.SignUpPage);
+            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Xamarin.Forms.DependencyService.Register<FileHelper>();
             //Define text entry fields
             TextView usernameField = FindViewById<TextView>(Resource.Id.UsernameField);
             TextView passwordField1 = FindViewById<TextView>(Resource.Id.FirstPasswordEntry);
@@ -75,34 +79,44 @@ namespace Android_App
 
         private void CreateAccount(TextView username, TextView password, TextView password2)
         {
+            string dbName = "AndroidAppDB.db";
+            string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            string dbPath = System.IO.Path.Combine(folder,dbName);
 
-            //Functie to check username availibility
-            Func<string,bool> ValidateUsername = usernameGiven => 
+            if (database == null)
             {
-                //using (SqlConnection connection = new SqlConnection(connectionString))
-                //{
-                //    connection.Open();
-                //    // Do work here; connection closed on following line.
-                //};
-                return true;
-            };
-            //Check username
-            if(ValidateUsername(username.Text) == false)
-            {
-                username.SetError("Username already exists", null);
+                database = new TodoItemDatabase(Xamarin.Forms.DependencyService.Get<IFileHelper>().GetLocalFilePath("AndroidAppDB.db"));
+                database.SaveItemAsync(new User() {Username = "Lol" , Password = "pass" });
+                List<User> users = database.GetItemsNotDoneAsync().Result;
+                System.Diagnostics.Debug.WriteLine(users[0].Username);
             }
-            else if(ValidateUsername(username.Text) == true && passwordsMatch == true)
-            {
-                //TODO Call database to create a new user with specified parameters
-                //CUSTOM MESSAGE BOX BUILDER!
-                AlertDialog.Builder alert = new AlertDialog.Builder(this);
-                alert.SetTitle("Account created");
-                alert.SetPositiveButton("Ok", (s,e)=> {
-                    Finish();
-                });
-                Dialog dialog = alert.Create();
-                dialog.Show();              
-            }
+            ////Functie to check username availibility
+            //Func<string,bool> ValidateUsername = usernameGiven => 
+            //{
+            //    //using (SqlConnection connection = new SqlConnection(connectionString))
+            //    //{
+            //    //    connection.Open();
+            //    //    // Do work here; connection closed on following line.
+            //    //};
+            //    return true;
+            //};
+            ////Check username
+            //if(ValidateUsername(username.Text) == false)
+            //{
+            //    username.SetError("Username already exists", null);
+            //}
+            //else if(ValidateUsername(username.Text) == true && passwordsMatch == true)
+            //{
+            //    //TODO Call database to create a new user with specified parameters
+            //    //CUSTOM MESSAGE BOX BUILDER!
+            //    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            //    alert.SetTitle("Account created");
+            //    alert.SetPositiveButton("Ok", (s,e)=> {
+            //        Finish();
+            //    });
+            //    Dialog dialog = alert.Create();
+            //    dialog.Show();              
+            //}
         }
     }
 }
