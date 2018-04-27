@@ -15,6 +15,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Graphics;
 using System.IO;
+using Android_App.DatabaseModels;
 
 /// <summary>
 /// TODO
@@ -27,7 +28,11 @@ namespace Android_App
     public class SignUpActivity : Activity
     {
         private bool passwordsMatch = false;
+
         static TodoItemDatabase database;
+
+        internal static TodoItemDatabase Database { get => database; set => database = value; }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             
@@ -80,12 +85,14 @@ namespace Android_App
 
         private void CreateAccount(TextView username, TextView password, TextView password2)
         {
+            Toast.MakeText(this, "Creating user...", ToastLength.Short).Show();
+
             string dbName = "AndroidAppDB.db";
             string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
             string dbPath = System.IO.Path.Combine(folder,dbName);
             //DOES FIND THE DATABASE IN ASSETS?
             //System.Diagnostics.Debug.WriteLine(Assets.List("")[0]);
-            if (database == null)
+            if (Database == null)
             {
                 if (!File.Exists(dbPath))
                 {
@@ -113,15 +120,19 @@ namespace Android_App
                 //var path = System.IO.Path.Combine(extStoragePath, "");
                 //var filename = System.IO.Path.Combine(extStoragePath, sqliteFilename);
 
-                database = new TodoItemDatabase(Xamarin.Forms.DependencyService.Get<IFileHelper>().GetLocalFilePath(dbPath));
-                database.SaveItemAsync(new User() {Username = "Lol2" , Password = "pass" });
-                List<User> users = database.GetItemsNotDoneAsync().Result;
-                System.Diagnostics.Debug.WriteLine(users.Count);
                 //System.Diagnostics.Debug.WriteLine(extStoragePath);
                 // Check if we can write to external storage and copying the db file to external storage file
                 //System.Diagnostics.Debug.WriteLine(Android.OS.Environment.ExternalStorageDirectory.CanWrite());
                 //System.IO.File.Copy(dbPath, System.IO.Path.Combine(extStoragePath, sqliteFilename), true);
             }
+
+            Database = new TodoItemDatabase(Xamarin.Forms.DependencyService.Get<IFileHelper>().GetLocalFilePath(dbPath));
+            Database.SaveItemAsync(new User() { Username = $"Lol{new Random().NextDouble()}", Password = "pass" });
+            List<User> users = Database.GetItemsNotDoneAsync().Result;
+            System.Diagnostics.Debug.WriteLine(users.Count);
+
+            Toast.MakeText(this, $"Total users: {users.Count}", ToastLength.Long).Show();
+
             //Commented code in scope here => to be used later
             {
                 ////Functie to check username availibility
