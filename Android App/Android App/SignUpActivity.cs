@@ -14,6 +14,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Graphics;
+using System.IO;
 
 /// <summary>
 /// TODO
@@ -82,13 +83,39 @@ namespace Android_App
             string dbName = "AndroidAppDB.db";
             string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
             string dbPath = System.IO.Path.Combine(folder,dbName);
-
+            //DOES FIND THE DATABASE IN ASSETS
+            System.Diagnostics.Debug.WriteLine(Assets.List("")[0]);
             if (database == null)
             {
-                database = new TodoItemDatabase(Xamarin.Forms.DependencyService.Get<IFileHelper>().GetLocalFilePath("AndroidAppDB.db"));
+                //Kopieer database naar phone
+                using (var binaryReader = new BinaryReader(Android.App.Application.Context.Assets.Open(dbName)))
+                {
+                    using (var binaryWriter = new BinaryWriter(new FileStream(dbPath, FileMode.Create)))
+                    {
+                        byte[] buffer = new byte[2048];
+                        int length = 0;
+                        while ((length = binaryReader.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            binaryWriter.Write(buffer, 0, length);
+                        }
+                    }
+                    //
+                }
+                
+                //New database file for external storage
+                var sqliteFilename = "MyDb.db";
+                var extStoragePath = global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
+                var path = System.IO.Path.Combine(extStoragePath, "");
+                var filename = System.IO.Path.Combine(extStoragePath, sqliteFilename);
+
+                database = new TodoItemDatabase(Xamarin.Forms.DependencyService.Get<IFileHelper>().GetLocalFilePath(dbPath));
                 database.SaveItemAsync(new User() {Username = "Lol" , Password = "pass" });
                 List<User> users = database.GetItemsNotDoneAsync().Result;
-                System.Diagnostics.Debug.WriteLine(users[0].Username);
+                System.Diagnostics.Debug.WriteLine(users.Count);
+                //System.Diagnostics.Debug.WriteLine(extStoragePath);
+                // Check if we can write to external storage and copying the db file to external storage file
+                System.Diagnostics.Debug.WriteLine(Android.OS.Environment.ExternalStorageDirectory.CanWrite());
+                System.IO.File.Copy(dbPath, System.IO.Path.Combine(extStoragePath, sqliteFilename), true);
             }
             ////Functie to check username availibility
             //Func<string,bool> ValidateUsername = usernameGiven => 
