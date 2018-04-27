@@ -83,67 +83,75 @@ namespace Android_App
             string dbName = "AndroidAppDB.db";
             string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
             string dbPath = System.IO.Path.Combine(folder,dbName);
-            //DOES FIND THE DATABASE IN ASSETS
-            System.Diagnostics.Debug.WriteLine(Assets.List("")[0]);
+            //DOES FIND THE DATABASE IN ASSETS?
+            //System.Diagnostics.Debug.WriteLine(Assets.List("")[0]);
             if (database == null)
             {
-                //Kopieer database naar phone
-                using (var binaryReader = new BinaryReader(Android.App.Application.Context.Assets.Open(dbName)))
+                if (!File.Exists(dbPath))
                 {
-                    using (var binaryWriter = new BinaryWriter(new FileStream(dbPath, FileMode.Create)))
+                    System.Diagnostics.Debug.WriteLine("Copying database");
+                    //Kopieer database naar phone
+                    using (var binaryReader = new BinaryReader(Android.App.Application.Context.Assets.Open(dbName)))
                     {
-                        byte[] buffer = new byte[2048];
-                        int length = 0;
-                        while ((length = binaryReader.Read(buffer, 0, buffer.Length)) > 0)
+                        using (var binaryWriter = new BinaryWriter(new FileStream(dbPath, FileMode.Create)))
                         {
-                            binaryWriter.Write(buffer, 0, length);
+                            byte[] buffer = new byte[2048];
+                            int length = 0;
+                            while ((length = binaryReader.Read(buffer, 0, buffer.Length)) > 0)
+                            {
+                                binaryWriter.Write(buffer, 0, length);
+                            }
                         }
+                        //
                     }
-                    //
                 }
+                else System.Diagnostics.Debug.WriteLine("database exist already");     
                 
                 //New database file for external storage
-                var sqliteFilename = "MyDb.db";
-                var extStoragePath = global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
-                var path = System.IO.Path.Combine(extStoragePath, "");
-                var filename = System.IO.Path.Combine(extStoragePath, sqliteFilename);
+                //var sqliteFilename = "MyDb.db";
+                //var extStoragePath = global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
+                //var path = System.IO.Path.Combine(extStoragePath, "");
+                //var filename = System.IO.Path.Combine(extStoragePath, sqliteFilename);
 
                 database = new TodoItemDatabase(Xamarin.Forms.DependencyService.Get<IFileHelper>().GetLocalFilePath(dbPath));
-                database.SaveItemAsync(new User() {Username = "Lol" , Password = "pass" });
+                database.SaveItemAsync(new User() {Username = "Lol2" , Password = "pass" });
                 List<User> users = database.GetItemsNotDoneAsync().Result;
                 System.Diagnostics.Debug.WriteLine(users.Count);
                 //System.Diagnostics.Debug.WriteLine(extStoragePath);
                 // Check if we can write to external storage and copying the db file to external storage file
-                System.Diagnostics.Debug.WriteLine(Android.OS.Environment.ExternalStorageDirectory.CanWrite());
-                System.IO.File.Copy(dbPath, System.IO.Path.Combine(extStoragePath, sqliteFilename), true);
+                //System.Diagnostics.Debug.WriteLine(Android.OS.Environment.ExternalStorageDirectory.CanWrite());
+                //System.IO.File.Copy(dbPath, System.IO.Path.Combine(extStoragePath, sqliteFilename), true);
             }
-            ////Functie to check username availibility
-            //Func<string,bool> ValidateUsername = usernameGiven => 
-            //{
-            //    //using (SqlConnection connection = new SqlConnection(connectionString))
-            //    //{
-            //    //    connection.Open();
-            //    //    // Do work here; connection closed on following line.
-            //    //};
-            //    return true;
-            //};
-            ////Check username
-            //if(ValidateUsername(username.Text) == false)
-            //{
-            //    username.SetError("Username already exists", null);
-            //}
-            //else if(ValidateUsername(username.Text) == true && passwordsMatch == true)
-            //{
-            //    //TODO Call database to create a new user with specified parameters
-            //    //CUSTOM MESSAGE BOX BUILDER!
-            //    AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            //    alert.SetTitle("Account created");
-            //    alert.SetPositiveButton("Ok", (s,e)=> {
-            //        Finish();
-            //    });
-            //    Dialog dialog = alert.Create();
-            //    dialog.Show();              
-            //}
+            //Commented code in scope here => to be used later
+            {
+                ////Functie to check username availibility
+                //Func<string,bool> ValidateUsername = usernameGiven => 
+                //{
+                //    //using (SqlConnection connection = new SqlConnection(connectionString))
+                //    //{
+                //    //    connection.Open();
+                //    //    // Do work here; connection closed on following line.
+                //    //};
+                //    return true;
+                //};
+                ////Check username
+                //if(ValidateUsername(username.Text) == false)
+                //{
+                //    username.SetError("Username already exists", null);
+                //}
+                //else if(ValidateUsername(username.Text) == true && passwordsMatch == true)
+                //{
+                //    //TODO Call database to create a new user with specified parameters
+                //    //CUSTOM MESSAGE BOX BUILDER!
+                //    AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                //    alert.SetTitle("Account created");
+                //    alert.SetPositiveButton("Ok", (s,e)=> {
+                //        Finish();
+                //    });
+                //    Dialog dialog = alert.Create();
+                //    dialog.Show();              
+                //}
+            }
         }
     }
 }
