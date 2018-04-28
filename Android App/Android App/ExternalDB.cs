@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -10,6 +9,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Data.SqlClient;
+using System.Configuration;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -19,7 +19,7 @@ namespace Android_App
 {
     public class ExternalDB
     {
-        private static string connString = "Server = hogeschoolrotterdam.database.windows.net,1433; Database = ASS; User Id = main; Password = database1#;Connection Timeout = 1;";
+        private static string connString = "Server = hogeschoolrotterdam.database.windows.net,1433; Database = ASS; User Id = main; Password = database1#;";//ConfigurationManager.ConnectionStrings["ASS"].ConnectionString;
         private static SqlConnection conn;
         public ExternalDB()
         {
@@ -43,14 +43,14 @@ namespace Android_App
                             Connection = conn
                         };
 
-                        SqlDataReader reader = command.ExecuteReader();
-                        while (reader.Read())
-                        {
-                            System.Diagnostics.Debug.WriteLine(reader["Username"].ToString(), reader["Password"].ToString());
-                        }
-                        conn.Close();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        System.Diagnostics.Debug.WriteLine(reader["Username"].ToString(), reader["Password"].ToString());
                     }
-                    return true;
+                    conn.Close();
+                }
+                return true;
 
                 }
                 catch
@@ -128,6 +128,7 @@ namespace Android_App
             });
         }
 
+<<<<<<< HEAD
         public Task AddUser(string username , string password)
         {
             return Task.Factory.StartNew(() => {
@@ -153,5 +154,7 @@ namespace Android_App
                 }
             });
         }
+=======
+>>>>>>> 6a1253009dcdaefb11d04648629143bc7366d9c7
     }
 }

@@ -22,7 +22,7 @@ namespace Android_App
 
             // Set our view from the "main" layout resource and getting the information from this field.
             SetContentView(Resource.Layout.Main);
-            
+
             // Get our button from the layout resourceand attach an event to it
             Button loginButton = FindViewById<Button>(Resource.Id.LoginButton);
             //Added a function to the click action of a the button
@@ -50,7 +50,7 @@ namespace Android_App
         private void loginAction()
         {
             //TEST DB CONN HERE
-            if(ExternalDB.TestConn().Result == true)
+            if (ExternalDB.TestConn().Result == true)
             {
                 //USUAL CODE UNDER HERE!
                 EditText usernameField = FindViewById<EditText>(Resource.Id.UsernameField);
