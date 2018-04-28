@@ -61,7 +61,7 @@ namespace Android_App
 
         private bool CheckUsernameAvailability(TextView usernameField)
         {
-            if(new ExternalDB().UsernameAvailibility(usernameField.Text).Result == true)
+            if (new ExternalDB().UsernameAvailibility(usernameField.Text).Result == true)
             {
                 return true;
             }
