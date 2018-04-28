@@ -35,7 +35,7 @@ namespace Android_App
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            
+
             base.OnCreate(savedInstanceState);
             // Create your application here
             SetContentView(Resource.Layout.SignUpPage);
@@ -48,7 +48,7 @@ namespace Android_App
             //Check password combination when text field input changes
             passwordField2.TextChanged += delegate { CheckPasswordCombination(passwordField1, passwordField2); };
             //Check username availibility
-            usernameField.TextChanged += delegate { CheckUsernameAvailibility(usernameField); };
+            usernameField.TextChanged += delegate { CheckUsernameAvailability(usernameField); };
             //Add button action
             Button cancel = FindViewById<Button>(Resource.Id.Cancel);
             cancel.Click += delegate { CancelAction(); };
@@ -59,9 +59,17 @@ namespace Android_App
 
         }
 
-        private void CheckUsernameAvailibility(TextView usernameField)
+        private bool CheckUsernameAvailability(TextView usernameField)
         {
-
+            if(new ExternalDB().UsernameAvailibility(usernameField.Text).Result == true)
+            {
+                return true;
+            }
+            else
+            {
+                usernameField.SetError("Username is not available",null);
+                return false;
+            }
         }
 
         private void CheckPasswordCombination(TextView passwordField1 , TextView passwordField2)
@@ -85,6 +93,31 @@ namespace Android_App
 
         private void CreateAccount(TextView username, TextView password, TextView password2)
         {
+            if (ExternalDB.TestConn().Result == true)
+            {
+                if ((password.Text == password2.Text) && CheckUsernameAvailability(username) == true)
+                {
+
+                    //Create user here
+                    string usernameText = username.Text;
+                    string passwordText = password.Text;
+                    Toast.MakeText(this, "Creating user...", ToastLength.Short).Show();
+                    Finish();
+                }
+                else if (password.Text != password2.Text)
+                {
+                    Toast.MakeText(this, "Passwords dont match", ToastLength.Short).Show();
+                }
+                else if (CheckUsernameAvailability(username) == false)
+                {
+                    Toast.MakeText(this, "Username is not available", ToastLength.Short).Show();
+                }
+            }
+            else
+            {
+                Toast.MakeText(this, "No connection with the database", ToastLength.Short).Show();
+            }
+            /*
             Toast.MakeText(this, "Creating user...", ToastLength.Short).Show();
 
             string dbName = "AndroidAppDB.db";
@@ -112,8 +145,8 @@ namespace Android_App
                         //
                     }
                 }
-                else System.Diagnostics.Debug.WriteLine("database exist already");     
-                
+                else System.Diagnostics.Debug.WriteLine("database exist already");
+
                 //New database file for external storage
                 //var sqliteFilename = "MyDb.db";
                 //var extStoragePath = global::Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
@@ -136,7 +169,7 @@ namespace Android_App
             //Commented code in scope here => to be used later
             {
                 ////Functie to check username availibility
-                //Func<string,bool> ValidateUsername = usernameGiven => 
+                //Func<string,bool> ValidateUsername = usernameGiven =>
                 //{
                 //    //using (SqlConnection connection = new SqlConnection(connectionString))
                 //    //{
@@ -160,9 +193,9 @@ namespace Android_App
                 //        Finish();
                 //    });
                 //    Dialog dialog = alert.Create();
-                //    dialog.Show();              
+                //    dialog.Show();
                 //}
-            }
+            }*/
         }
     }
 }
