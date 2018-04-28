@@ -164,6 +164,9 @@
     <None Include="app.config" />
     <AndroidAsset Include="Assets\AndroidAppDB.db" />
     <None Include="GettingStarted.Xamarin" />
+    <AndroidResource Include="Resources\layout\MainMenu.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
