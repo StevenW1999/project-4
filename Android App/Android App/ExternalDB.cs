@@ -127,7 +127,6 @@ namespace Android_App
                 return userValidated;
             });
         }
-
         public Task AddUser(string username , string password)
         {
             return Task.Factory.StartNew(() => {
@@ -153,6 +152,5 @@ namespace Android_App
                 }
             });
         }
-
     }
 }
