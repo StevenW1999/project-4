@@ -103,7 +103,7 @@ namespace Android_App
                     string passwordText = password.Text;
                     Toast.MakeText(this, "Creating user...", ToastLength.Short).Show();
                     new ExternalDB().AddUser(usernameText, passwordText);
-                    Toast.MakeText(this, "Added a user", ToastLength.Short).Show();
+                    Toast.MakeText(this, "User created", ToastLength.Short).Show();
                     Finish();
                 }
                 else if (password.Text != password2.Text)
