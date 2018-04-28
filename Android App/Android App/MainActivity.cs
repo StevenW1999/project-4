@@ -49,19 +49,43 @@ namespace Android_App
         /// </summary>
         private void loginAction()
         {
-            EditText usernameField = FindViewById<EditText>(Resource.Id.UsernameField);
-            string username = usernameField.Text;
-            EditText passwordField = FindViewById<EditText>(Resource.Id.PasswordField);
-            string password = passwordField.Text;
-            System.Diagnostics.Debug.WriteLine($"Given Username : {username} and password : {password}");
-
-            //CUSTOM MESSAGE BOX BUILDER!
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.SetTitle("Error");
-            alert.SetMessage("Wrong username and/or password");
-            alert.SetPositiveButton("Ok", handler: null);
-            Dialog dialog = alert.Create();
-            dialog.Show();
+            //TEST DB CONN HERE
+            if(ExternalDB.TestConn() == true)
+            {
+                //USUAL CODE UNDER HERE!
+                EditText usernameField = FindViewById<EditText>(Resource.Id.UsernameField);
+                string username = usernameField.Text;
+                EditText passwordField = FindViewById<EditText>(Resource.Id.PasswordField);
+                string password = passwordField.Text;
+                System.Diagnostics.Debug.WriteLine($"Given Username : {username} and password : {password}");
+                //Validate user with online DB
+                if (ExternalDB.ValidateLogin(username, password) == true)
+                {
+                    Toast.MakeText(this, "Login Succesfull", ToastLength.Short).Show();
+                }
+                else
+                {
+                    //ERROR ICON HAS TO BE SET STILL
+                    Android.Graphics.Drawables.Drawable icon = null;
+                    usernameField.SetError("Wrong Username", icon);
+                    passwordField.SetError("Wrong Password", icon);
+                    Toast.MakeText(this, "Wrong Username or Password", ToastLength.Short).Show();
+                    //CUSTOM MESSAGE BOX BUILDER!
+                    {
+                        //AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                        //alert.SetTitle("Error");
+                        //alert.SetMessage("Wrong username and/or password");
+                        //alert.SetPositiveButton("Ok", handler: null);
+                        //Dialog dialog = alert.Create();
+                        //dialog.Show();
+                    }
+                }
+            }
+            //IF THERE IS NO DATABASE CONNECTION
+            else
+            {
+                Toast.MakeText(this, "No database connection established", ToastLength.Short).Show();
+            }
         }
     }
 }

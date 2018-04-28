@@ -147,6 +147,7 @@
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
     <Compile Include="DatabaseModels\Todo.cs" />
+    <Compile Include="ExternalDB.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="IFileHelper.cs" />
     <Compile Include="MainActivity.cs" />
