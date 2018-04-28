@@ -9,6 +9,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Data.SqlClient;
+using System.Configuration;
+using System.Threading.Tasks;
 
 /// <summary>
 /// THIS IS A TEST OBJECT TO ESTABLISH CONNECTION TO THE DATABASE
@@ -107,14 +109,16 @@ namespace Android_App
                         Connection = conn
                     };
 
-                SqlDataReader reader = command.ExecuteReader();
-                if(reader.HasRows == true)
-                {
-                    userValidated = true;
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows == true)
+                    {
+                        userValidated = true;
+                    }
+                    conn.Close();
                 }
-                conn.Close();
-            }
-            return userValidated;
+                return userValidated;
+            });
         }
+
     }
 }
