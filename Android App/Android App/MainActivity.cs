@@ -50,7 +50,7 @@ namespace Android_App
         private void loginAction()
         {
             //TEST DB CONN HERE
-            if(ExternalDB.TestConn() == true)
+            if(ExternalDB.TestConn().Result == true)
             {
                 //USUAL CODE UNDER HERE!
                 EditText usernameField = FindViewById<EditText>(Resource.Id.UsernameField);
@@ -59,7 +59,7 @@ namespace Android_App
                 string password = passwordField.Text;
                 System.Diagnostics.Debug.WriteLine($"Given Username : {username} and password : {password}");
                 //Validate user with online DB
-                if (ExternalDB.ValidateLogin(username, password) == true)
+                if (new ExternalDB().ValidateLogin(username, password).Result == true)
                 {
                     Toast.MakeText(this, "Login Succesfull", ToastLength.Short).Show();
                     //LOAD NEW ACTIVITY PAGE

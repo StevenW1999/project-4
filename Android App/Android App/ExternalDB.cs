@@ -9,35 +9,39 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Data.SqlClient;
-using System.Configuration;
 
 /// <summary>
 /// THIS IS A TEST OBJECT TO ESTABLISH CONNECTION TO THE DATABASE
 /// </summary>
 namespace Android_App
 {
-    public static class ExternalDB
+    public class ExternalDB
     {
         private static string connString = ConfigurationManager.ConnectionStrings["ASS"].ConnectionString;
         private static SqlConnection conn;
+        public ExternalDB()
+        {
+            //To initialize External db object
+        }
 
         //THIS FUNCTION IS A TEST TO RECIEVE INFORMATION
-        public static bool TestConn()
+        public static Task<bool> TestConn()
         {
-            try
+            return Task.Run(() =>
             {
-                using (conn = new SqlConnection(connString))
+                try
                 {
-                    conn.Open();
-
-                    SqlCommand command = new SqlCommand
+                    using (conn = new SqlConnection(connString))
                     {
-                        CommandText = "select * from users",
-                        Connection = conn
-                    };
+                        conn.Open();
+
+                        SqlCommand command = new SqlCommand
+                        {
+                            CommandText = "select * from users",
+                            Connection = conn
+                        };
 
                     SqlDataReader reader = command.ExecuteReader();
-
                     while (reader.Read())
                     {
                         System.Diagnostics.Debug.WriteLine(reader["Username"].ToString(), reader["Password"].ToString());
@@ -46,33 +50,68 @@ namespace Android_App
                 }
                 return true;
 
-            }
-            catch
-            {
-                return false;
-            }
+                }
+                catch
+                {
+                    return false;
+                }
+            });
         }
 
-        public static bool ValidateLogin(string username , string password)
+        public Task<bool> UsernameAvailibility(string username)
         {
-            bool userValidated = false;
-            using (conn = new SqlConnection(connString))
+            return Task<bool>.Factory.StartNew(() =>
             {
-                conn.Open();
-
-                SqlCommand command = new SqlCommand
+                bool usernameAvailible = true;
+                try
                 {
-                    CommandText = $"select * from users where Username = '{username}' and Password = '{password}'",
-                    Connection = conn
-                };
+                    using (conn = new SqlConnection(connString))
+                    {
+                        conn.Open();
+
+                        SqlCommand command = new SqlCommand
+                        {
+                            CommandText = $"select * from users where Username = '{username}'",
+                            Connection = conn
+                        };
+
+                        SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows == true)
+                        {
+                            usernameAvailible = false;
+                        }
+                        conn.Close();
+                    }
+                }
+                catch
+                {
+                    System.Diagnostics.Debug.WriteLine("Server could not be reached");
+                }
+                return usernameAvailible;
+            });
+        }
+
+        //To validate user credentials
+        public Task<bool> ValidateLogin(string username, string password)
+        {
+            return Task<bool>.Factory.StartNew(() =>
+            {
+                bool userValidated = false;
+                using (conn = new SqlConnection(connString))
+                {
+                    conn.Open();
+
+                    SqlCommand command = new SqlCommand
+                    {
+                        CommandText = $"select * from users where Username = '{username}' and Password = '{password}'",
+                        Connection = conn
+                    };
 
                 SqlDataReader reader = command.ExecuteReader();
-
                 if(reader.HasRows == true)
                 {
                     userValidated = true;
                 }
-
                 conn.Close();
             }
             return userValidated;
