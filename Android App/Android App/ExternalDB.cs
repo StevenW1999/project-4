@@ -99,24 +99,58 @@ namespace Android_App
             return Task<bool>.Factory.StartNew(() =>
             {
                 bool userValidated = false;
-                using (conn = new SqlConnection(connString))
+                try
                 {
-                    conn.Open();
-
-                    SqlCommand command = new SqlCommand
+                    using (conn = new SqlConnection(connString))
                     {
-                        CommandText = $"select * from users where Username = '{username}' and Password = '{password}'",
-                        Connection = conn
-                    };
+                        conn.Open();
 
-                    SqlDataReader reader = command.ExecuteReader();
-                    if (reader.HasRows == true)
-                    {
-                        userValidated = true;
+                        SqlCommand command = new SqlCommand
+                        {
+                            CommandText = $"select * from users where Username = '{username}' and Password = '{password}'",
+                            Connection = conn
+                        };
+
+                        SqlDataReader reader = command.ExecuteReader();
+                        if (reader.HasRows == true)
+                        {
+                            userValidated = true;
+                        }
+                        conn.Close();
                     }
-                    conn.Close();
                 }
+                catch
+                {
+                    System.Diagnostics.Debug.WriteLine("Failed to validate login");
+                }
+
                 return userValidated;
+            });
+        }
+
+        public Task AddUser(string username , string password)
+        {
+            return Task.Factory.StartNew(() => {
+                try
+                {
+                    using (conn = new SqlConnection(connString))
+                    {
+                        conn.Open();
+
+                        SqlCommand command = new SqlCommand
+                        {
+                            CommandText = $"insert into users values ('{username}' , '{password}')",
+                            Connection = conn
+                        };
+
+                        command.ExecuteNonQuery();
+                        conn.Close();
+                    }
+                }
+                catch
+                {
+                    System.Diagnostics.Debug.WriteLine("Failed to Add a user to the database");
+                }
             });
         }
     }

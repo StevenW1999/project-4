@@ -48,7 +48,7 @@ namespace Android_App
             //Check password combination when text field input changes
             passwordField2.TextChanged += delegate { CheckPasswordCombination(passwordField1, passwordField2); };
             //Check username availibility
-            usernameField.TextChanged += delegate { CheckUsernameAvailability(usernameField); };
+            usernameField.TextChanged += delegate { /*CheckUsernameAvailability(usernameField); Vanwege lag uit gecomment*/ };
             //Add button action
             Button cancel = FindViewById<Button>(Resource.Id.Cancel);
             cancel.Click += delegate { CancelAction(); };
@@ -102,6 +102,8 @@ namespace Android_App
                     string usernameText = username.Text;
                     string passwordText = password.Text;
                     Toast.MakeText(this, "Creating user...", ToastLength.Short).Show();
+                    new ExternalDB().AddUser(usernameText, passwordText);
+                    Toast.MakeText(this, "Added a user", ToastLength.Short).Show();
                     Finish();
                 }
                 else if (password.Text != password2.Text)
