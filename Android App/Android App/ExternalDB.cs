@@ -23,6 +23,7 @@ namespace Android_App
         private static SqlConnection conn;
         public ExternalDB()
         {
+            
             //To initialize External db object
         }
 
