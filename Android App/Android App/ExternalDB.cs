@@ -128,7 +128,6 @@ namespace Android_App
             });
         }
 
-<<<<<<< HEAD
         public Task AddUser(string username , string password)
         {
             return Task.Factory.StartNew(() => {
@@ -154,7 +153,6 @@ namespace Android_App
                 }
             });
         }
-=======
->>>>>>> 6a1253009dcdaefb11d04648629143bc7366d9c7
+
     }
 }
