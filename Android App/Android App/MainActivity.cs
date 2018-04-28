@@ -62,13 +62,10 @@ namespace Android_App
                 if (ExternalDB.ValidateLogin(username, password) == true)
                 {
                     Toast.MakeText(this, "Login Succesfull", ToastLength.Short).Show();
+                    //LOAD NEW ACTIVITY PAGE
                 }
                 else
                 {
-                    //ERROR ICON HAS TO BE SET STILL
-                    Android.Graphics.Drawables.Drawable icon = null;
-                    usernameField.SetError("Wrong Username", icon);
-                    passwordField.SetError("Wrong Password", icon);
                     Toast.MakeText(this, "Wrong Username or Password", ToastLength.Short).Show();
                     //CUSTOM MESSAGE BOX BUILDER!
                     {
