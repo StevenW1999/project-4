@@ -29,7 +29,6 @@ namespace Android_App
         //THIS FUNCTION IS A TEST TO RECIEVE INFORMATION
         public static Task<bool> TestConn()
         {
-
             return Task.Run(() =>
             {
                 try
@@ -97,7 +96,6 @@ namespace Android_App
         //To validate user credentials
         public Task<bool> ValidateLogin(string username, string password)
         {
-
             return Task<bool>.Factory.StartNew(() =>
             {
                 bool userValidated = false;
