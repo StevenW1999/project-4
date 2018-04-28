@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -10,6 +9,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Data.SqlClient;
+using System.Configuration;
 
 /// <summary>
 /// THIS IS A TEST OBJECT TO ESTABLISH CONNECTION TO THE DATABASE
@@ -18,7 +18,7 @@ namespace Android_App
 {
     public static class ExternalDB
     {
-        private static string connString = "Server = hogeschoolrotterdam.database.windows.net,1433; Database = ASS; User Id = main; Password = database1#;Connection Timeout = 1;";
+        private static string connString = ConfigurationManager.ConnectionStrings["ASS"].ConnectionString;
         private static SqlConnection conn;
 
         //THIS FUNCTION IS A TEST TO RECIEVE INFORMATION
@@ -37,6 +37,7 @@ namespace Android_App
                     };
 
                     SqlDataReader reader = command.ExecuteReader();
+
                     while (reader.Read())
                     {
                         System.Diagnostics.Debug.WriteLine(reader["Username"].ToString(), reader["Password"].ToString());
@@ -66,10 +67,12 @@ namespace Android_App
                 };
 
                 SqlDataReader reader = command.ExecuteReader();
+
                 if(reader.HasRows == true)
                 {
                     userValidated = true;
                 }
+
                 conn.Close();
             }
             return userValidated;
