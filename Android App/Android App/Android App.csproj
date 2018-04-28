@@ -154,6 +154,7 @@
     <Compile Include="FileHelper.cs" />
     <Compile Include="IFileHelper.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="MainPageActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignUpActivity.cs" />
@@ -164,7 +165,7 @@
     <None Include="app.config" />
     <AndroidAsset Include="Assets\AndroidAppDB.db" />
     <None Include="GettingStarted.Xamarin" />
-    <AndroidResource Include="Resources\layout\MainMenu.axml">
+    <AndroidResource Include="Resources\layout\MainMenuPage.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <None Include="packages.config" />

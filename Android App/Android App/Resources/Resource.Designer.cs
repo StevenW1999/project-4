@@ -3580,7 +3580,7 @@ namespace Android_App
 			public const int Main = 2130968617;
 			
 			// aapt resource value: 0x7f04002a
-			public const int MainMenu = 2130968618;
+			public const int MainMenuPage = 2130968618;
 			
 			// aapt resource value: 0x7f04002b
 			public const int mr_chooser_dialog = 2130968619;

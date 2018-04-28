@@ -63,6 +63,8 @@ namespace Android_App
                 {
                     Toast.MakeText(this, "Login Succesfull", ToastLength.Short).Show();
                     //LOAD NEW ACTIVITY PAGE
+                    Intent mainMenu = new Intent(this, typeof(MainPageActivity));
+                    StartActivity(mainMenu);
                 }
                 else
                 {
