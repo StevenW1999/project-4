@@ -128,9 +128,9 @@ namespace Android_App
                 return userValidated;
             });
         }
-        public Task AddUser(string username , string password)
+        public Task<bool> AddUser(string username , string password)
         {
-            return Task.Factory.StartNew(() => {
+            return Task<bool>.Factory.StartNew(() => {
                 try
                 {
                     using (conn = new SqlConnection(connString))
@@ -144,12 +144,14 @@ namespace Android_App
                         };
 
                         command.ExecuteNonQuery();
-                        conn.Close();
+                        conn.Close();                       
                     }
+                    return true;
                 }
-                catch
-                {
-                    System.Diagnostics.Debug.WriteLine("Failed to Add a user to the database");
+                catch(Exception e)
+                {  
+                    System.Diagnostics.Debug.WriteLine($"Failed to Add a user to the database , \n {e.StackTrace}");
+                    return false;
                 }
             });
         }

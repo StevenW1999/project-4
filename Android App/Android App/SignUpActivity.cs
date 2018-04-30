@@ -45,20 +45,30 @@ namespace Android_App
             TextView usernameField = FindViewById<TextView>(Resource.Id.UsernameField);
             TextView passwordField1 = FindViewById<TextView>(Resource.Id.FirstPasswordEntry);
             TextView passwordField2 = FindViewById<TextView>(Resource.Id.SecondPasswordEntry);
+            //usernameField.SetError("Username cannot be empty", null);
+            //passwordField1.SetError("Password cannot be empty", null);
+            //passwordField2.SetError("Password cannot be empty", null);
             //Check password combination when text field input changes
             passwordField2.TextChanged += delegate { CheckPasswordCombination(passwordField1, passwordField2); };
+            passwordField1.TextChanged += delegate { CheckPasswordCombination(passwordField1, passwordField2); };
             //Check username availibility
-            usernameField.TextChanged += delegate { /*CheckUsernameAvailability(usernameField); Vanwege lag uit gecomment*/ };
+            usernameField.TextChanged += delegate { CheckUsernameNotNull(usernameField);/*CheckUsernameAvailability(usernameField); Vanwege lag uit gecomment*/ };
             //Add button action
             Button cancel = FindViewById<Button>(Resource.Id.Cancel);
             cancel.Click += delegate { CancelAction(); };
 
             //Add button Create account
             Button createAccount = FindViewById<Button>(Resource.Id.CreateAccount);
-            createAccount.Click += delegate { CreateAccount(usernameField,passwordField1,passwordField2); };
+            createAccount.Click += delegate { CreateAccount(usernameField, passwordField1, passwordField2); };
 
         }
-
+        private void CheckUsernameNotNull(TextView usernameField)
+        {
+            if (usernameField.Text == "")
+            {
+                usernameField.SetError("Username cannot be empty", null);
+            }
+        }
         private bool CheckUsernameAvailability(TextView usernameField)
         {
             if (new ExternalDB().UsernameAvailibility(usernameField.Text).Result == true)
@@ -67,19 +77,36 @@ namespace Android_App
             }
             else
             {
-                usernameField.SetError("Username is not available",null);
+                usernameField.SetError("Username is not available", null);
                 return false;
             }
+
         }
 
-        private void CheckPasswordCombination(TextView passwordField1 , TextView passwordField2)
+        private void CheckPasswordCombination(TextView passwordField1, TextView passwordField2)
         {
-            if(passwordField1.Text != passwordField2.Text)
+            if (passwordField1.Text == "" && passwordField2.Text == "")
             {
-                passwordField2.SetError("Passwords dont match",null);
+                passwordField1.SetError("Password cannot be empty", null);
+                passwordField2.SetError("Password cannot be empty", null);
                 this.passwordsMatch = false;
             }
-            else
+            else if (passwordField1.Text == "")
+            {
+                passwordField1.SetError("Password cannot be empty", null);
+                this.passwordsMatch = false;
+            }
+            else if (passwordField2.Text == "")
+            {
+                passwordField2.SetError("Password cannot be empty", null);
+                this.passwordsMatch = false;
+            }
+            else if (passwordField1.Text != passwordField2.Text)
+            {
+                passwordField2.SetError("Passwords dont match", null);
+                this.passwordsMatch = false;
+            }
+            else if ((passwordField1.Text == passwordField2.Text) && passwordField1.Text != "" && passwordField2.Text != "")
             {
                 this.passwordsMatch = true;
             }
@@ -95,24 +122,39 @@ namespace Android_App
         {
             if (ExternalDB.TestConn().Result == true)
             {
-                if ((password.Text == password2.Text) && CheckUsernameAvailability(username) == true)
+                if ((this.passwordsMatch == true) && CheckUsernameAvailability(username) == true)
                 {
 
                     //Create user here
                     string usernameText = username.Text;
                     string passwordText = password.Text;
                     Toast.MakeText(this, "Creating user...", ToastLength.Short).Show();
-                    new ExternalDB().AddUser(usernameText, passwordText);
-                    Toast.MakeText(this, "User created", ToastLength.Short).Show();
-                    Finish();
+                    if (new ExternalDB().AddUser(usernameText, passwordText).Result == true)
+                    {
+                        Toast.MakeText(this, "User created", ToastLength.Short).Show();
+                        Finish();
+                    }
+                    else
+                    {
+                        Toast.MakeText(this, "Failed to create user, something when wrong!", ToastLength.Short).Show();
+                    }
+
                 }
                 else if (password.Text != password2.Text)
                 {
-                    Toast.MakeText(this, "Passwords dont match", ToastLength.Short).Show();
+                    Toast.MakeText(this, "Passwords dont match!", ToastLength.Short).Show();
+                }
+                else if(username.Text == "")
+                {
+                    Toast.MakeText(this, "Username cannot be empty!", ToastLength.Short).Show();
+                }
+                else if (password.Text == "" || password2.Text == "")
+                {
+                    Toast.MakeText(this, "Password cannot be empty!", ToastLength.Short).Show();
                 }
                 else if (CheckUsernameAvailability(username) == false)
                 {
-                    Toast.MakeText(this, "Username is not available", ToastLength.Short).Show();
+                    Toast.MakeText(this, "Username is not available!", ToastLength.Short).Show();
                 }
             }
             else
