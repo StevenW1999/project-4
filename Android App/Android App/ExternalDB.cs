@@ -19,7 +19,7 @@ namespace Android_App
 {
     public class ExternalDB
     {
-        private static string connString = "Server = hogeschoolrotterdam.database.windows.net,1433; Database = ASS; User Id = main; Password = database1#;";//ConfigurationManager.ConnectionStrings["ASS"].ConnectionString;
+        private static string connString = "Server = hogeschoolrotterdam.database.windows.net,1433; Database = ASS; User Id = main; Password = database1#;";
         private static SqlConnection conn;
         public ExternalDB()
         {
