@@ -20,6 +20,9 @@ namespace Android_App
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.MainMenuPage);
             // Create your application here
+            var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+            SetActionBar(toolbar);
+            ActionBar.Title = "Planned";
         }
     }
 }
