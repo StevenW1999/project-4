@@ -1,9 +1,6 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
-<<<<<<< HEAD
 import android.annotation.SuppressLint;
-=======
->>>>>>> fe20b9255d5009a92cd7961af230f87f9aaed9b0
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,26 +14,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-<<<<<<< HEAD
 import android.widget.TextView;
 import android.widget.Toast;
-
 import junit.framework.Test;
-
 import java.io.IOException;
-=======
 import android.widget.Toast;
->>>>>>> fe20b9255d5009a92cd7961af230f87f9aaed9b0
 
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-<<<<<<< HEAD
     @SuppressLint("SetTextI18n")
-=======
     public static final String PREFERENCES = "ASS_Preferences";
 
->>>>>>> fe20b9255d5009a92cd7961af230f87f9aaed9b0
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
