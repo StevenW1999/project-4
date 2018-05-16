@@ -1,5 +1,7 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,16 +14,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
+import junit.framework.Test;
+import java.io.IOException;
+import android.widget.Toast;
 
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    @SuppressLint("SetTextI18n")
+    public static final String PREFERENCES = "ASS_Preferences";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("To Do");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +52,7 @@ public class MainMenu extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -56,6 +69,8 @@ public class MainMenu extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        TextView t = (TextView)findViewById(R.id.textViewIdForUsername);
+        t.setText("UsernameString");
         return true;
     }
 
@@ -68,6 +83,10 @@ public class MainMenu extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+
             return true;
         }
 
@@ -80,22 +99,33 @@ public class MainMenu extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_Agenda) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_ToDo) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_Notes) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_Friends) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_Settings) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_Rateus) {
 
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * This method is used to load a new activity/screen.
+     * To use this method provide it with the class name of the activity
+     * you would like to start.
+     * @param ActivityName
+     */
+    private void loadNewPage(Class ActivityName) {
+        Intent loadPage = new Intent(this,ActivityName);
+        startActivity(loadPage);
     }
 }
