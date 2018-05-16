@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Hscreen"
+            android:name=".MainMenu"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,10 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".SettingsActivity"></activity>
         <activity
-            android:name=".MainMenu"
-            android:label="MainMenu"
+            android:name=".Hscreen"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
