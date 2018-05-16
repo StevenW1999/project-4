@@ -19,7 +19,7 @@
             android:title="Check box preference" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Category 1">
+    <PreferenceCategory android:title="Category 2">
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="check_box_preference_2"
