@@ -21,8 +21,13 @@
             </intent-filter>
         </activity>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+        <activity android:name=".SettingsActivity"></activity>
+=======
+>>>>>>> cc7866fcd69c7fd9a48b1607fb825de1ca50196d
+=======
         <activity android:name=".SettingsActivity"></activity>
 =======
 >>>>>>> cc7866fcd69c7fd9a48b1607fb825de1ca50196d
@@ -31,6 +36,10 @@
             android:label="MainMenu"
             android:theme="@style/AppTheme.NoActionBar" />
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d6adc66ea9a79c6189765f1f09e7f9f99cbd1b66
+>>>>>>> cc7866fcd69c7fd9a48b1607fb825de1ca50196d
 =======
 >>>>>>> d6adc66ea9a79c6189765f1f09e7f9f99cbd1b66
 >>>>>>> cc7866fcd69c7fd9a48b1607fb825de1ca50196d

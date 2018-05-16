@@ -7,9 +7,12 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <string name="title_activity_hscreen">Hscreen</string>
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> cc7866fcd69c7fd9a48b1607fb825de1ca50196d
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -91,5 +94,8 @@
 =======
     <string name="title_activity_hscreen">Hscreen</string>
 >>>>>>> d6adc66ea9a79c6189765f1f09e7f9f99cbd1b66
+<<<<<<< HEAD
+>>>>>>> cc7866fcd69c7fd9a48b1607fb825de1ca50196d
+=======
 >>>>>>> cc7866fcd69c7fd9a48b1607fb825de1ca50196d
 </resources>
