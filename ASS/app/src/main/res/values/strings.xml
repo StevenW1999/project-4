@@ -6,6 +6,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+<<<<<<< HEAD
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -84,4 +85,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+=======
+    <string name="title_activity_hscreen">Hscreen</string>
+>>>>>>> d6adc66ea9a79c6189765f1f09e7f9f99cbd1b66
 </resources>
