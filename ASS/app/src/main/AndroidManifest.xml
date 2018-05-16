@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="net.azurewebsites.ashittyscheduler.ass">
 
     <application
@@ -10,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainMenu"
+            android:name=".Hscreen"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,6 +20,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        <activity android:name=".SettingsActivity"></activity>
+=======
+>>>>>>> cc7866fcd69c7fd9a48b1607fb825de1ca50196d
+=======
+        <activity android:name=".SettingsActivity"></activity>
+=======
+>>>>>>> cc7866fcd69c7fd9a48b1607fb825de1ca50196d
+        <activity
+            android:name=".MainMenu"
+            android:label="MainMenu"
+            android:theme="@style/AppTheme.NoActionBar" />
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d6adc66ea9a79c6189765f1f09e7f9f99cbd1b66
+>>>>>>> cc7866fcd69c7fd9a48b1607fb825de1ca50196d
+=======
+>>>>>>> d6adc66ea9a79c6189765f1f09e7f9f99cbd1b66
+>>>>>>> cc7866fcd69c7fd9a48b1607fb825de1ca50196d
     </application>
 
 </manifest>
