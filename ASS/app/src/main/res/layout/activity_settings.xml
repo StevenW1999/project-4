@@ -11,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:background="@color/colorBlack"
         android:name="net.azurewebsites.ashittyscheduler.ass.SettingsFragment"/>
 
 </android.support.constraint.ConstraintLayout>
