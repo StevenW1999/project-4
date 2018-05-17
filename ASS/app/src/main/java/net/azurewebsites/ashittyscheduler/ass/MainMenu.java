@@ -29,7 +29,7 @@ public class MainMenu extends AppCompatActivity
     ListView lst;
     String[] todos = {"Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev"};
     Button TKnop;
-
+    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
     @SuppressLint("SetTextI18n")
     public static final String PREFERENCES = "ASS_Preferences";
 
@@ -64,7 +64,7 @@ public class MainMenu extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         lst =(ListView) findViewById(R.id.textView);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
+
         lst.setAdapter(arrayAdapter);
         lst.setOnItemClickListener((AdapterView.OnItemClickListener) this);
         TKnop.setOnClickListener(new View.OnClickListener() {
