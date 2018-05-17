@@ -25,6 +25,7 @@
             android:name=".Hscreen"
             android:label="STEBAN BS"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".addtodo"/>
     </application>
 
 </manifest>

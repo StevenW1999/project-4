@@ -29,7 +29,7 @@ public class MainMenu extends AppCompatActivity
     ListView lst;
     String[] todos = {"Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev"};
     Button TKnop;
-    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
+
     @SuppressLint("SetTextI18n")
     public static final String PREFERENCES = "ASS_Preferences";
 
@@ -41,7 +41,8 @@ public class MainMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("To Do");
-        TKnop = (Button) findViewById(R.id.Knop) ;
+        TKnop = (Button) findViewById(R.id.Knop);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
 
 
 /*
