@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
 
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
     compileSdkVersion 27
     defaultConfig {
         applicationId "net.azurewebsites.ashittyscheduler.ass"

@@ -9,6 +9,9 @@
     <string name="title_activity_hscreen">Hscreen</string>
     <string name="title_activity_settings">Settings</string>
 
+    <!-- String(s) related to CalendarView -->
+    <string name="see_today">Today</string>
+
     <!-- Strings related to Settings -->
     <string name="switch_title">Title</string>
     <string name="switch_summary">Summary</string>
