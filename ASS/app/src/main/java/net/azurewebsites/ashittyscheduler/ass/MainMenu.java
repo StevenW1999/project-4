@@ -34,7 +34,7 @@ public class MainMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("To Do");
-
+/*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +43,7 @@ public class MainMenu extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
+*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -74,24 +74,6 @@ public class MainMenu extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
-            startActivity(settingsIntent);
-
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -101,16 +83,17 @@ public class MainMenu extends AppCompatActivity
 
         if (id == R.id.nav_Agenda) {
             // Handle the camera action
+            getSupportActionBar().setTitle("Agenda");
         } else if (id == R.id.nav_ToDo) {
-
+            getSupportActionBar().setTitle("To Do");
         } else if (id == R.id.nav_Notes) {
-
+            getSupportActionBar().setTitle("Notes");
         } else if (id == R.id.nav_Friends) {
-
+            getSupportActionBar().setTitle("Friends");
         } else if (id == R.id.nav_Settings) {
-
+            LoadNewPage(SettingsActivity.class);
         } else if (id == R.id.nav_Rateus) {
-
+            getSupportActionBar().setTitle("Rate us");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -124,7 +107,7 @@ public class MainMenu extends AppCompatActivity
      * you would like to start.
      * @param ActivityName
      */
-    private void loadNewPage(Class ActivityName) {
+    private void LoadNewPage(Class ActivityName) {
         Intent loadPage = new Intent(this,ActivityName);
         startActivity(loadPage);
     }
