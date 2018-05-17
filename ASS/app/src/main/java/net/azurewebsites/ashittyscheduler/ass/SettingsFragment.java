@@ -24,9 +24,9 @@ public class SettingsFragment extends PreferenceFragment {
         super.onActivityCreated(savedInstanceState);
         // To get a preference
         PreferenceScreen preferenceScreen = getPreferenceScreen();
-        SwitchPreference preference = (SwitchPreference)preferenceScreen.findPreference("test_switch");
+        SwitchPreference preference = (SwitchPreference)preferenceScreen.findPreference("switch_location_services");
 
-        Preference preference2 = preferenceScreen.findPreference("check_box_preference_1");
+        Preference preference2 = preferenceScreen.findPreference("switch_notifications_todos");
 
         preference2.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
