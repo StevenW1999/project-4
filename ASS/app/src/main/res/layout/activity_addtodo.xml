@@ -8,7 +8,7 @@
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/descriptionPlainText"
+        android:id="@+id/descriptionText"
         android:layout_width="358dp"
         android:layout_height="47dp"
         android:layout_marginBottom="8dp"
@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toTopOf="@+id/datePlainText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titlePlainText" />
+        app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
     <EditText
         android:id="@+id/timePlainText"
@@ -63,10 +63,10 @@
         app:layout_constraintBottom_toTopOf="@+id/timePlainText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionPlainText" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionText" />
 
     <EditText
-        android:id="@+id/titlePlainText"
+        android:id="@+id/titleText"
         android:layout_width="358dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -76,7 +76,7 @@
         android:ems="10"
         android:hint=" Title"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/descriptionPlainText"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -102,7 +102,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
         android:text=" "
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/addButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
 
