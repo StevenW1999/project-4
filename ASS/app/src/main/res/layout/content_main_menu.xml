@@ -4,26 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:background="@color/colorGrey"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainMenu"
     tools:showIn="@layout/app_bar_main_menu">
 
 <<<<<<< HEAD
+
     <ListView
         android:id="@+id/ListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+=======
+>>>>>>> f322056002d21f231e53bbcb5aa29ce65a9d8c89
 
+    <ListView
+        android:id="@+id/textView"
+        android:layout_width="383dp"
+        android:layout_height="wrap_content">
 
 
     </ListView>
+
     <Button
+        android:id="@+id/Knop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Knop"/>
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/add_to_do"/>
 
-=======
->>>>>>> d06ef576efeffb1a51729e301f131bed1b0ff749
+
 </android.support.constraint.ConstraintLayout>
