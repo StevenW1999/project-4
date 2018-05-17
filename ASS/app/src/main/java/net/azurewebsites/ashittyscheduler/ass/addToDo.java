@@ -1,5 +1,5 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
-public class addToDo {
+public class addtodo {
 
 }

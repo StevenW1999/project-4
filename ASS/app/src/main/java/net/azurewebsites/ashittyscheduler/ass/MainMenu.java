@@ -14,6 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import junit.framework.Test;
@@ -21,7 +25,10 @@ import java.io.IOException;
 import android.widget.Toast;
 
 public class MainMenu extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener , AdapterView.OnItemClickListener {
+    ListView lst;
+    String[] todos = {"Dev", "Analyse"};
+    Button TKnop;
 
     @SuppressLint("SetTextI18n")
     public static final String PREFERENCES = "ASS_Preferences";
@@ -34,6 +41,9 @@ public class MainMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("To Do");
+        TKnop = (Button)findViewById(R.id.Knop);
+
+
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +63,22 @@ public class MainMenu extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        lst =(ListView) findViewById(R.id.ListView);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
+        lst.setAdapter(arrayAdapter);
+        lst.setOnItemClickListener((AdapterView.OnItemClickListener) this);
+
+        TKnop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadNewPage(SettingsActivity.class);
+            }
+        });
+
+
+
     }
+
 
     @Override
     public void onBackPressed() {
@@ -111,4 +136,13 @@ public class MainMenu extends AppCompatActivity
         Intent loadPage = new Intent(this,ActivityName);
         startActivity(loadPage);
     }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TextView tv = (TextView)view;
+        Toast.makeText(this, "You click on" + tv.getText()+ position, Toast.LENGTH_SHORT).show();
+
+    }
+
 }
