@@ -123,7 +123,7 @@
 
         android:layout_marginTop="16dp"
         android:text=" "
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/addButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
 

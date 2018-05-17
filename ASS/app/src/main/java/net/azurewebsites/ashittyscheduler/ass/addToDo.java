@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class addtodo extends AppCompatActivity{
-    ArrayList<String> todos;
+    ArrayList<String> todolist;
     ArrayAdapter<String>adapter;
     EditText todoTitle;
     EditText todoDesc;
@@ -26,12 +26,12 @@ public class addtodo extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addtodo);
 
-        todoTitle = (EditText)findViewById(R.id.titleText);
-        todoDesc = (EditText)findViewById(R.id.descriptionText);
-        addKnop = (Button)findViewById(R.id.addButton);
+        //todoTitle = (EditText)findViewById(R.id.titleText);
+        //todoDesc = (EditText)findViewById(R.id.descriptionText);
+        //addKnop = (Button)findViewById(R.id.addButton);
 
 
-        adapter = new ArrayAdapter<>(addtodo.this, android.R.layout.simple_list_item_1, todos);
+
 
 
 
