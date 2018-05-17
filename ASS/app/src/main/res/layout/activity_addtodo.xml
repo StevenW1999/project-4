@@ -8,7 +8,7 @@
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/datePlainText" />
 
     <EditText
-        android:id="@+id/datePlainText"
+        android:id="@+id/date"
         android:layout_width="358dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -60,7 +60,11 @@
         app:layout_constraintTop_toBottomOf="@+id/descriptionPlainText" />
 
     <EditText
+<<<<<<< HEAD
         android:id="@+id/titlePlainText"
+=======
+        android:id="@+id/titleText"
+>>>>>>> e7f7def2e16aecb5a5c1a2db6b95f0b15af25154
         android:layout_width="358dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -74,25 +78,41 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/notificationsTextView"
+        android:id="@+id/notificationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:hint="Notifications"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
+=======
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Notifications"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date" />
+>>>>>>> e7f7def2e16aecb5a5c1a2db6b95f0b15af25154
 
     <Switch
         android:id="@+id/notificationsSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+<<<<<<< HEAD
         android:layout_marginTop="16dp"
         android:text=" "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
+=======
+        android:layout_marginTop="8dp"
+        android:text=" "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date" />
+>>>>>>> e7f7def2e16aecb5a5c1a2db6b95f0b15af25154
 
 
 </android.support.constraint.ConstraintLayout>
