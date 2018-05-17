@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Button"
+        android:text="@string/button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -28,7 +28,7 @@
         android:ems="10"
         android:hint="Description"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/datePlainText"
+        app:layout_constraintBottom_toTopOf="@+id/date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
@@ -47,10 +47,10 @@
         app:layout_constraintBottom_toTopOf="@+id/notificationsTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datePlainText" />
+        app:layout_constraintTop_toBottomOf="@+id/date" />
 
     <EditText
-        android:id="@+id/datePlainText"
+        android:id="@+id/date"
         android:layout_width="358dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -66,7 +66,15 @@
         app:layout_constraintTop_toBottomOf="@+id/descriptionText" />
 
     <EditText
+<<<<<<< HEAD
         android:id="@+id/titleText"
+=======
+
+        android:id="@+id/titleText"
+
+
+
+>>>>>>> 1cda0a0cf1e737ddace0e01326fa9f8280204d35
         android:layout_width="358dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -74,7 +82,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint=" Title"
+        android:hint="@string/title"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/descriptionText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +93,11 @@
         android:id="@+id/notificationsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+
+
         android:layout_marginBottom="220dp"
+
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:hint="Notifications"
@@ -94,17 +106,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
 
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Notifications"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date" />
+
+
+
     <Switch
         android:id="@+id/notificationsSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="160dp"
         android:layout_marginEnd="16dp"
+
+
+
         android:layout_marginTop="16dp"
         android:text=" "
         app:layout_constraintBottom_toTopOf="@+id/addButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
+
 
 
 </android.support.constraint.ConstraintLayout>
