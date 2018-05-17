@@ -10,6 +10,7 @@
     tools:context=".MainMenu"
     tools:showIn="@layout/app_bar_main_menu">
 
+<<<<<<< HEAD
     <ListView
         android:id="@+id/ListView"
         android:layout_width="match_parent"
@@ -23,4 +24,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/Knop"/>
 
+=======
+>>>>>>> d06ef576efeffb1a51729e301f131bed1b0ff749
 </android.support.constraint.ConstraintLayout>
