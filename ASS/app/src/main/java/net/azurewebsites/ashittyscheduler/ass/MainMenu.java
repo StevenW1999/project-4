@@ -41,11 +41,8 @@ public class MainMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("To Do");
-<<<<<<< HEAD
         TKnop = (Button) findViewById(R.id.Knop);
-=======
-        TKnop = (Button) findViewById(R.id.Knop) ;
->>>>>>> 3179f0011a6ae953511feaa222fe5db7483794bb
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
 
 
@@ -144,7 +141,7 @@ public class MainMenu extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TextView tv = (TextView)view;
-        Toast.makeText(this, "You click on" + tv.getText()+ position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You click on " + tv.getText()+ position, Toast.LENGTH_SHORT).show();
 
     }
 
