@@ -66,15 +66,12 @@
         app:layout_constraintTop_toBottomOf="@+id/descriptionText" />
 
     <EditText
-<<<<<<< HEAD
-        android:id="@+id/titleText"
-=======
+
 
         android:id="@+id/titleText"
 
 
 
->>>>>>> 1cda0a0cf1e737ddace0e01326fa9f8280204d35
         android:layout_width="358dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -105,14 +102,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
-
-
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Notifications"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
 
 
 

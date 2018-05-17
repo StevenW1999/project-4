@@ -27,7 +27,7 @@ import android.widget.Toast;
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , AdapterView.OnItemClickListener {
     ListView lst;
-    String[] todos = {"Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev"};
+    String[] todos = {"Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev"};
     Button TKnop;
 
     @SuppressLint("SetTextI18n")
@@ -42,7 +42,6 @@ public class MainMenu extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("To Do");
         TKnop = (Button) findViewById(R.id.Knop) ;
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
 
 
 /*
@@ -65,7 +64,7 @@ public class MainMenu extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         lst =(ListView) findViewById(R.id.textView);
-
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
         lst.setAdapter(arrayAdapter);
         lst.setOnItemClickListener((AdapterView.OnItemClickListener) this);
         TKnop.setOnClickListener(new View.OnClickListener() {
