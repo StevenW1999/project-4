@@ -21,6 +21,7 @@
             android:name=".Hscreen"
             android:label="STEBAN BS"
             android:theme="@style/AppTheme.NoActionBar" />
+<<<<<<< HEAD
         <activity
             android:name=".LoginActivity"
             android:theme="@style/ASSTheme">
@@ -30,6 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+=======
+        <activity android:name=".addtodo"/>
+>>>>>>> c785e5ff3ddd3e60032e00921802d27f7f566bd7
     </application>
 
 </manifest>

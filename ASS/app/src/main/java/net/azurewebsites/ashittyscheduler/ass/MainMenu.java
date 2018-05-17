@@ -14,6 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import junit.framework.Test;
@@ -21,7 +25,10 @@ import java.io.IOException;
 import android.widget.Toast;
 
 public class MainMenu extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener , AdapterView.OnItemClickListener {
+    ListView lst;
+    String[] todos = {"Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev"};
+    Button TKnop;
 
     @SuppressLint("SetTextI18n")
     public static final String PREFERENCES = "ASS_Preferences";
@@ -34,6 +41,20 @@ public class MainMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("To Do");
+        TKnop = (Button) findViewById(R.id.Knop);
+<<<<<<< HEAD
+
+=======
+=======
+        TKnop = (Button) findViewById(R.id.Knop) ;
+<<<<<<< HEAD
+=======
+>>>>>>> 3179f0011a6ae953511feaa222fe5db7483794bb
+>>>>>>> fa5ecdc3f53244a617fad5e22b09db4f0f324560
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
+>>>>>>> ae751fc7d94670e3a8963a5eeae1a2ee24c0a51e
+
+
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +74,20 @@ public class MainMenu extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        lst =(ListView) findViewById(R.id.textView);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
+        lst.setAdapter(arrayAdapter);
+        lst.setOnItemClickListener((AdapterView.OnItemClickListener) this);
+        TKnop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadNewPage(addtodo.class);
+            }
+        });
+
+
     }
+
 
     @Override
     public void onBackPressed() {
@@ -111,4 +145,13 @@ public class MainMenu extends AppCompatActivity
         Intent loadPage = new Intent(this,ActivityName);
         startActivity(loadPage);
     }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TextView tv = (TextView)view;
+        Toast.makeText(this, "You click on " + tv.getText()+ position, Toast.LENGTH_SHORT).show();
+
+    }
+
 }

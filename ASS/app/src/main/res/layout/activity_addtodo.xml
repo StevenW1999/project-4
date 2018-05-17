@@ -1,84 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/notificationTextView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:minHeight="155dp">
-
-
-    <!--    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
-
-    <android.support.design.widget.FloatingActionButton
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/fab"
-        android:layout_alignParentBottom="true"
-
-        ></android.support.design.widget.FloatingActionButton>-->
+    android:layout_height="match_parent">
 
 
     <Button
         android:id="@+id/addButton"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:text="Add To Do"
+        android:text="@string/button"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/descriptionText"
+        android:layout_width="358dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Description"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/date"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-<!--
-    <Switch
-        android:id="@+id/notificationSwitch"
-        android:layout_width="45dp"
-        android:layout_height="34dp"
-        android:text=" "
-        tools:layout_editor_absoluteX="323dp"
-        tools:layout_editor_absoluteY="200dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+    <EditText
+        android:id="@+id/timePlainText"
+        android:layout_width="358dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Time 00:00"
+        android:inputType="time"
+        app:layout_constraintBottom_toTopOf="@+id/notificationsTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date" />
+
+    <EditText
+        android:id="@+id/date"
+        android:layout_width="358dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Date dd/mm/yy"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@+id/timePlainText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionText" />
+
+    <EditText
+<<<<<<< HEAD
+
+
+        android:id="@+id/titleText"
+
+
+
+=======
+        android:id="@+id/titleText"
+>>>>>>> ae751fc7d94670e3a8963a5eeae1a2ee24c0a51e
+        android:layout_width="358dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/title"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/notificationTextView"
+        android:id="@+id/notificationsTextView"
         android:layout_width="wrap_content"
-        android:layout_height="28dp"
-        android:text="Notifications"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="220dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:hint="Notifications"
         android:textSize="20sp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="200dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
 
-    <EditText
-        android:id="@+id/datePlainText"
-        android:layout_width="352dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Date dd/mm/yy"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="138dp" />
+<<<<<<< HEAD
+=======
 
-    <EditText
-        android:id="@+id/descriptionPlainText"
-        android:layout_width="352dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Description"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="77dp" />
+<<<<<<< HEAD
 
-    <EditText
-        android:id="@+id/titlePlainText"
-        android:layout_width="352dp"
+=======
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:text="Notifications"
+    android:textSize="20sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/date" />
+>>>>>>> ae751fc7d94670e3a8963a5eeae1a2ee24c0a51e
+>>>>>>> fa5ecdc3f53244a617fad5e22b09db4f0f324560
+    <Switch
+        android:id="@+id/notificationsSwitch"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Title"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
-!-->
+        android:layout_marginBottom="160dp"
+        android:layout_marginEnd="16dp"
+
+
+
+        android:layout_marginTop="16dp"
+        android:text=" "
+        app:layout_constraintBottom_toTopOf="@+id/addButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
+
+
+
 </android.support.constraint.ConstraintLayout>
