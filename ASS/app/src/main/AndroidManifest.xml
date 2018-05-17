@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Hscreen"
+            android:name=".MainMenu"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -20,15 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
         <activity android:name=".SettingsActivity" />
-=======
-        <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".SettingsActivity"></activity>
->>>>>>> 62feabd1db5ceca445f2fb88600c1a654fa9beff
         <activity
-            android:name=".MainMenu"
-            android:label="MainMenu"
+            android:name=".Hscreen"
+            android:label="STEBAN BS"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
