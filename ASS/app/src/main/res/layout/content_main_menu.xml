@@ -9,16 +9,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainMenu"
     tools:showIn="@layout/app_bar_main_menu">
-
-<<<<<<< HEAD
-
-    <ListView
-        android:id="@+id/ListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-=======
->>>>>>> f322056002d21f231e53bbcb5aa29ce65a9d8c89
-
+    
     <ListView
         android:id="@+id/textView"
         android:layout_width="383dp"
