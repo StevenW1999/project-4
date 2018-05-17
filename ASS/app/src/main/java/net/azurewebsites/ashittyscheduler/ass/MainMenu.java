@@ -41,7 +41,15 @@ public class MainMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("To Do");
+<<<<<<< HEAD
+        TKnop = (Button) findViewById(R.id.Knop);
+=======
         TKnop = (Button) findViewById(R.id.Knop) ;
+<<<<<<< HEAD
+=======
+>>>>>>> 3179f0011a6ae953511feaa222fe5db7483794bb
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
+>>>>>>> ae751fc7d94670e3a8963a5eeae1a2ee24c0a51e
 
 
 /*
