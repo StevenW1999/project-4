@@ -42,11 +42,26 @@ public class MainMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("To Do");
+<<<<<<< HEAD
 
         TKnop = (Button) findViewById(R.id.Knop) ;
 
 
 
+=======
+        TKnop = (Button) findViewById(R.id.Knop);
+<<<<<<< HEAD
+
+=======
+=======
+        TKnop = (Button) findViewById(R.id.Knop) ;
+<<<<<<< HEAD
+=======
+>>>>>>> 3179f0011a6ae953511feaa222fe5db7483794bb
+>>>>>>> fa5ecdc3f53244a617fad5e22b09db4f0f324560
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
+>>>>>>> ae751fc7d94670e3a8963a5eeae1a2ee24c0a51e
+>>>>>>> f471478ffc1e6b1ac6f1b3b44a494cfcc8562188
 
 
 /*
@@ -141,7 +156,7 @@ public class MainMenu extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TextView tv = (TextView)view;
-        Toast.makeText(this, "You click on" + tv.getText()+ position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You click on " + tv.getText()+ position, Toast.LENGTH_SHORT).show();
 
     }
     public class addtodo extends AppCompatActivity {

@@ -67,11 +67,15 @@
 
     <EditText
 
+<<<<<<< HEAD
 
 
 
         android:id="@+id/titleText"
 
+=======
+        android:id="@+id/titleText"
+>>>>>>> f471478ffc1e6b1ac6f1b3b44a494cfcc8562188
         android:layout_width="358dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -99,6 +103,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
 
+<<<<<<< HEAD
 
 
 
@@ -126,4 +131,6 @@
 
 
 
+=======
+>>>>>>> f471478ffc1e6b1ac6f1b3b44a494cfcc8562188
 </android.support.constraint.ConstraintLayout>
