@@ -22,12 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import junit.framework.Test;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import android.widget.Toast;
 
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , AdapterView.OnItemClickListener {
-    ListView lst;
-    String[] todos = {"Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev","Dev", "Analyse", "Dev"};
+
     Button TKnop;
 
     @SuppressLint("SetTextI18n")
@@ -41,15 +42,11 @@ public class MainMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("To Do");
-<<<<<<< HEAD
-        TKnop = (Button) findViewById(R.id.Knop);
-=======
+
         TKnop = (Button) findViewById(R.id.Knop) ;
-<<<<<<< HEAD
-=======
->>>>>>> 3179f0011a6ae953511feaa222fe5db7483794bb
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
->>>>>>> ae751fc7d94670e3a8963a5eeae1a2ee24c0a51e
+
+
+
 
 
 /*
@@ -71,10 +68,7 @@ public class MainMenu extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        lst =(ListView) findViewById(R.id.textView);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, todos);
-        lst.setAdapter(arrayAdapter);
-        lst.setOnItemClickListener((AdapterView.OnItemClickListener) this);
+
         TKnop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,5 +144,47 @@ public class MainMenu extends AppCompatActivity
         Toast.makeText(this, "You click on" + tv.getText()+ position, Toast.LENGTH_SHORT).show();
 
     }
+    public class addtodo extends AppCompatActivity {
 
+        static final int A = 0;
+
+        private ListView list;
+        private ArrayAdapter<String> adapter;
+        private ArrayList<String> arrayList;
+
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_addtodo);
+
+            list = (ListView) findViewById(R.id.textView);
+            arrayList = new ArrayList<>();
+            adapter = new ArrayAdapter<>(this, R.layout.activity_main_menu, android.R.id.text1, arrayList);
+        }
+
+        public void onClickAddButton(View view) {
+            Intent i = new Intent(MainMenu.this, addtodo.class);
+            startActivityForResult(i, 2);
+        }
+
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == A) {
+                if (resultCode == RESULT_OK) {
+                    addNewItem();
+                }
+            }
+        }
+
+        public void addNewItem() {
+            Bundle addNameInfo = getIntent().getExtras();
+            if(addNameInfo == null)
+                return;
+            String nameInput = addNameInfo.getString("nameInput");
+            arrayList.add(nameInput);
+            list.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }
+    }
 }
