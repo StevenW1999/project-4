@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_ToDo"
+            android:icon="@drawable/ic_todo"
+            android:title="To Do" />
+        <item
+            android:id="@+id/nav_Agenda"
+            android:icon="@drawable/ic_agenda"
+            android:title="Agenda" />
+        <item
+            android:id="@+id/nav_Notes"
+            android:icon="@drawable/ic_notes"
+            android:title="Notes" />
+        <item
+            android:id="@+id/nav_Friends"
+            android:icon="@drawable/ic_friends"
+            android:title="Friends" />
+        <item
+            android:id="@+id/nav_Settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Settings" />
+        <item
+            android:id="@+id/nav_Rateus"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Rate us" />
+    </group>
+
+</menu>
