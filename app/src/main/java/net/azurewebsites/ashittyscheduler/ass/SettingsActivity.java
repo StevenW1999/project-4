@@ -7,11 +7,20 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        
+        //  o
+        // /|\
+        //  /\
+        
+        Boolean isThatAStickman = true;
+        
+        // Another comment.
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         setTitle("Settings");
+        
         // Bla bla bla
-        String test = "x";
     }
 
 }
