@@ -16,7 +16,7 @@
             android:title="Change Password" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="?">
+    <PreferenceCategory android:title="Location Services">
         <SwitchPreference
             android:defaultValue="true"
             android:key="switch_location_services"
@@ -36,9 +36,6 @@
             android:defaultValue="true"
             android:key="switch_notifications_friends"
             android:title="Receive notifications for friend requests" />
-        <RingtonePreference
-            android:key="ringtone_notifications"
-            android:title="Notification sound effects" />
     </PreferenceCategory>
 
 </PreferenceScreen>
