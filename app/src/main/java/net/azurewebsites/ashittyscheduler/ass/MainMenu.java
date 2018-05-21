@@ -28,8 +28,13 @@ import android.widget.Toast;
 
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , AdapterView.OnItemClickListener {
+ListView listView;
+ArrayList<String> arrayList;
+ArrayAdapter<String> arrayAdapter;
+String messageText;
+int position;
 
-    Button TKnop;
+
 
     @SuppressLint("SetTextI18n")
     public static final String PREFERENCES = "ASS_Preferences";
@@ -43,8 +48,26 @@ public class MainMenu extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("To Do");
 
-        TKnop = (Button) findViewById(R.id.Knop) ;
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        listView = (ListView) findViewById(R.id.textView);
+        arrayList = new ArrayList<>();
+        arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,arrayList);
+        listView.setAdapter(arrayAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                intent.setClass(MainMenu.this, edittodo.class);
+                intent.putExtra(Intent_Constants.INTENT_MESSAGE_DATA,arrayList.get(position).toString());
+                intent.putExtra(Intent_Constants.INTENT_ITEM_POSITION, position);
+                startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE_TWO);
+
+            }
+        });
+
+
+
+
+;
 
 
 /*
@@ -67,12 +90,7 @@ public class MainMenu extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        TKnop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoadNewPage(addtodo.class);
-            }
-        });
+
 
 
     }
@@ -142,47 +160,28 @@ public class MainMenu extends AppCompatActivity
         Toast.makeText(this, "You click on " + tv.getText()+ position, Toast.LENGTH_SHORT).show();
 
     }
-    public class addtodo extends AppCompatActivity {
+    public void onClick(View v){
+        Intent intent = new Intent();
+        intent.setClass(MainMenu.this, addtodo.class);
+        startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE);
+    }
 
-        static final int A = 0;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        private ListView list;
-        private ArrayAdapter<String> adapter;
-        private ArrayList<String> arrayList;
+       if(resultCode == Intent_Constants.INTENT_REQUEST_CODE){
+           messageText = data.getStringExtra(Intent_Constants.INTENT_MESSAGE_FIELD);
+           arrayList.add(messageText);
+           arrayAdapter.notifyDataSetChanged();
+       }
+       else if(resultCode==Intent_Constants.INTENT_RESULT_CODE_TWO){
+           messageText = data.getStringExtra(Intent_Constants.INTENT_CHANGED_MESSAGE);
+           position = data.getIntExtra(Intent_Constants.INTENT_ITEM_POSITION,-1);
+           arrayList.remove(position);
+           arrayList.add(position,messageText);
+           arrayAdapter.notifyDataSetChanged();
 
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_addtodo);
-
-            list = (ListView) findViewById(R.id.textView);
-            arrayList = new ArrayList<>();
-            adapter = new ArrayAdapter<>(this, R.layout.activity_main_menu, android.R.id.text1, arrayList);
-        }
-
-        public void onClickAddButton(View view) {
-            Intent i = new Intent(MainMenu.this, addtodo.class);
-            startActivityForResult(i, 2);
-        }
-
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (requestCode == A) {
-                if (resultCode == RESULT_OK) {
-                    addNewItem();
-                }
-            }
-        }
-
-        public void addNewItem() {
-            Bundle addNameInfo = getIntent().getExtras();
-            if(addNameInfo == null)
-                return;
-            String nameInput = addNameInfo.getString("nameInput");
-            arrayList.add(nameInput);
-            list.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-        }
+       }
     }
 }
+
