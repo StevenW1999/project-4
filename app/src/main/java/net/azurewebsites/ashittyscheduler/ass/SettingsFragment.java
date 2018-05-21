@@ -28,6 +28,7 @@ public class SettingsFragment extends PreferenceFragment {
 
         Preference preference2 = preferenceScreen.findPreference("switch_notifications_todos");
 
+        /*
         preference2.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -59,9 +60,10 @@ public class SettingsFragment extends PreferenceFragment {
                 return false;
             }
         });
+        */
 
         //change title
-        preference.setTitle("my_title");
+        //preference.setTitle("my_title");
 
         // etc
     }
