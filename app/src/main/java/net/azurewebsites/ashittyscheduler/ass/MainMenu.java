@@ -106,7 +106,8 @@ public class MainMenu extends AppCompatActivity
 
         if (id == R.id.nav_Agenda) {
             // Handle the camera action
-            getSupportActionBar().setTitle("Agenda");
+            //getSupportActionBar().setTitle("Agenda");
+            LoadNewPage(Agenda.class);
         } else if (id == R.id.nav_ToDo) {
             getSupportActionBar().setTitle("To Do");
         } else if (id == R.id.nav_Notes) {
