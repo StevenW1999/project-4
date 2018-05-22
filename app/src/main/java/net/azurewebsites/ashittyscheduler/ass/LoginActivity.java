@@ -24,6 +24,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class LoginActivity extends AppCompatActivity {
 
     //Setting internet acces policy
+    // Test
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
     //
     private static final String USER_AGENT = "Mozilla/5.0";
