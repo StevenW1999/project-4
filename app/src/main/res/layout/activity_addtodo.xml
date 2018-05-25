@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/button"
+        android:text="Add to do"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="addButtonClicked"/>
@@ -21,7 +21,7 @@
     <EditText
         android:id="@+id/descriptionText"
         android:layout_width="358dp"
-        android:layout_height="47dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
@@ -46,6 +46,7 @@
         android:ems="10"
         android:hint="Time 00:00"
         android:inputType="time"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/notificationsTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -63,6 +64,7 @@
         android:ems="10"
         android:hint="Date dd/mm/yy"
         android:inputType="date"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/timePlainText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -90,12 +92,12 @@
         android:id="@+id/notificationsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="220dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:hint="Notifications"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/repeatText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
 
@@ -106,7 +108,6 @@
         android:layout_marginBottom="160dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        android:text=" "
         app:layout_constraintBottom_toTopOf="@+id/addButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
@@ -115,14 +116,12 @@
         android:id="@+id/repeatText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="176dp"
+        android:layout_marginStart="16dp"
         android:text="Repeat"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/notificationsTextView"
-        app:layout_constraintTop_toTopOf="@+id/date" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Switch
         android:id="@+id/repeatSwitch"
@@ -131,6 +130,7 @@
         android:layout_marginEnd="16dp"
 
         android:layout_marginTop="8dp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/repeatText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/repeatText" />
@@ -138,42 +138,35 @@
     <TextView
         android:id="@+id/repeatType"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="39dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Repeat type"
         android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/repeatInterval"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notificationsTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/repeatText" />
 
     <TextView
         android:id="@+id/repeatInterval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="64dp"
+        android:layout_marginStart="16dp"
         android:text="Interval"
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/repeatType"
-        app:layout_constraintStart_toStartOf="@+id/repeatType"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatType" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/reminderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/addButton"
-        app:layout_constraintStart_toEndOf="@+id/repeatInterval"
-        app:layout_constraintTop_toTopOf="@+id/repeatInterval" />
+        app:layout_constraintEnd_toStartOf="@+id/addButton" />
 
 </android.support.constraint.ConstraintLayout>
