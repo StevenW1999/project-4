@@ -25,6 +25,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:onClick="onClick"
+        android:src="@drawable/transparentbutt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
