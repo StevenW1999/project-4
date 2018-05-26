@@ -22,8 +22,7 @@ public class HttpGetTask extends HttpTask {
     }
 
     @Override
-    protected HttpResponse doInBackground(Void... voids) {
-
+    protected HttpResponse performRequest() {
         HttpResponse httpResponse = null;
 
         try {
@@ -56,4 +55,5 @@ public class HttpGetTask extends HttpTask {
 
         return httpResponse;
     }
+
 }

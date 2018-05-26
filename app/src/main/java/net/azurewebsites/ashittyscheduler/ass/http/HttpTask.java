@@ -55,6 +55,14 @@ public abstract class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
         listener.onBeforeExecute();
     }
 
+    // Performs the request and returns a response
+    protected abstract HttpResponse performRequest();
+
+    @Override
+    protected HttpResponse doInBackground(Void... voids) {
+        return performRequest();
+    }
+
     @Override
     protected void onPostExecute(HttpResponse httpResponse) {
         if (httpResponse != null) {
