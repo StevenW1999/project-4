@@ -1,25 +1,29 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.spark.submitbutton.SubmitButton;
+import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -61,39 +65,80 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void ShowFail() {
-        Toast.makeText(this,"Something went wrong...",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Something went wrong...", Toast.LENGTH_SHORT).show();
     }
 
     private void signIn() throws IOException {
+
         EditText usernameBox = (EditText)findViewById(R.id.Username);
         EditText passwordBox = (EditText)findViewById(R.id.Password);
-        StringBuilder tokenUri=new StringBuilder("username=");
-        tokenUri.append(URLEncoder.encode(usernameBox.getText().toString(),"UTF-8"));
-        tokenUri.append("&password=");
-        tokenUri.append(URLEncoder.encode(passwordBox.getText().toString(),"UTF-8"));
-        URL url = new URL(URLString);
-        HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
-        httpConnection.setRequestMethod("POST");
-        httpConnection.setRequestProperty("User-Agent", USER_AGENT);
-        httpConnection.setRequestProperty("Accept-Language", "UTF-8");
-        httpConnection.setDoOutput(true);
-        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(httpConnection.getOutputStream());
-        outputStreamWriter.write(tokenUri.toString());
-        outputStreamWriter.flush();
-        int code  = httpConnection.getResponseCode();
-        if(code == 200){
-            Toast.makeText(this,"Logged in" , Toast.LENGTH_LONG).show();
-            LoadNewPage(MainMenu.class);
-            finish();
-        } else if (code==403){
-            Log.d("Internet connection", "Response = Doing toast , failed auth ");
-            Toast.makeText(this,"Wrong username or password" , Toast.LENGTH_LONG).show();
-        }
-        else{
-            Toast.makeText(this, "Something went wrong.....", Toast.LENGTH_SHORT).show();
-            throw new IOException(Integer.toString(code));
-        }
-        Log.d("Internet connection", "Response code = " + code);
+
+        // parameters
+        Pair[] parameters = new Pair[] {
+                new Pair<>("username", usernameBox.getText().toString()),
+                new Pair<>("password", passwordBox.getText().toString())
+        };
+
+
+        HttpTask task = new HttpTask(this,
+                "https://ashittyscheduler.azurewebsites.net/api/users/login",
+                parameters, new AsyncHttpListener() {
+
+            private ProgressDialog progressDialog;
+
+            @Override
+            public void onPreExecute() {
+                // show a progress dialog (duh)
+                progressDialog = ProgressDialog.show(LoginActivity.this,
+                        "Logging in",
+                        "Please wait");
+            }
+
+            @Override
+            public void onResponse(HttpResponse httpResponse) {
+                Toast.makeText(getApplicationContext(), "FINISHED", Toast.LENGTH_SHORT);
+
+                // obtain code
+                int code = httpResponse.getCode();
+
+                if(code == HttpStatusCode.OK.getCode()){
+                    // obtain response message (our token in this case)
+
+                    try {
+                        JSONObject tokenObj = new JSONObject(httpResponse.getMessage());
+
+                        // TODO: Save this token somewhere... (PSST... SharedPreferences)
+                        String token = tokenObj.get("TokenId").toString();
+
+                        Toast.makeText(getApplicationContext(),"Login successful. Token: " + token , Toast.LENGTH_LONG).show();
+                        LoadNewPage(MainMenu.class);
+                        finish();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (code == HttpStatusCode.UNAUTHORIZED.getCode()){
+                    Toast.makeText(getApplicationContext(), httpResponse.getMessage(), Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError() {
+                Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPostExecute() {
+                // dismiss the progress dialog (duh)
+                progressDialog.dismiss();
+            }
+        });
+
+        task.execute();
+
     }
 
     private void LoadNewPage(Class ActivityName) {

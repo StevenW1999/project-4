@@ -1,20 +1,21 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
+
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -53,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerAccount() throws IOException{
+
         EditText usernameField = (EditText)findViewById(R.id.usernameField);
         EditText passwordField = (EditText)findViewById(R.id.passwordField);
         EditText passwordField2 = (EditText)findViewById(R.id.passwordField2);
@@ -60,38 +62,57 @@ public class RegisterActivity extends AppCompatActivity {
         if(!passwordField.getText().toString().equals(passwordField2.getText().toString()) ){
             passwordField2.setError("Passwords dont match");
             Toast.makeText(this,"Passwords dont match",Toast.LENGTH_SHORT).show();
-        }else{
-            StringBuilder tokenUri=new StringBuilder("username=");
-            tokenUri.append(URLEncoder.encode(usernameField.getText().toString(),"UTF-8"));
-            tokenUri.append("&password=");
-            tokenUri.append(URLEncoder.encode(passwordField.getText().toString(),"UTF-8"));
-            URL url = new URL(URLString);
-            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("User-Agent",USER_AGENT);
-            conn.setRequestProperty("Accept-Language", "UTF-8");
-            conn.setDoOutput(true);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(conn.getOutputStream());
-            outputStreamWriter.write(tokenUri.toString());
-            outputStreamWriter.flush();
-            int code = conn.getResponseCode();
-            String content = conn.getContent().toString();
-            if(code == 200){
-                Toast.makeText(this, "Account created", Toast.LENGTH_SHORT).show();
-                LoadNewPage(LoginActivity.class);
-                finish();
-            }else if(code == 400){
-                //READ RESPONSE BODY
-                Toast.makeText(this, content, Toast.LENGTH_SHORT).show();
-            }
-            else {
-                Log.d("Webservice", ""+code);
-                throw new IOException();
-            }
+        }else {
+            // parameters
+            Pair[] parameters = new Pair[]{
+                    new Pair<String, String>("username", usernameField.getText().toString()),
+                    new Pair<String, String>("password", passwordField.getText().toString())
+            };
+
+            HttpTask task = new HttpTask(this,
+                    "https://ashittyscheduler.azurewebsites.net/api/users/register",
+                    parameters, new AsyncHttpListener() {
+
+                private ProgressDialog progressDialog;
+
+                @Override
+                public void onPreExecute() {
+                    // show a progress dialog (duh)
+                    progressDialog = ProgressDialog.show(RegisterActivity.this,
+                            "Creating account ",
+                            "Please wait");
+                }
+
+                @Override
+                public void onResponse(HttpResponse httpResponse) {
+                    // obtain code
+                    int code = httpResponse.getCode();
+
+                    if (code == HttpStatusCode.OK.getCode()) {
+                        Toast.makeText(getApplicationContext(), "Account created", Toast.LENGTH_SHORT).show();
+
+                        // TODO: Perform a login here? instead of returning to the login screen
+                        LoadNewPage(LoginActivity.class);
+                        finish();
+                    } else if (code == HttpStatusCode.BAD_REQUEST.getCode()) {
+                        Toast.makeText(getApplicationContext(), httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onError() {
+                    // TODO: Handle error
+                    Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onPostExecute() {
+                    progressDialog.dismiss();
+                }
+            });
+
+            task.execute();
         }
-
-
-
     }
     private void LoadNewPage(Class ActivityName) {
         Intent loadPage = new Intent(this,ActivityName);
