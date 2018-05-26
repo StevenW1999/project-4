@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpPostTask;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
@@ -69,14 +70,14 @@ public class RegisterActivity extends AppCompatActivity {
                     new Pair<String, String>("password", passwordField.getText().toString())
             };
 
-            HttpTask task = new HttpTask(this,
+            HttpTask task = new HttpPostTask(this,
                     "https://ashittyscheduler.azurewebsites.net/api/users/register",
                     parameters, new AsyncHttpListener() {
 
                 private ProgressDialog progressDialog;
 
                 @Override
-                public void onPreExecute() {
+                public void onBeforeExecute() {
                     // show a progress dialog (duh)
                     progressDialog = ProgressDialog.show(RegisterActivity.this,
                             "Creating account ",
@@ -106,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onPostExecute() {
+                public void onFinishExecuting() {
                     progressDialog.dismiss();
                 }
             });

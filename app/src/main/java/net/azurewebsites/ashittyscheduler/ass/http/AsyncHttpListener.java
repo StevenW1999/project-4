@@ -3,7 +3,7 @@ package net.azurewebsites.ashittyscheduler.ass.http;
 public interface AsyncHttpListener {
 
     // Performed before a task has started executing.
-    void onPreExecute();
+    void onBeforeExecute();
 
     // Performed on receiving a successful http response.
     void onResponse(HttpResponse httpResponse);
@@ -12,5 +12,5 @@ public interface AsyncHttpListener {
     void onError();
 
     // Performed after the task has finished executing.
-    void onPostExecute();
+    void onFinishExecuting();
 }

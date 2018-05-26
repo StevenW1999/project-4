@@ -1,9 +1,7 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,13 +13,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpPostTask;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.io.IOException;
 
@@ -80,14 +78,14 @@ public class LoginActivity extends AppCompatActivity {
         };
 
 
-        HttpTask task = new HttpTask(this,
+        HttpTask task = new HttpPostTask(this,
                 "https://ashittyscheduler.azurewebsites.net/api/users/login",
                 parameters, new AsyncHttpListener() {
 
             private ProgressDialog progressDialog;
 
             @Override
-            public void onPreExecute() {
+            public void onBeforeExecute() {
                 // show a progress dialog (duh)
                 progressDialog = ProgressDialog.show(LoginActivity.this,
                         "Logging in",
@@ -131,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPostExecute() {
+            public void onFinishExecuting() {
                 // dismiss the progress dialog (duh)
                 progressDialog.dismiss();
             }
