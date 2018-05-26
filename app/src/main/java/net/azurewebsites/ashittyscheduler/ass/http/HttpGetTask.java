@@ -16,7 +16,9 @@ public class HttpGetTask extends HttpTask {
     public HttpGetTask(Context context, String url, Pair<String, String>[] params, AsyncHttpListener listener) throws IOException {
         super(context, url, params, listener);
 
-        this.url = new URL(url + "?" + this.params);
+        if (params.length > 0) {
+            this.url = new URL(url + "?" + this.params);
+        }
     }
 
     @Override
