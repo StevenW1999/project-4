@@ -37,7 +37,7 @@
         </activity>
         <activity android:name=".addtodo" />
         <activity android:name=".Agenda" />
-        <activity android:name=".Friends"></activity>
+        <activity android:name=".FriendsActivity"></activity>
     </application>
 
 </manifest>

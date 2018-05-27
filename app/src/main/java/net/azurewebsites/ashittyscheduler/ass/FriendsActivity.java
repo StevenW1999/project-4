@@ -3,7 +3,7 @@ package net.azurewebsites.ashittyscheduler.ass;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class Friends extends AppCompatActivity {
+public class FriendsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
