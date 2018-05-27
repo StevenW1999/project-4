@@ -131,7 +131,8 @@ int position;
         } else if (id == R.id.nav_Notes) {
             getSupportActionBar().setTitle("Notes");
         } else if (id == R.id.nav_Friends) {
-            getSupportActionBar().setTitle("FriendsActivity");
+            //getSupportActionBar().setTitle("Friends");
+            LoadNewPage(FriendsActivity.class);
         } else if (id == R.id.nav_Settings) {
             LoadNewPage(SettingsActivity.class);
         } else if (id == R.id.nav_Rateus) {
