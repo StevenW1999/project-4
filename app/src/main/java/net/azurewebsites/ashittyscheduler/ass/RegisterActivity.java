@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
-import net.azurewebsites.ashittyscheduler.ass.http.HttpPostTask;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
@@ -66,11 +66,11 @@ public class RegisterActivity extends AppCompatActivity {
         }else {
             // parameters
             Pair[] parameters = new Pair[]{
-                    new Pair<String, String>("username", usernameField.getText().toString()),
-                    new Pair<String, String>("password", passwordField.getText().toString())
+                    new Pair<>("username", usernameField.getText().toString()),
+                    new Pair<>("password", passwordField.getText().toString())
             };
 
-            HttpTask task = new HttpPostTask(this,
+            HttpTask task = new HttpTask(this, HttpMethod.POST,
                     "https://ashittyscheduler.azurewebsites.net/api/users/register",
                     parameters, new AsyncHttpListener() {
 

@@ -14,20 +14,29 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-public abstract class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
+public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
 
     public static final String USER_AGENT = "Mozilla/5.0";
 
-    protected final Context context;
-    protected URL url;
-    protected String params;
+    private final Context context;
+    private URL url;
+    private String params;
+    private HttpMethod method;
 
     private final AsyncHttpListener listener;
 
-    public HttpTask(Context context, String url, Pair<String,String>[] params, AsyncHttpListener listener) throws IOException {
+    public HttpTask(Context context, HttpMethod method, String url, Pair<String,String>[] params, AsyncHttpListener listener) throws IOException {
         this.context = context;
         this.url = new URL(url);
+        this.method = method;
         this.params = convertParams(params);
+        // append parameters to the URL (if needed)
+        if (method == HttpMethod.GET || method == HttpMethod.PUT || method == HttpMethod.DELETE) {
+            this.url = new URL(url + this.params);
+        }
+        else {
+            this.url = new URL(url);
+        }
         this.listener = listener;
     }
 
@@ -55,12 +64,67 @@ public abstract class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
         listener.onBeforeExecute();
     }
 
-    // Performs the request and returns a response
-    protected abstract HttpResponse performRequest();
-
     @Override
     protected HttpResponse doInBackground(Void... voids) {
-        return performRequest();
+        HttpResponse httpResponse = null;
+
+        try {
+            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            httpConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            httpConnection.setRequestProperty("Accept-Language", "UTF-8");
+
+            switch(method) {
+                case POST:
+                    httpConnection.setRequestMethod("POST");
+                    httpConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    httpConnection.setRequestProperty("Content-Length", Integer.toString(params.getBytes(StandardCharsets.UTF_8).length));
+                    httpConnection.setDoOutput(true);
+
+                    // append parameters to the body (if needed)
+                    if (params.length() != 0) {
+                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(httpConnection.getOutputStream());
+                        outputStreamWriter.write(params);
+                        outputStreamWriter.flush();
+                    }
+
+                    break;
+                case GET:
+                    httpConnection.setRequestMethod("GET");
+                case PUT:
+                    httpConnection.setRequestMethod("PUT");
+                    httpConnection.setDoOutput(true);
+                    break;
+                case DELETE:
+                    httpConnection.setRequestMethod("DELETE");
+                    httpConnection.setDoOutput(true);
+                    break;
+            }
+
+            // read the input stream
+            StringBuilder sb = new StringBuilder();
+            BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
+            String read;
+
+            while((read=br.readLine()) != null) {
+                sb.append(read);
+            }
+            br.close();
+
+            // create the custom response
+            httpResponse = new HttpResponse(
+                    httpConnection.getResponseCode(),
+                    sb.toString()
+            );
+
+            // and finally, close the connection
+            httpConnection.disconnect();
+        }
+        catch(IOException ex) {
+            Log.e("HTTPCONNECTION", "ERROR!");
+            ex.printStackTrace();
+        }
+
+        return httpResponse;
     }
 
     @Override

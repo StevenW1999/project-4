@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
-import net.azurewebsites.ashittyscheduler.ass.http.HttpPostTask;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         };
 
 
-        HttpTask task = new HttpPostTask(this,
+        HttpTask task = new HttpTask(this, HttpMethod.POST,
                 "https://ashittyscheduler.azurewebsites.net/api/users/login",
                 parameters, new AsyncHttpListener() {
 
