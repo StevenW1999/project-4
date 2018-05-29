@@ -1,9 +1,11 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +40,9 @@ private TextView selecteddate;
 private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText, mRepeatIntervalText;
 private Switch repeatSwitch, notificationSwitch;
 private TextView notificationText;
+private AlarmManager alarmManager;
+private PendingIntent alarmIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +65,7 @@ private TextView notificationText;
 
         repeatSwitch.setOnCheckedChangeListener(this);
 
-
+//Clock
         AccesTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +97,8 @@ private TextView notificationText;
         });
 
 
+
+
         datepickerdialogbutton = (TextView) findViewById(R.id.date);
         selecteddate = (TextView)findViewById(R.id.date);
 
@@ -109,18 +116,27 @@ private TextView notificationText;
         });
     }
 
+    //Repeat Switch
+
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (repeatSwitch.isChecked()){
             repeattText.setText("Repeat ON");
             mRepeatText.setText(  "SELECT REPEAT TYPE");
             mRepeatIntervalText.setText("Interval");
+            mRepeatTypeText.setEnabled(true);
+            mRepeatIntervalText.setEnabled(true);
+
 
         }
         else {
             repeattText.setText("Repeat OFF");
             mRepeatText.setText("Repeat OFF");
             mRepeatIntervalText.setText("Repeat OFF");
+            mRepeatTypeText.setEnabled(false);
+            mRepeatIntervalText.setEnabled(false);
+
+
 
 
         }
@@ -128,7 +144,7 @@ private TextView notificationText;
     }
 
 
-
+//Calendar
     public static class DatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
         @Override
@@ -160,7 +176,7 @@ private TextView notificationText;
 
 
 
-
+//select repeat type
     public void selectRepeatType(View v){
         final String[] items = new String[3];
         items[0] = "Day";
@@ -183,7 +199,7 @@ private TextView notificationText;
         alert.show();
     }
 
-
+//input repeat interval
     public void setRepeatNo(View v){
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Enter Number");

@@ -152,7 +152,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatText"
         android:clickable="true"
-        android:onClick="selectRepeatType"/>
+        android:onClick="selectRepeatType"
+        android:enabled="true" />
 
     <TextView
         android:id="@+id/repeatInterval"
@@ -166,7 +167,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatType"
         android:clickable="true"
-        android:onClick="setRepeatNo"/>
+        android:onClick="setRepeatNo"
+        android:enabled="true" />
 
 
 
