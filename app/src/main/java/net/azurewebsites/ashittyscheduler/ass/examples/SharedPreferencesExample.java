@@ -12,16 +12,15 @@ public class SharedPreferencesExample extends Activity {
 
     public void example() {
 
-        SharedPreferences sp = this.getSharedPreferences(MainMenu.PREFERENCES, Context.MODE_PRIVATE);
-
-        // Retrieving something from the shared preferences
-        String s = sp.getString("Test", null);
 
         SharedPreferences preferences = this.getSharedPreferences(MainMenu.PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         editor.putString("Test1", "9048239042390");
         editor.putString("Test2", "9048239042390");
+
+        // Retrieving something from the shared preferences
+        String s = preferences.getString("Test1", null);
 
         // Removing items
         editor.remove("Test11");

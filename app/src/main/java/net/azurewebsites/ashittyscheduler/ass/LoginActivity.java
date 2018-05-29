@@ -104,10 +104,14 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         JSONObject tokenObj = new JSONObject(httpResponse.getMessage());
 
-                        // TODO: Save this token somewhere... (PSST... SharedPreferences)
                         String token = tokenObj.get("TokenId").toString();
 
-                        Toast.makeText(getApplicationContext(),"Login successful. Token: " + token , Toast.LENGTH_LONG).show();
+                        // TODO: Save token to sharedpreferences
+
+                        // ...
+
+                        Toast.makeText(getApplicationContext(),"Login successful.", Toast.LENGTH_SHORT).show();
+
                         LoadNewPage(MainMenu.class);
                         finish();
                     } catch (JSONException e) {
