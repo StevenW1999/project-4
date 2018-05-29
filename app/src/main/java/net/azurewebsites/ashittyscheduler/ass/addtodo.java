@@ -5,12 +5,13 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -18,12 +19,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
-public class addtodo extends AppCompatActivity {
+public class addtodo extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 TimePickerDialog timePickerDialog;
 Calendar calendar;
 private TextView AccesTime;
@@ -37,6 +35,9 @@ private String mRepeatNo;
 private String mRepeatType;
 private TextView datepickerdialogbutton;
 private TextView selecteddate;
+private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText, mRepeatIntervalText;
+private Switch repeatSwitch, notificationSwitch;
+private TextView notificationText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,18 @@ private TextView selecteddate;
         AccesTime = (TextView) findViewById(R.id.timePlainText);
         DisplayTime = (TextView) findViewById(R.id.timePlainText);
         repeattText = (TextView) findViewById(R.id.repeatText) ;
+        mRepeatTypeText = (TextView)findViewById(R.id.repeatType);
+        mRepeatText = (TextView) findViewById(R.id.repeatType);
+        mRepeatNoText = (TextView) findViewById(R.id.repeatType);
+        repeatSwitch = (Switch) findViewById(R.id.repeatSwitch);
+
+        mRepeatIntervalText = (TextView) findViewById(R.id.repeatInterval);
+
+
+
+        repeatSwitch.setOnCheckedChangeListener(this);
+
+
         AccesTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +109,26 @@ private TextView selecteddate;
         });
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (repeatSwitch.isChecked()){
+            repeattText.setText("Repeat ON");
+            mRepeatText.setText(  "SELECT REPEAT TYPE");
+            mRepeatIntervalText.setText("Interval");
+
+        }
+        else {
+            repeattText.setText("Repeat OFF");
+            mRepeatText.setText("Repeat OFF");
+            mRepeatIntervalText.setText("Repeat OFF");
+
+
+        }
+
+    }
+
+
+
     public static class DatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
         @Override
@@ -128,18 +161,60 @@ private TextView selecteddate;
 
 
 
+    public void selectRepeatType(View v){
+        final String[] items = new String[3];
+        items[0] = "Day";
+        items[1] = "Week";
+        items[2] = "Month";
 
-//    public void onSwitchRepeat(View view) {
-//        Switch on = (Switch) findViewById(R.id.repeatSwitch);
-//        if () {
-//            mRepeat = "true";
-//            repeattText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
-//        } else {
-//            mRepeat = "false";
-//            repeattText.setText(R.id.repeatText);
-//        }
-//    }
+        // Create List Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Type");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
 
+            public void onClick(DialogInterface dialog, int item) {
+
+                mRepeatType = items[item];
+                mRepeatTypeText.setText(mRepeatType);
+                mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
+    public void setRepeatNo(View v){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Enter Number");
+
+        // Create EditText box to input repeat number
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        alert.setView(input);
+        alert.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        if (input.getText().toString().length() == 0) {
+                            mRepeatNo = Integer.toString(1);
+                            mRepeatNoText.setText(mRepeatNo);
+                            mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
+                        }
+                        else {
+                            mRepeatNo = input.getText().toString().trim();
+                            mRepeatNoText.setText(mRepeatNo);
+                            mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
+                        }
+                    }
+                });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // do nothing
+            }
+        });
+        alert.show();
+    }
 
 
 
