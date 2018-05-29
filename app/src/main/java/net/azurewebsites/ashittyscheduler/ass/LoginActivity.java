@@ -94,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(HttpResponse httpResponse) {
-                Toast.makeText(getApplicationContext(), "FINISHED", Toast.LENGTH_SHORT);
 
                 // obtain code
                 int code = httpResponse.getCode();
