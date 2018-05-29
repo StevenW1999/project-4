@@ -19,25 +19,37 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
     public static final String USER_AGENT = "Mozilla/5.0";
 
     private final Context context;
-    private URL url;
-    private String params;
+    private String url;
+
+    private String uriParameters;
+    private String bodyParameters;
     private HttpMethod method;
 
     private final AsyncHttpListener listener;
 
-    public HttpTask(Context context, HttpMethod method, String url, Pair<String,String>[] params, AsyncHttpListener listener) throws IOException {
+    public HttpTask(Context context, HttpMethod method, String url, AsyncHttpListener listener) throws IOException {
         this.context = context;
-        this.url = new URL(url);
         this.method = method;
-        this.params = convertParams(params);
-        // append parameters to the URL (if needed)
-        if (method == HttpMethod.GET || method == HttpMethod.PUT || method == HttpMethod.DELETE) {
-            this.url = new URL(url + this.params);
-        }
-        else {
-            this.url = new URL(url);
-        }
+        this.url = url;
         this.listener = listener;
+        this.bodyParameters = "";
+        this.uriParameters = "";
+    }
+
+    public void setBodyParameters(Pair<String,String>[] params) {
+        try {
+            this.bodyParameters = convertParams(params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setUriParameters(Pair<String,String>[] params) {
+        try {
+            this.uriParameters = convertParams(params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String convertParams(Pair<String, String>[] params) throws IOException {
@@ -69,35 +81,33 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
         HttpResponse httpResponse = null;
 
         try {
-            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection httpConnection = (HttpURLConnection) new URL(url + uriParameters).openConnection();
             httpConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
             httpConnection.setRequestProperty("Accept-Language", "UTF-8");
 
             switch(method) {
                 case POST:
                     httpConnection.setRequestMethod("POST");
-                    httpConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                    httpConnection.setRequestProperty("Content-Length", Integer.toString(params.getBytes(StandardCharsets.UTF_8).length));
-                    httpConnection.setDoOutput(true);
-
-                    // append parameters to the body (if needed)
-                    if (params.length() != 0) {
-                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(httpConnection.getOutputStream());
-                        outputStreamWriter.write(params);
-                        outputStreamWriter.flush();
-                    }
-
                     break;
                 case GET:
                     httpConnection.setRequestMethod("GET");
                 case PUT:
                     httpConnection.setRequestMethod("PUT");
-                    httpConnection.setDoOutput(true);
                     break;
                 case DELETE:
                     httpConnection.setRequestMethod("DELETE");
-                    httpConnection.setDoOutput(true);
                     break;
+            }
+
+            // append parameters to the body (if needed)
+            if (bodyParameters.length() != 0) {
+                httpConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                httpConnection.setRequestProperty("Content-Length", Integer.toString(this.bodyParameters.getBytes(StandardCharsets.UTF_8).length));
+                httpConnection.setDoOutput(true);
+
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(httpConnection.getOutputStream());
+                outputStreamWriter.write(this.bodyParameters);
+                outputStreamWriter.flush();
             }
 
             // read the input stream

@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
         HttpTask task = new HttpTask(this, HttpMethod.POST,
                 "https://ashittyscheduler.azurewebsites.net/api/users/login",
-                parameters, new AsyncHttpListener() {
+                new AsyncHttpListener() {
 
             private ProgressDialog progressDialog;
 
@@ -133,6 +133,8 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
+
+        task.setBodyParameters(parameters);
 
         task.execute();
 
