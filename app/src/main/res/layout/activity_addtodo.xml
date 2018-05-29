@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
 
     <Button
@@ -121,11 +122,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="176dp"
         android:layout_marginStart="16dp"
-        android:text="Repeat Off"
+        android:text="Repeat OFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Switch
         android:id="@+id/repeatSwitch"
@@ -142,33 +142,29 @@
     <TextView
         android:id="@+id/repeatType"
         android:layout_width="358dp"
-        android:layout_height="39dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="Repeat OFF"
-        android:textSize="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/repeatInterval"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repeatText"
         android:clickable="true"
         android:onClick="selectRepeatType"
-        android:enabled="true" />
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/repeatInterval"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/repeatText" />
 
     <TextView
         android:id="@+id/repeatInterval"
-        android:layout_width="wrap_content"
+        android:layout_width="358dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
         android:layout_marginStart="16dp"
-        android:text="Repeat OFF"
-        android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repeatType"
         android:clickable="true"
         android:onClick="setRepeatNo"
-        android:enabled="true" />
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/repeatType" />
 
 
 
