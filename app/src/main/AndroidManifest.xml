@@ -37,6 +37,7 @@
         </activity>
         <activity android:name=".addtodo" />
         <activity android:name=".Agenda"></activity>
+        <activity android:name=".edittodo"></activity>
     </application>
 
 </manifest>
