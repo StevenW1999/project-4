@@ -20,24 +20,21 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/ASSTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/ASSTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".addtodo" />
         <activity android:name=".Agenda" />
-        <activity android:name=".FriendsActivity"></activity>
+        <activity android:name=".FriendsActivity">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".FriendChatActivity"></activity>
     </application>
 
 </manifest>

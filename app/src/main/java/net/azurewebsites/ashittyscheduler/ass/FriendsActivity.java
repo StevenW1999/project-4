@@ -26,6 +26,7 @@ import android.widget.Toast;
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpPostTask;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +58,35 @@ public class FriendsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(getApplicationContext(),"Send request to : " + usernameGiven.getText(),Toast.LENGTH_SHORT).show();
+                        Pair[] parameters = new Pair[] {
+                                new Pair<>("UsernameFriend", usernameGiven.getText().toString())
+                        };
+                        try {
+                            HttpTask task = new HttpPostTask(getApplicationContext(), "https://ashittyscheduler.azurewebsites.net/api/friend/friendRequest",parameters,new AsyncHttpListener(){
+
+                                @Override
+                                public void onBeforeExecute() {
+                                    Log.d("TEST SUBMIT Friend", "onBeforeExecute: TESTING ");
+                                }
+
+                                @Override
+                                public void onResponse(HttpResponse httpResponse) {
+                                    Log.d("Reponse",Integer.toString(httpResponse.getCode()));
+                                }
+
+                                @Override
+                                public void onError() {
+
+                                }
+
+                                @Override
+                                public void onFinishExecuting() {
+
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         dialog.cancel();
                     }
                 });
@@ -78,8 +108,14 @@ public class FriendsActivity extends AppCompatActivity {
                 String o = listView.getItemAtPosition(position).toString();
                 Log.d("USERNAME:", "onItemClick: " + o);
                 Toast.makeText(getApplicationContext(), o, Toast.LENGTH_SHORT).show();
+                LoadFriendChat(FriendChatActivity.class , o);
             }
         });
+    }
+    private void LoadFriendChat(Class ActivityName , String o) {
+        Intent loadPage = new Intent(this,ActivityName);
+        loadPage.putExtra("Username" , o);
+        startActivity(loadPage);
     }
 }
 
