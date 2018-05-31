@@ -24,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
-import net.azurewebsites.ashittyscheduler.ass.http.HttpPostTask;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
 
@@ -62,7 +62,7 @@ public class FriendsActivity extends AppCompatActivity {
                                 new Pair<>("UsernameFriend", usernameGiven.getText().toString())
                         };
                         try {
-                            HttpTask task = new HttpPostTask(getApplicationContext(), "https://ashittyscheduler.azurewebsites.net/api/friend/friendRequest",parameters,new AsyncHttpListener(){
+                            HttpTask task = new HttpTask(getApplicationContext(), HttpMethod.POST ,"https://ashittyscheduler.azurewebsites.net/api/friend/friendRequest",new AsyncHttpListener(){
 
                                 @Override
                                 public void onBeforeExecute() {
@@ -84,6 +84,9 @@ public class FriendsActivity extends AppCompatActivity {
 
                                 }
                             });
+
+                            //task.setBodyParameters(parameters);
+                            //task.execute();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
