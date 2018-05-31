@@ -9,6 +9,7 @@ import android.widget.EditText;
 public class edittodo extends AppCompatActivity {
     String messageText;
     int position;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
