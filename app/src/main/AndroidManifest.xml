@@ -33,7 +33,6 @@
         <activity android:name=".addtodo" />
         <activity android:name=".Agenda" />
         <activity android:name=".FriendsActivity">
-
         </activity>
         <activity android:name=".FriendChatActivity"></activity>
     </application>
