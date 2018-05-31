@@ -33,6 +33,7 @@ ArrayAdapter<String> arrayAdapter;
 String messageText;
 
     private Fragment fragmentToSet = null;
+ 
 
     private DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener(){
 
@@ -48,10 +49,9 @@ String messageText;
 
         @Override
         public void onDrawerClosed(@NonNull View drawerView) {
-            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.frameLayout, fragmentToSet);
-            ft.commit();
+
+
+
         }
 
         @Override
@@ -78,14 +78,16 @@ String messageText;
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent();
-                intent.setClass(MainMenu.this, edittodo.class);
+//                intent.setClass(MainMenu.this, addtodo.class);
                 intent.putExtra(Intent_Constants.INTENT_MESSAGE_DATA,arrayList.get(position).toString());
-                intent.putExtra(Intent_Constants.INTENT_ITEM_POSITION, position);
 
-////                startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE_TWO);
-                startActivity(intent);
+////                intent.putExtra(Intent_Constants.INTENT_ITEM_POSITION, position);
+//
+//////                startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE_TWO);
+//                startActivity(intent);
             }
         });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -96,6 +98,11 @@ String messageText;
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 
     @Override
@@ -140,6 +147,7 @@ String messageText;
             // fragment to set = settings
             fragmentToSet = new SettingsFragment();
 
+
         } else if (id == R.id.nav_Rateus) {
             getSupportActionBar().setTitle("Rate us");
         }
@@ -161,11 +169,7 @@ String messageText;
     }
 
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TextView tv = (TextView)view;
-        Toast.makeText(this, "You click on " + tv.getText()+ position, Toast.LENGTH_SHORT).show();
-    }
+
     public void onClick(View v){
         Intent intent = new Intent();
         intent.setClass(MainMenu.this, addtodo.class);
@@ -189,6 +193,7 @@ String messageText;
 //
 //       }
     }
+
 }
 
 

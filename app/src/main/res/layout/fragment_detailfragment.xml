@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".detailfragment">
+
+
+    <Button
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:layout_marginLeft="280dp"
+        android:clickable="true"    />
+        <!--android:onClick="editButtonClicked"/>-->
+
+
+    <TextView
+        android:id="@+id/detailTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="20dp"/>
+    <TextView
+        android:id="@+id/detailDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Details"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="20dp"/>
+    <TextView
+        android:id="@+id/detailDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:layout_marginTop="300dp"
+        android:layout_marginLeft="20dp"/>
+    <TextView
+        android:id="@+id/detailTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time"
+        android:layout_marginTop="400dp"
+        android:layout_marginLeft="20dp"/>
+    <TextView
+        android:id="@+id/detailNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notification"
+        android:layout_marginTop="500dp"
+        android:layout_marginLeft="20dp"/>
+
+
+</FrameLayout>

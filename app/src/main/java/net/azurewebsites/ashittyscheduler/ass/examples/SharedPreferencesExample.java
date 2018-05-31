@@ -13,7 +13,7 @@ public class SharedPreferencesExample extends Activity {
     public void example() {
 
 
-        SharedPreferences preferences = this.getSharedPreferences(MainMenu.PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences preferences = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         editor.putString("Test1", "9048239042390");

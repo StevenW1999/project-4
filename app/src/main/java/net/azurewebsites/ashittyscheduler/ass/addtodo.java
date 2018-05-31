@@ -257,7 +257,7 @@ private PendingIntent alarmIntent;
         else {
             Intent intent = new Intent();
             intent.putExtra(Intent_Constants.INTENT_MESSAGE_FIELD, messageText);
-            intent.putExtra(Intent_Constants.KEY_DATE, dateText);
+//            intent.putExtra(Intent_Constants.KEY_DATE, dateText);
             setResult(Intent_Constants.INTENT_RESULT_CODE,intent);
             finish();
         }
