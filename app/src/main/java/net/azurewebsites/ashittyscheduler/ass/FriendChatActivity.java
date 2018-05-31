@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -34,6 +35,8 @@ public class FriendChatActivity extends AppCompatActivity {
         this.adapter = new ListAdapter1(this,texts);
         this.listView = (ListView)findViewById(R.id.chatList);
         listView.setAdapter(adapter);
+        listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+        listView.setStackFromBottom(true);
         final EditText editText = (EditText)findViewById(R.id.chatMessageBox);
         editText.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -46,6 +49,8 @@ public class FriendChatActivity extends AppCompatActivity {
                 return false;
             }
         });
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
     private void addMessage(Texts text){
         this.adapter.setData(text);
