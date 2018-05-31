@@ -49,9 +49,7 @@ String messageText;
         @Override
         public void onDrawerClosed(@NonNull View drawerView) {
             android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.frameLayout, fragmentToSet);
-            ft.commit();
+            fm.beginTransaction().replace(R.id.frameLayout, fragmentToSet).commit();
         }
 
         @Override
