@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
         HttpTask task = new HttpTask(this, HttpMethod.POST,
                 "https://ashittyscheduler.azurewebsites.net/api/users/login",
-                parameters, new AsyncHttpListener() {
+                new AsyncHttpListener() {
 
             private ProgressDialog progressDialog;
 
@@ -94,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(HttpResponse httpResponse) {
-                Toast.makeText(getApplicationContext(), "FINISHED", Toast.LENGTH_SHORT);
 
                 // obtain code
                 int code = httpResponse.getCode();
@@ -105,10 +104,14 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         JSONObject tokenObj = new JSONObject(httpResponse.getMessage());
 
-                        // TODO: Save this token somewhere... (PSST... SharedPreferences)
                         String token = tokenObj.get("TokenId").toString();
 
-                        Toast.makeText(getApplicationContext(),"Login successful. Token: " + token , Toast.LENGTH_LONG).show();
+                        // TODO: Save token to sharedpreferences
+
+                        // ...
+
+                        Toast.makeText(getApplicationContext(),"Login successful.", Toast.LENGTH_SHORT).show();
+
                         LoadNewPage(MainMenu.class);
                         finish();
                     } catch (JSONException e) {
@@ -134,6 +137,8 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
+
+        task.setBodyParameters(parameters);
 
         task.execute();
 
