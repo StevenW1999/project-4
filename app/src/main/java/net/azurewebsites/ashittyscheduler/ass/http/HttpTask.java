@@ -14,21 +14,42 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-public abstract class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
+public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
 
     public static final String USER_AGENT = "Mozilla/5.0";
 
-    protected final Context context;
-    protected URL url;
-    protected String params;
+    private final Context context;
+    private String url;
+
+    private String uriParameters;
+    private String bodyParameters;
+    private HttpMethod method;
 
     private final AsyncHttpListener listener;
 
-    public HttpTask(Context context, String url, Pair<String,String>[] params, AsyncHttpListener listener) throws IOException {
+    public HttpTask(Context context, HttpMethod method, String url, AsyncHttpListener listener) throws IOException {
         this.context = context;
-        this.url = new URL(url);
-        this.params = convertParams(params);
+        this.method = method;
+        this.url = url;
         this.listener = listener;
+        this.bodyParameters = "";
+        this.uriParameters = "";
+    }
+
+    public void setBodyParameters(Pair<String,String>[] params) {
+        try {
+            this.bodyParameters = convertParams(params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setUriParameters(Pair<String,String>[] params) {
+        try {
+            this.uriParameters = convertParams(params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String convertParams(Pair<String, String>[] params) throws IOException {
@@ -55,12 +76,65 @@ public abstract class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
         listener.onBeforeExecute();
     }
 
-    // Performs the request and returns a response
-    protected abstract HttpResponse performRequest();
-
     @Override
     protected HttpResponse doInBackground(Void... voids) {
-        return performRequest();
+        HttpResponse httpResponse = null;
+
+        try {
+            HttpURLConnection httpConnection = (HttpURLConnection) new URL(url + uriParameters).openConnection();
+            httpConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
+            httpConnection.setRequestProperty("Accept-Language", "UTF-8");
+
+            switch(method) {
+                case POST:
+                    httpConnection.setRequestMethod("POST");
+                    break;
+                case GET:
+                    httpConnection.setRequestMethod("GET");
+                case PUT:
+                    httpConnection.setRequestMethod("PUT");
+                    break;
+                case DELETE:
+                    httpConnection.setRequestMethod("DELETE");
+                    break;
+            }
+
+            // append parameters to the body (if needed)
+            if (bodyParameters.length() != 0) {
+                httpConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                httpConnection.setRequestProperty("Content-Length", Integer.toString(this.bodyParameters.getBytes(StandardCharsets.UTF_8).length));
+                httpConnection.setDoOutput(true);
+
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(httpConnection.getOutputStream());
+                outputStreamWriter.write(this.bodyParameters);
+                outputStreamWriter.flush();
+            }
+
+            // read the input stream
+            StringBuilder sb = new StringBuilder();
+            BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
+            String read;
+
+            while((read=br.readLine()) != null) {
+                sb.append(read);
+            }
+            br.close();
+
+            // create the custom response
+            httpResponse = new HttpResponse(
+                    httpConnection.getResponseCode(),
+                    sb.toString()
+            );
+
+            // and finally, close the connection
+            httpConnection.disconnect();
+        }
+        catch(IOException ex) {
+            Log.e("HTTPCONNECTION", "ERROR!");
+            ex.printStackTrace();
+        }
+
+        return httpResponse;
     }
 
     @Override

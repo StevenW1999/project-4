@@ -55,6 +55,7 @@ int position;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent intent = new Intent();
                 intent.setClass(MainMenu.this, edittodo.class);
                 intent.putExtra(Intent_Constants.INTENT_MESSAGE_DATA,arrayList.get(position).toString());
@@ -131,7 +132,8 @@ int position;
         } else if (id == R.id.nav_Notes) {
             getSupportActionBar().setTitle("Notes");
         } else if (id == R.id.nav_Friends) {
-            getSupportActionBar().setTitle("Friends");
+            //getSupportActionBar().setTitle("Friends");
+            LoadNewPage(FriendsActivity.class);
         } else if (id == R.id.nav_Settings) {
             LoadNewPage(SettingsActivity.class);
         } else if (id == R.id.nav_Rateus) {
@@ -159,7 +161,6 @@ int position;
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TextView tv = (TextView)view;
         Toast.makeText(this, "You click on " + tv.getText()+ position, Toast.LENGTH_SHORT).show();
-
     }
     public void onClick(View v){
         Intent intent = new Intent();
