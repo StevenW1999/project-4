@@ -64,8 +64,6 @@ private PendingIntent alarmIntent;
 
         mRepeatIntervalText = (TextView) findViewById(R.id.repeatInterval);
 
-
-
         repeatSwitch.setOnCheckedChangeListener(this);
 
 //Clock
