@@ -45,15 +45,15 @@ public class Agenda extends AppCompatActivity {
         //    }
         //});
 
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                if (calendarView.getFirstDayOfWeek() != calendarView.getDate()) {
-                    calendarView.getMinDate();
-                    System.out.println("Date changed");
-                }
-            }
-        });
+    //    calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+    //        @Override
+    //        public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+    //            if (calendarView.getFirstDayOfWeek() != calendarView.getDate()) {
+    //                calendarView.getMinDate();
+    //                System.out.println("Date changed");
+    //            }
+    //        }
+    //    });
 
     }
 }
