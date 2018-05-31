@@ -32,7 +32,7 @@ ListView listView;
 ArrayList<String> arrayList;
 ArrayAdapter<String> arrayAdapter;
 String messageText;
-int position;
+
 
 
 
@@ -60,7 +60,9 @@ int position;
                 intent.setClass(MainMenu.this, edittodo.class);
                 intent.putExtra(Intent_Constants.INTENT_MESSAGE_DATA,arrayList.get(position).toString());
                 intent.putExtra(Intent_Constants.INTENT_ITEM_POSITION, position);
-                startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE_TWO);
+
+////                startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE_TWO);
+                startActivity(intent);
 
             }
         });
@@ -176,14 +178,15 @@ int position;
            arrayList.add(messageText);
            arrayAdapter.notifyDataSetChanged();
        }
-       else if(resultCode==Intent_Constants.INTENT_RESULT_CODE_TWO){
-           messageText = data.getStringExtra(Intent_Constants.INTENT_CHANGED_MESSAGE);
-           position = data.getIntExtra(Intent_Constants.INTENT_ITEM_POSITION,-1);
-           arrayList.remove(position);
-           arrayList.add(position,messageText);
-           arrayAdapter.notifyDataSetChanged();
-
-       }
+//       else if(resultCode==Intent_Constants.INTENT_RESULT_CODE_TWO){
+//           messageText = data.getStringExtra(Intent_Constants.INTENT_CHANGED_MESSAGE);
+//           position = data.getIntExtra(Intent_Constants.INTENT_ITEM_POSITION,-1);
+//           arrayList.remove(position);
+//           arrayList.add(position,messageText);
+//           arrayAdapter.notifyDataSetChanged();
+//
+//       }
     }
 }
+
 
