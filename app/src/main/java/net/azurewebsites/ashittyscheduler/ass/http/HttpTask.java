@@ -7,6 +7,7 @@ import android.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -110,9 +111,13 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
                 outputStreamWriter.flush();
             }
 
+            InputStream in = httpConnection.getResponseCode() < HttpStatusCode.BAD_REQUEST.getCode()
+                    ? httpConnection.getInputStream()  // code < 400  no error
+                    : httpConnection.getErrorStream(); // code >= 400 error
+
             // read the input stream
             StringBuilder sb = new StringBuilder();
-            BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String read;
 
             while((read=br.readLine()) != null) {
