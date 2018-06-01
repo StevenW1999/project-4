@@ -82,6 +82,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
 
         try {
             HttpURLConnection httpConnection = (HttpURLConnection) new URL(url + uriParameters).openConnection();
+            //httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
             httpConnection.setRequestProperty("Accept-Language", "UTF-8");
 
@@ -91,6 +92,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
                     break;
                 case GET:
                     httpConnection.setRequestMethod("GET");
+                    break;
                 case PUT:
                     httpConnection.setRequestMethod("PUT");
                     break;
@@ -98,7 +100,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
                     httpConnection.setRequestMethod("DELETE");
                     break;
             }
-
+            String s = httpConnection.getRequestMethod();
             // append parameters to the body (if needed)
             if (bodyParameters.length() != 0) {
                 httpConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
