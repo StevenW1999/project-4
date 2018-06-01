@@ -10,6 +10,11 @@
     tools:context=".MainMenu"
     tools:showIn="@layout/app_bar_main_menu">
 
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+
     <ListView
         android:id="@+id/textView"
         android:layout_width="383dp"
