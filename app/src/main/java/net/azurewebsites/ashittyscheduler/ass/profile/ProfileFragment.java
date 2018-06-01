@@ -1,8 +1,10 @@
 package net.azurewebsites.ashittyscheduler.ass.profile;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.azurewebsites.ashittyscheduler.ass.ApplicationConstants;
 import net.azurewebsites.ashittyscheduler.ass.LoginActivity;
 import net.azurewebsites.ashittyscheduler.ass.MainMenu;
 import net.azurewebsites.ashittyscheduler.ass.R;
@@ -50,7 +53,7 @@ public class ProfileFragment extends Fragment {
         // parameters
         //TODO: ADD PARAMETER
         Pair[] parameters = new Pair[] {
-                new Pair<>("tokenId", ""),
+                new Pair<>("tokenId", getActivity().getSharedPreferences(ApplicationConstants.PREFERENCES, Context.MODE_PRIVATE).getString("Token" , null)),
         };
 
         try {
@@ -63,7 +66,7 @@ public class ProfileFragment extends Fragment {
 
                 @Override
                 public void onBeforeExecute() {
-                   // progressDialog = ProgressDialog.show(getContext(),"Loading profile","Please wait");
+                   progressDialog = ProgressDialog.show(getContext(),"Loading profile","Please wait");
                 }
 
                 @Override
@@ -96,7 +99,7 @@ public class ProfileFragment extends Fragment {
 
                 @Override
                 public void onFinishExecuting() {
-                    //progressDialog.dismiss();
+                    progressDialog.dismiss();
                 }
             });
 
