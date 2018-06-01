@@ -1,5 +1,6 @@
 package net.azurewebsites.ashittyscheduler.ass.settings;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -23,6 +23,8 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        // Add preferences
         getActivity().getFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, new MyPreferenceFragment())
                 .commit();

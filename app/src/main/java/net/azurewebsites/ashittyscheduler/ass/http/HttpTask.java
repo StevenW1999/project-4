@@ -92,6 +92,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
                     break;
                 case GET:
                     httpConnection.setRequestMethod("GET");
+                    break;
                 case PUT:
                     httpConnection.setRequestMethod("PUT");
                     break;
