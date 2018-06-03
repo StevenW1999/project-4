@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Overview.OverviewFragment">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorGrey"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".MainMenu"
+        tools:showIn="@layout/app_bar_main_menu">
+
+        <ListView
+            android:id="@+id/textView"
+            android:layout_width="383dp"
+            android:layout_height="wrap_content"
+            android:divider="@color/colorBlack"
+            android:dividerHeight="1dp"
+            android:footerDividersEnabled="true"
+            app:layout_constraintTop_toBottomOf="@+id/dropDownFilter" >
+
+        </ListView>
+
+        <Spinner
+            android:id="@+id/dropDownFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/dropdownYear"
+            android:popupBackground="@color/colorGrey"
+            android:spinnerMode="dropdown" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:onClick="onClick"
+            android:src="@drawable/transparentbutt"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        </android.support.design.widget.FloatingActionButton>
+
+    </android.support.constraint.ConstraintLayout>
+
+</FrameLayout>
