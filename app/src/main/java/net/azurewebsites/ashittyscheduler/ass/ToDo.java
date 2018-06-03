@@ -8,6 +8,10 @@ public class ToDo {
     private String description;
     private Date date;
 
+    // TODO: Add getters and setters for these
+    private String time;
+    private Date dateReminder;
+
     public String getId() {
         return id;
     }
@@ -40,6 +44,11 @@ public class ToDo {
         this.date = date;
     }
 
+
+    @Override
+    public String toString() {
+        return getTitle();
+    }
     
 
 

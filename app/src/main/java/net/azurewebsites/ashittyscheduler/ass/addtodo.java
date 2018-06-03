@@ -152,8 +152,15 @@ private PendingIntent alarmIntent;
 
     }
 
+    public void CancelButtonClicked(View view) {
+//        Intent intent = new Intent();
+//        intent.setClass(addtodo.this, MainMenu.class);
+//        startActivity(intent);
+        finish();
+    }
 
-//Calendar
+
+    //Calendar
     public static class DatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
         @Override

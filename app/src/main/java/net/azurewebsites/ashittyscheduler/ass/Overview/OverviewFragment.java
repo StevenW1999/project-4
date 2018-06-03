@@ -20,7 +20,9 @@ import android.widget.Toast;
 import net.azurewebsites.ashittyscheduler.ass.Intent_Constants;
 import net.azurewebsites.ashittyscheduler.ass.MainMenu;
 import net.azurewebsites.ashittyscheduler.ass.R;
+import net.azurewebsites.ashittyscheduler.ass.ToDo;
 import net.azurewebsites.ashittyscheduler.ass.addtodo;
+import net.azurewebsites.ashittyscheduler.ass.detailscreen;
 import net.azurewebsites.ashittyscheduler.ass.edittodo;
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
@@ -76,18 +78,23 @@ public class OverviewFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                // get selected to do item
+                ToDo todo = (ToDo) parent.getItemAtPosition(position);
+
+                //TODO: Check if todo is null!!!!!!!!!!!
+                if (todo == null) {
+
+                }
+
                 Intent intent = new Intent();
-                intent.setClass(getActivity().getApplicationContext(), edittodo.class);
-                intent.putExtra(Intent_Constants.INTENT_MESSAGE_DATA,arrayList.get(position).toString());
-                intent.putExtra(Intent_Constants.INTENT_ITEM_POSITION, position);
+                intent.setClass(getActivity().getApplicationContext(), detailscreen.class);
+                intent.putExtra("todoId", todo.getId());
 
-////                startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE_TWO);
                 startActivity(intent);
-
             }
         });
 
-        final ArrayAdapter<String> toDoItems = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1);
+        final ArrayAdapter<ToDo> toDoItems = new ArrayAdapter<ToDo>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1);
         listView.setAdapter(toDoItems);
 
         toDoItems.clear();
@@ -107,9 +114,14 @@ public class OverviewFragment extends Fragment {
                         JSONArray todos = new JSONArray(httpResponse.getMessage());
 
                         for (int i = 0; i < todos.length(); i++) {
-                            JSONObject todo = todos.getJSONObject(i);
-                            toDoItems.add(todo.getString("Title"));
+                            JSONObject todoJSON = todos.getJSONObject(i);
 
+                            ToDo todo = new ToDo();
+                            todo.setId(todoJSON.getString("Id"));
+                            todo.setTitle(todoJSON.getString("Title"));
+                            //TODO: Add Date, DateReminder etc...
+
+                            toDoItems.add(todo);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
