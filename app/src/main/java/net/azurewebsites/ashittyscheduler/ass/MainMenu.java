@@ -101,8 +101,8 @@ public class MainMenu extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        TextView t = (TextView)findViewById(R.id.textViewIdForUsername);
-        t.setText("UsernameString");
+        //TextView t = (TextView)findViewById(R.id.textViewIdForUsername);
+        //t.setText("UsernameString");
 
         LinearLayout header = findViewById(R.id.headerMainMenu);
         header.setOnClickListener(new View.OnClickListener() {

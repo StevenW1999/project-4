@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Pair;
 
+import net.azurewebsites.ashittyscheduler.ass.ApplicationConstants;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -86,6 +88,13 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
             httpConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
             httpConnection.setRequestProperty("Accept-Language", "UTF-8");
 
+            String token = context.getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE).getString("Token", null);
+
+            if (token != null) {
+                // token is available... add it to the custom request header
+                httpConnection.setRequestProperty("Token", token);
+            }
+
             switch(method) {
                 case POST:
                     httpConnection.setRequestMethod("POST");
@@ -100,7 +109,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
                     httpConnection.setRequestMethod("DELETE");
                     break;
             }
-
+            String s = httpConnection.getRequestMethod();
             // append parameters to the body (if needed)
             if (bodyParameters.length() != 0) {
                 httpConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");

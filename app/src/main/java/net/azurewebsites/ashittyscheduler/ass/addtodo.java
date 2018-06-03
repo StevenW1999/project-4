@@ -6,14 +6,18 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -21,8 +25,16 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
+import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
+
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -47,6 +59,7 @@ private AlarmManager alarmManager;
 private PendingIntent alarmIntent;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +77,6 @@ private PendingIntent alarmIntent;
 
         mRepeatIntervalText = (TextView) findViewById(R.id.repeatInterval);
 
-
-
         repeatSwitch.setOnCheckedChangeListener(this);
 
 //Clock
@@ -75,22 +86,12 @@ private PendingIntent alarmIntent;
                 calendar = Calendar.getInstance();
                 CalendarHour= calendar.get(Calendar.HOUR_OF_DAY);
                 CalendarMinute = calendar.get(Calendar.MINUTE);
+
                 timePickerDialog = new TimePickerDialog(addtodo.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if (hourOfDay == 0) {
-                            hourOfDay += 12;
-                            format = "AM";
-
-                        } else if (hourOfDay == 12) {
-                            format = "PM";
-                        } else if (hourOfDay > 12) {
-                            hourOfDay -= 12;
-                            format = "PM";
-                        } else {
-                            format = "AM";
-                        }
-                        DisplayTime.setText(hourOfDay + ":" + minute + format);
+                        String timeStamp = String.format("%02d:%02d", hourOfDay, minute);
+                        DisplayTime.setText(timeStamp);
                     }
                 },
                         CalendarHour,CalendarMinute, false);
@@ -114,6 +115,11 @@ private PendingIntent alarmIntent;
                 DialogFragment dialogfragment = new DatePickerDialogClass();
 
                 dialogfragment.show(getFragmentManager(), "Date Picker Dialog");
+
+//            intent.putExtra(Intent_Constants.KEY_DATE, dateText);
+
+
+
 
             }
         });
@@ -173,9 +179,10 @@ private PendingIntent alarmIntent;
 
             TextView textview = (TextView)getActivity().findViewById(R.id.date);
 
-            textview.setText(day + ":" + (month+1) + ":" + year);
+            textview.setText(year + "-" +(month+1)  + "-" +day );
         }
     }
+
 
 
 
@@ -252,15 +259,83 @@ private PendingIntent alarmIntent;
     //add todo to the listview
     public void addButtonClicked (View v){
         String messageText = ((EditText)findViewById(R.id.titleText)).getText().toString();
+        String DescText = ((EditText)findViewById(R.id.descriptionText)).getText().toString();
         String dateText = ((TextView)findViewById(R.id.date)).getText().toString();
+        String timeText = ((TextView)findViewById(R.id.timePlainText)).getText().toString();
+        String repeatTxt = ((TextView)findViewById(R.id.repeatText)).getText().toString();
+        String notificationText = ((TextView)findViewById(R.id.notificationsTextView)).getText().toString();
+
+
         if (messageText.equals("")){
+            Toast.makeText(this, "PLEASE GIVE THE TODO A TITLE", Toast.LENGTH_SHORT).show();
 
         }
         else {
-            Intent intent = new Intent();
-            intent.putExtra(Intent_Constants.INTENT_MESSAGE_FIELD, messageText);
-            intent.putExtra(Intent_Constants.KEY_DATE, dateText);
-            setResult(Intent_Constants.INTENT_RESULT_CODE,intent);
+
+            try {
+
+                // create body parameters
+                Pair[] parameters = new Pair[]{
+                        new Pair("Title", messageText),
+                        new Pair("Description", DescText),
+                        new Pair("Date", dateText+ "T" + timeText),
+                        new Pair("DateReminder", dateText+ "T" + timeText) // TODO: Add reminder date
+                };
+
+                HttpTask task = new HttpTask(this.getApplicationContext(),
+                        HttpMethod.POST,
+                        "http://ashittyscheduler.azurewebsites.net/api/todo/create",
+                        new AsyncHttpListener() {
+                            private ProgressDialog progressDialog;
+
+                            @Override
+                            public void onBeforeExecute() {
+                                // show a progress dialog (duh)
+                                progressDialog = android.app.ProgressDialog.show(addtodo.this,
+                                        "Creating todo",
+                                        "Please wait");
+                            }
+
+                            @Override
+                            public void onResponse(HttpResponse httpResponse) {
+
+                                int code = httpResponse.getCode();
+
+                                if (code == HttpStatusCode.OK.getCode()){
+                                    Toast.makeText(getApplicationContext(), "TODO CREATED", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Toast.makeText(getApplicationContext(), "FAILED TO CREATE TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+
+
+                            }
+
+                            @Override
+                            public void onError() {
+                                Toast.makeText(getApplicationContext(), "TFAILED TO CREATE TODO", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                            @Override
+                            public void onFinishExecuting() {
+                                // dismiss the progress dialog (duh)
+                                progressDialog.dismiss();
+                            }
+                        }
+                );
+
+                // set body parameters
+                task.setBodyParameters(parameters);
+
+                task.execute();
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
             finish();
         }
     }

@@ -110,11 +110,11 @@ public class LoginActivity extends AppCompatActivity {
 
                         // TODO: Save token to sharedpreferences
 
-                        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+                        SharedPreferences sharedPreferences = getSharedPreferences(ApplicationConstants.PREFERENCES ,Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("Token", token);
                         editor.apply();
-
+                        Log.d("TOKEN ID", token);
                         Toast.makeText(getApplicationContext(),"Login successful.", Toast.LENGTH_SHORT).show();
 
                         LoadNewPage(MainMenu.class);
