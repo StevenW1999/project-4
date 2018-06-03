@@ -49,7 +49,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
 
     public void setUriParameters(Pair<String,String>[] params) {
         try {
-            this.uriParameters = convertParams(params);
+            this.uriParameters = "?" + convertParams(params);
         } catch (IOException e) {
             e.printStackTrace();
         }

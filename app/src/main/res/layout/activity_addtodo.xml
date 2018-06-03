@@ -178,7 +178,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/notificationsTextView"
         app:layout_constraintStart_toStartOf="@+id/repeatInterval"
-        app:layout_constraintTop_toBottomOf="@+id/repeatInterval" />
+        app:layout_constraintTop_toBottomOf="@+id/repeatInterval"
+        android:onClick="CancelButtonClicked"/>
 
 
 </android.support.constraint.ConstraintLayout>
