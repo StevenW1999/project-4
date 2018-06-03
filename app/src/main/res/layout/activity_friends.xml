@@ -14,10 +14,23 @@
         android:layout_marginEnd="8dp"
         android:clickable="true"
         android:focusable="true"
-        app:backgroundTint="?attr/colorError"
+        app:backgroundTint="@color/colorBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/FriendRequestPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@color/colorBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/AddFriendButton"
+        app:srcCompat="@android:drawable/ic_dialog_alert" />
 
     <ListView
         android:id="@+id/list"

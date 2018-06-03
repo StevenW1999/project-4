@@ -1,11 +1,12 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
 import android.annotation.SuppressLint;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,12 +18,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import net.azurewebsites.ashittyscheduler.ass.profile.ProfileFragment;
 import net.azurewebsites.ashittyscheduler.ass.settings.SettingsFragment;
 
 public class MainMenu extends AppCompatActivity
@@ -33,7 +37,6 @@ ArrayAdapter<String> arrayAdapter;
 String messageText;
 
     private Fragment fragmentToSet = null;
- 
 
     private DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener(){
 
@@ -49,9 +52,14 @@ String messageText;
 
         @Override
         public void onDrawerClosed(@NonNull View drawerView) {
+            if (fragmentToSet != null) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frameLayout, fragmentToSet)
+                        .commit();
 
-
-
+                fragmentToSet = null;
+            }
         }
 
         @Override
@@ -78,16 +86,14 @@ String messageText;
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent();
-//                intent.setClass(MainMenu.this, addtodo.class);
+                intent.setClass(MainMenu.this, edittodo.class);
                 intent.putExtra(Intent_Constants.INTENT_MESSAGE_DATA,arrayList.get(position).toString());
+                intent.putExtra(Intent_Constants.INTENT_ITEM_POSITION, position);
 
-////                intent.putExtra(Intent_Constants.INTENT_ITEM_POSITION, position);
-//
-//////                startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE_TWO);
-//                startActivity(intent);
+////                startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE_TWO);
+                startActivity(intent);
             }
         });
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -98,11 +104,6 @@ String messageText;
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
     @Override
@@ -121,6 +122,20 @@ String messageText;
         getMenuInflater().inflate(R.menu.main_menu, menu);
         TextView t = (TextView)findViewById(R.id.textViewIdForUsername);
         t.setText("UsernameString");
+
+        LinearLayout header = findViewById(R.id.headerMainMenu);
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+                getSupportActionBar().setTitle("Profile");
+                fragmentToSet = new ProfileFragment();
+
+                drawer.closeDrawer(Gravity.LEFT, true);
+            }
+        });
+
         return true;
     }
 
@@ -144,9 +159,9 @@ String messageText;
             LoadNewPage(FriendsActivity.class);
         } else if (id == R.id.nav_Settings) {
 
+            getSupportActionBar().setTitle("Settings");
             // fragment to set = settings
             fragmentToSet = new SettingsFragment();
-
 
         } else if (id == R.id.nav_Rateus) {
             getSupportActionBar().setTitle("Rate us");
@@ -169,7 +184,11 @@ String messageText;
     }
 
 
-
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TextView tv = (TextView)view;
+        Toast.makeText(this, "You click on " + tv.getText()+ position, Toast.LENGTH_SHORT).show();
+    }
     public void onClick(View v){
         Intent intent = new Intent();
         intent.setClass(MainMenu.this, addtodo.class);
@@ -193,7 +212,6 @@ String messageText;
 //
 //       }
     }
-
 }
 
 

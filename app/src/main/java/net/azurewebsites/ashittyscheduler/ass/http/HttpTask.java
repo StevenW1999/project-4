@@ -7,6 +7,7 @@ import android.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -82,6 +83,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
 
         try {
             HttpURLConnection httpConnection = (HttpURLConnection) new URL(url + uriParameters).openConnection();
+            //httpConnection.setRequestMethod("POST");
             httpConnection.setRequestProperty("User-Agent", "Mozilla/5.0");
             httpConnection.setRequestProperty("Accept-Language", "UTF-8");
 
@@ -91,6 +93,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
                     break;
                 case GET:
                     httpConnection.setRequestMethod("GET");
+                    break;
                 case PUT:
                     httpConnection.setRequestMethod("PUT");
                     break;
@@ -98,7 +101,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
                     httpConnection.setRequestMethod("DELETE");
                     break;
             }
-
+            String s = httpConnection.getRequestMethod();
             // append parameters to the body (if needed)
             if (bodyParameters.length() != 0) {
                 httpConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -110,9 +113,13 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
                 outputStreamWriter.flush();
             }
 
+            InputStream in = httpConnection.getResponseCode() < HttpStatusCode.BAD_REQUEST.getCode()
+                    ? httpConnection.getInputStream()  // code < 400  no error
+                    : httpConnection.getErrorStream(); // code >= 400 error
+
             // read the input stream
             StringBuilder sb = new StringBuilder();
-            BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String read;
 
             while((read=br.readLine()) != null) {
