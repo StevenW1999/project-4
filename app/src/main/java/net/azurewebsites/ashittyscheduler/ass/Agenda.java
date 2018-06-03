@@ -41,7 +41,7 @@ public class Agenda extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agenda);
 
-        //calendarView = (CalendarView) findViewById(R.id.calendarView);
+        calendarView = (CalendarView) findViewById(R.id.calendarView);
         btnToday = (Button) findViewById(R.id.btnToday);
         listViewToDo = (ListView) findViewById(R.id.listViewToDo);
 
