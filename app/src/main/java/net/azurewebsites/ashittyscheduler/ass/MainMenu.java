@@ -85,13 +85,8 @@ String messageText;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent();
-                intent.setClass(MainMenu.this, edittodo.class);
-                intent.putExtra(Intent_Constants.INTENT_MESSAGE_DATA,arrayList.get(position).toString());
-                intent.putExtra(Intent_Constants.INTENT_ITEM_POSITION, position);
 
-////                startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE_TWO);
-                startActivity(intent);
+
             }
         });
 
