@@ -52,6 +52,8 @@ public class FriendsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Friends");
         AddFriend();
         FriendRequestPage();
+
+        LoadFriendList();
         final ArrayList<String> usernames = new ArrayList<>();
         usernames.add("Test");
         usernames.add("Test2");
@@ -69,6 +71,10 @@ public class FriendsActivity extends AppCompatActivity {
                 LoadFriendChat(FriendChatActivity.class , o);
             }
         });
+    }
+
+    public void LoadFriendList() {
+        //...
     }
 
     private void FriendRequestPage() {
@@ -134,7 +140,7 @@ public class FriendsActivity extends AppCompatActivity {
                     View DialogView = getLayoutInflater().inflate(R.layout.friend_requests,null);
                     builder.setView(DialogView);
                     ListView ls = (ListView)DialogView.findViewById(R.id.requests_list);
-                    FriendRequestAdapter friendRequestAdapter = new FriendRequestAdapter(FriendsActivity.this,list);
+                    FriendRequestAdapter friendRequestAdapter = new FriendRequestAdapter(FriendsActivity.this , list);
                     ls.setAdapter(friendRequestAdapter);
                     final AlertDialog dialog = builder.create();
                     dialog.show();
@@ -229,8 +235,8 @@ class FriendRequestAdapter extends ArrayAdapter<String>{
     private final Context context;
     private ArrayList<String> usernames;
 
-    public  FriendRequestAdapter(Context context , ArrayList<String>usernames){
-        super(context, R.layout.customlistviewfriends, usernames);
+    public  FriendRequestAdapter(Context context , ArrayList<String> usernames){
+        super(context, R.layout.customlistviewfriends , usernames);
         this.context = context;
         this.usernames = usernames;
     }
@@ -238,7 +244,7 @@ class FriendRequestAdapter extends ArrayAdapter<String>{
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.friend_requests_row, parent, false);
+        final View rowView = inflater.inflate(R.layout.friend_requests_row, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.request_username);
         ImageButton accept = rowView.findViewById(R.id.request_accept);
         ImageButton decline = rowView.findViewById(R.id.request_decline);
@@ -248,21 +254,139 @@ class FriendRequestAdapter extends ArrayAdapter<String>{
             @Override
             public void onClick(View v) {
                 Log.d("ACCEPT REQUEST BUTTON", "onClick: accept: " + s);
-                HandleRequest(s,true);
+                HandleRequest(s,true );
             }
         });
         decline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("DECLINE REQUEST BUTTON", "onClick: decline: " + s);
-                HandleRequest(s,true);
+                HandleRequest(s,false);
             }
         });
         return rowView;
     }
 
-    private void HandleRequest(String username , boolean accepted){
+    private void loadData(){
+        //TO DO
+        //REFRESH THE DATA IN THIS LIST VIEW
+        final Context context = this.context;
+        final FriendRequestAdapter friendRequestAdapter = this;
+        Pair[] parameters = new Pair[]{
+                new Pair<>("tokenId",context.getSharedPreferences(ApplicationConstants.PREFERENCES, Context.MODE_PRIVATE).getString("Token" , null))
+        };
+        final ArrayList<String> usernames = new ArrayList<>();
+        try {
+            HttpTask task = new HttpTask(context, HttpMethod.POST, "http://ashittyscheduler.azurewebsites.net/api/friend/getFriendRequests", new AsyncHttpListener() {
+                private ProgressDialog progressDialog;
+                @Override
+                public void onBeforeExecute() {
+                    progressDialog = ProgressDialog.show(context,
+                            "Responding to request",
+                            "Reloading, please wait");
+                }
 
+                @Override
+                public void onResponse(HttpResponse httpResponse) {
+                    int code = httpResponse.getCode();
+                    httpResponse.getMessage();
+                    if(code == HttpStatusCode.OK.getCode()){
+                        Toast.makeText(context,"Loaded requests", Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONArray userList = new JSONArray(httpResponse.getMessage());
+
+                            for(int i =0; i<userList.length(); ++i) {
+                                JSONObject user = userList.getJSONObject(i);
+                                String username = user.getString("Username");
+                                Log.d("USERS TO REQUEST", username);
+                                usernames.add(username);
+                                //usernames.add("Tester Try");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Toast.makeText(context,"Could not load requests...", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onError() {
+                    Toast.makeText(context, "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFinishExecuting() {
+                    friendRequestAdapter.setData(usernames);
+                    //friendRequestAdapter.notifyDataSetChanged();
+                    progressDialog.dismiss();
+                    Log.d("TESTING RELOAD REQUESTS", "onFinishExecuting: RELOADED DATA");
+                }
+            });
+            task.setBodyParameters(parameters);
+            task.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void HandleRequest(final String username , boolean accepted){
+        final Context context = this.context;
+        final FriendRequestAdapter ap = this;
+        String bool;
+        if(accepted){bool = "true";}
+        else{bool = "false";}
+        Pair[] parameters = new Pair[]{
+          new Pair<>("tokenId" , this.context.getSharedPreferences(ApplicationConstants.PREFERENCES, Context.MODE_PRIVATE).getString("Token" , null)),
+          new Pair<>("UsernameFriend" , username),
+          new Pair<>("Accepted" , bool)
+        };
+        try {
+                HttpTask task = new HttpTask(context, HttpMethod.POST, "https://ashittyscheduler.azurewebsites.net/api/friend/FriendRequestResponse", new AsyncHttpListener() {
+                private ProgressDialog progressDialog;
+                @Override
+                public void onBeforeExecute() {
+                    progressDialog = ProgressDialog.show(context,
+                            "Responding to request",
+                            "Please wait");
+                }
+
+                @Override
+                public void onResponse(HttpResponse httpResponse) {
+                    int code = httpResponse.getCode();
+                    httpResponse.getMessage();
+                    if(code == HttpStatusCode.OK.getCode()){
+                        Toast.makeText(context,"Response send", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context,"Could not send response..", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onError() {
+                    Toast.makeText(context, "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFinishExecuting() {
+                    progressDialog.dismiss();
+                    ap.loadData();
+                }
+            });
+            task.setBodyParameters(parameters);
+            task.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setData(ArrayList<String> usernames){
+        this.usernames.clear();
+        for(String item : usernames){
+            this.usernames.add(item);
+        }
+        notifyDataSetChanged();
     }
 }
 

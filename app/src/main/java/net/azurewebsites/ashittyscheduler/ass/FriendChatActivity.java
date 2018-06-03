@@ -51,6 +51,7 @@ public class FriendChatActivity extends AppCompatActivity {
         });
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
     }
     private void addMessage(Texts text){
         this.adapter.setData(text);
