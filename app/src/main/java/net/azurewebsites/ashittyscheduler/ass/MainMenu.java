@@ -21,20 +21,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import net.azurewebsites.ashittyscheduler.ass.Overview.OverviewFragment;
 import net.azurewebsites.ashittyscheduler.ass.profile.ProfileFragment;
 import net.azurewebsites.ashittyscheduler.ass.settings.SettingsFragment;
 
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , AdapterView.OnItemClickListener {
-ListView listView;
-ArrayList<String> arrayList;
-ArrayAdapter<String> arrayAdapter;
-String messageText;
 
     private Fragment fragmentToSet = null;
 
@@ -71,29 +69,12 @@ String messageText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main_menu);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("To Do");
-
-        listView = (ListView) findViewById(R.id.textView);
-        arrayList = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,arrayList);
-        listView.setAdapter(arrayAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent = new Intent();
-                intent.setClass(MainMenu.this, edittodo.class);
-                intent.putExtra(Intent_Constants.INTENT_MESSAGE_DATA,arrayList.get(position).toString());
-                intent.putExtra(Intent_Constants.INTENT_ITEM_POSITION, position);
-
-////                startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE_TWO);
-                startActivity(intent);
-            }
-        });
+        toolbar.setTitle("To Do");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -120,8 +101,8 @@ String messageText;
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        TextView t = (TextView)findViewById(R.id.textViewIdForUsername);
-        t.setText("UsernameString");
+        //TextView t = (TextView)findViewById(R.id.textViewIdForUsername);
+        //t.setText("UsernameString");
 
         LinearLayout header = findViewById(R.id.headerMainMenu);
         header.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +133,9 @@ String messageText;
             LoadNewPage(Agenda.class);
         } else if (id == R.id.nav_ToDo) {
             getSupportActionBar().setTitle("To Do");
+
+            fragmentToSet = new OverviewFragment();
+
         } else if (id == R.id.nav_Notes) {
             getSupportActionBar().setTitle("Notes");
         } else if (id == R.id.nav_Friends) {
@@ -197,12 +181,12 @@ String messageText;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+/*
        if(resultCode == Intent_Constants.INTENT_REQUEST_CODE){
            messageText = data.getStringExtra(Intent_Constants.INTENT_MESSAGE_FIELD);
            arrayList.add(messageText);
            arrayAdapter.notifyDataSetChanged();
-       }
+       }*/
 //       else if(resultCode==Intent_Constants.INTENT_RESULT_CODE_TWO){
 //           messageText = data.getStringExtra(Intent_Constants.INTENT_CHANGED_MESSAGE);
 //           position = data.getIntExtra(Intent_Constants.INTENT_ITEM_POSITION,-1);

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".detailscreen">
+
+    <Button
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:text="Edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="EditButtonClicked"/>
+
+
+
+
+
+    <TextView
+        android:id="@+id/detailTitle"
+        android:layout_width="119dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Title"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/detailDescription"
+        android:layout_width="119dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
+        android:text="Details"
+        android:textSize="20dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailTitle" />
+
+    <TextView
+        android:id="@+id/detailDate"
+        android:layout_width="119dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="60dp"
+        android:text="Date"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/detailDescription"
+        app:layout_constraintTop_toBottomOf="@+id/detailDescription" />
+
+    <TextView
+        android:id="@+id/detailTime"
+        android:layout_width="119dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="60dp"
+        android:text="Time"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/detailDate"
+        app:layout_constraintTop_toBottomOf="@+id/detailDate" />
+
+    <TextView
+        android:id="@+id/detailNotification"
+        android:layout_width="119dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
+        android:text="Notification"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/detailTime"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/detailTime"
+        app:layout_constraintTop_toBottomOf="@+id/detailTime" />
+
+</android.support.constraint.ConstraintLayout>
