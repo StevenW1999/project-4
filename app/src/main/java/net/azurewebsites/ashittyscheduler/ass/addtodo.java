@@ -315,6 +315,7 @@ private PendingIntent alarmIntent;
                                     Toast.makeText(getApplicationContext(), "FAILED TO CREATE TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
 
+                                Log.d("ERROR CREATE TODO", httpResponse.getMessage());
 
                             }
 
