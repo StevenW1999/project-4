@@ -36,7 +36,8 @@
         app:layout_constraintEnd_toEndOf="@+id/EditDescription"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/EditDescription"
-        app:layout_constraintTop_toBottomOf="@+id/EditDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/EditDescription"
+        android:clickable="true"/>
 
     <TextView
         android:id="@+id/EditTime"
@@ -48,7 +49,8 @@
         app:layout_constraintEnd_toEndOf="@+id/EditDate"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/EditDate"
-        app:layout_constraintTop_toBottomOf="@+id/EditDate" />
+        app:layout_constraintTop_toBottomOf="@+id/EditDate"
+        android:clickable="true"/>
 
     <Button
         android:id="@+id/EditButton"
@@ -59,5 +61,6 @@
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="EditButtonClicked"/>
+        android:onClick="EditButtonClicked"
+        android:clickable="true"/>
 </android.support.constraint.ConstraintLayout>

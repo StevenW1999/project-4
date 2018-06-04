@@ -1,9 +1,15 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.TextView;
@@ -46,7 +52,7 @@ public class detailscreen extends AppCompatActivity {
         };
 
         try {
-            HttpTask httpTask = new HttpTask(this.getApplicationContext(),
+            final HttpTask httpTask = new HttpTask(this.getApplicationContext(),
                     HttpMethod.GET,
                     "http://ashittyscheduler.azurewebsites.net/api/todo/get",
 
@@ -90,12 +96,16 @@ public class detailscreen extends AppCompatActivity {
 
 
                             }
+                            else{
+                                Toast.makeText(getApplicationContext(), "FAILED TO GET TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
 
                         }
 
                         @Override
                         public void onError() {
                             //TODO: Handle error
+
                         }
 
                         @Override
@@ -115,8 +125,94 @@ public class detailscreen extends AppCompatActivity {
     }
 
     public void EditButtonClicked(View view) {
-
-
+        Intent intent = new Intent();
+        intent.setClass(detailscreen.this, edittodo.class);
+        String todoId = intent.getStringExtra("todoId");
+        intent.putExtra("todoId", todoId);
+        startActivity(intent);
 
 }
+
+public void DeleteButtonClicked(View view){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(detailscreen.this);
+        mBuilder.setTitle(R.string.dialog_title);
+        mBuilder.setMessage(R.string.dialog_message);
+        mBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+
+            Intent intent = getIntent();
+            String todoId = intent.getStringExtra("todoId");
+            Pair[] parameters = new Pair[]{
+                    new Pair("todoId", todoId)};
+
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                try {
+
+                    HttpTask httpTask = new HttpTask(getApplicationContext(),
+                            HttpMethod.DELETE,
+                            "http://ashittyscheduler.azurewebsites.net/api/todo/delete",
+
+                            new AsyncHttpListener() {
+
+
+                                @Override
+                                public void onBeforeExecute() {
+
+                                }
+
+                                @Override
+                                public void onResponse(HttpResponse httpResponse) {
+                                    int code = httpResponse.getCode();
+
+                                    if (code == HttpStatusCode.OK.getCode()){
+                                        Toast.makeText(getApplicationContext(), "TODO DELETED", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        Toast.makeText(getApplicationContext(), "FAILED TO DELETE TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Log.d("DELETETODO", httpResponse.getMessage());
+                                    }
+
+                                }
+
+                                @Override
+                                public void onError() {
+
+
+                                }
+
+                                @Override
+                                public void onFinishExecuting() {
+                                    finish();
+
+                                }
+
+
+                            }
+
+                    );
+
+                    httpTask.setUriParameters(parameters);
+                    httpTask.execute();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+            }
+
+        });
+        mBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = mBuilder.create();
+        alertDialog.show();
+
+    }
+
+
+
 }

@@ -1,19 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory android:title="Profile Settings">
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="edit_displayname"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Change Display Name"
+            android:summary="Display name summary"/>
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="edit_description"
+            android:selectAllOnFocus="true"
+            android:singleLine="false"
+            android:title="Change Profile Description"
+            android:summary="Profile Description summary"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="User Settings">
         <EditTextPreference
             android:defaultValue="Default value"
             android:key="edit_username"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Change Username" />
+            android:title="Change Username"
+            android:summary="Username summary"/>
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="edit_email"
+            android:selectAllOnFocus="true"
+            android:singleLine="false"
+            android:title="Change Email"
+            android:summary="user@ashittyscheduler.azurewebsites.net"/>
         <EditTextPreference
             android:defaultValue="Default value"
             android:key="edit_password"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Change Password" />
+            android:title="Change Password"
+            android:summary="Password summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Location Services">
