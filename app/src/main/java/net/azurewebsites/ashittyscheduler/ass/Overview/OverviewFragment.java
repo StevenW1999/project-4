@@ -23,7 +23,7 @@ import net.azurewebsites.ashittyscheduler.ass.R;
 import net.azurewebsites.ashittyscheduler.ass.ToDo;
 import net.azurewebsites.ashittyscheduler.ass.addtodo;
 import net.azurewebsites.ashittyscheduler.ass.detailscreen;
-import net.azurewebsites.ashittyscheduler.ass.edittodo;
+//import net.azurewebsites.ashittyscheduler.ass.edittodo;
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
@@ -122,6 +122,7 @@ public class OverviewFragment extends Fragment {
                             //TODO: Add Date, DateReminder etc...
 
                             toDoItems.add(todo);
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
