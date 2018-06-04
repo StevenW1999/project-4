@@ -39,9 +39,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 
 public class FriendsActivity extends AppCompatActivity {
+    private CustomAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,29 +55,78 @@ public class FriendsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Friends");
         AddFriend();
         FriendRequestPage();
-
-        LoadFriendList();
-        final ArrayList<String> usernames = new ArrayList<>();
-        usernames.add("Test");
-        usernames.add("Test2");
-        CustomAdapter adapter = new CustomAdapter(this, usernames);
+        final ArrayList<User> users = new ArrayList<>();
+        //usernames.add("Bot");
+        this.adapter = new CustomAdapter(this, users);
         final ListView listView = (ListView)findViewById(R.id.list);
-        listView.setAdapter(adapter);
+        listView.setAdapter(this.adapter);
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-                String o = listView.getItemAtPosition(position).toString();
+                User o = ((User) listView.getItemAtPosition(position));
                 Log.d("USERNAME:", "onItemClick: " + o);
-                Toast.makeText(getApplicationContext(), o, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), o.getUsername(), Toast.LENGTH_SHORT).show();
                 LoadFriendChat(FriendChatActivity.class , o);
             }
         });
+        LoadFriendList();
     }
 
     public void LoadFriendList() {
-        //...
+        Pair[] parameters = new Pair[]{
+                new Pair<>("tokenId",getSharedPreferences(ApplicationConstants.PREFERENCES, Context.MODE_PRIVATE).getString("Token" , null))
+        };
+        final CustomAdapter adapter = this.adapter;
+        final ArrayList<User> users = new ArrayList<>();
+        try {
+            HttpTask task = new HttpTask(FriendsActivity.this, HttpMethod.POST, "http://ashittyscheduler.azurewebsites.net/api/friend/GetFriends", new AsyncHttpListener() {
+                private ProgressDialog progressDialog;
+                @Override
+                public void onBeforeExecute() {
+                    progressDialog = ProgressDialog.show(FriendsActivity.this,
+                            "Getting friends",
+                            "Please wait");
+                }
+
+                @Override
+                public void onResponse(HttpResponse httpResponse) {
+                    try {
+                        JSONArray userList = new JSONArray(httpResponse.getMessage());
+
+                        for(int i =0; i<userList.length(); ++i) {
+                            JSONObject user = userList.getJSONObject(i);
+                            User userObject = new User();
+                            userObject.setId(user.getString("Id"));
+                            userObject.setUsername(user.getString("Username"));
+                            userObject.setName(user.getString("DisplayName"));
+                            String username = user.getString("Username");
+                            Log.d("USERS TO FRIEND", username);
+                            users.add(userObject);
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onError() {
+                    Toast.makeText(getApplicationContext(), "An error occured. Could not load friends. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFinishExecuting() {
+                    progressDialog.dismiss();
+                    adapter.updateData(users);
+                }
+            });
+            task.setBodyParameters(parameters);
+            task.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void FriendRequestPage() {
@@ -224,9 +276,9 @@ public class FriendsActivity extends AppCompatActivity {
         });
     }
 
-    private void LoadFriendChat(Class ActivityName , String o) {
+    private void LoadFriendChat(Class ActivityName , User o) {
         Intent loadPage = new Intent(this,ActivityName);
-        loadPage.putExtra("Username" , o);
+        loadPage.putExtra("User" , o);
         startActivity(loadPage);
     }
 }
@@ -390,15 +442,15 @@ class FriendRequestAdapter extends ArrayAdapter<String>{
     }
 }
 
-class CustomAdapter extends ArrayAdapter<String>{
+class CustomAdapter extends ArrayAdapter<User>{
 
     private final Context context;
-    private ArrayList<String> usernames;
+    private ArrayList<User> users;
 
-    public CustomAdapter(Context context, ArrayList<String> usernames) {
-        super(context, R.layout.customlistviewfriends, usernames);
+    public CustomAdapter(Context context, ArrayList<User> users) {
+        super(context, R.layout.customlistviewfriends, users);
         this.context = context;
-        this.usernames = usernames;
+        this.users = users;
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -408,9 +460,9 @@ class CustomAdapter extends ArrayAdapter<String>{
         TextView textView = (TextView) rowView.findViewById(R.id.FriendsUsername);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.FriendsUserImage);
         ImageView hasText = (ImageView)rowView.findViewById(R.id.MessageNotificatie);
-        textView.setText(this.usernames.get(position));
+        textView.setText(this.users.get(position).getUsername());
         // Change the icon for Windows and iPhone
-        String s = this.usernames.get(position);
+        String s = this.users.get(position).getUsername();
         /*if (s.startsWith("Windows7") || s.startsWith("iPhone")
                 || s.startsWith("Solaris")) {
             imageView.setImageResource(R.drawable.no);
@@ -419,5 +471,21 @@ class CustomAdapter extends ArrayAdapter<String>{
         }*/
 
         return rowView;
+    }
+
+    public void updateData(ArrayList<User> users){
+        this.users.clear();
+        for(User item : users){
+            this.users.add(item);
+        }
+        Collections.sort(this.users, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                String s1 = o1.getUsername();
+                String s2 = o2.getUsername();
+                return s1.compareToIgnoreCase(s2);
+            }
+        });
+        notifyDataSetChanged();
     }
 }
