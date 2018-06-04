@@ -61,14 +61,26 @@ public class OverviewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Spinner spinner =(Spinner) getActivity().findViewById(R.id.dropDownFilter);
+        final Spinner spinner =(Spinner) getActivity().findViewById(R.id.dropDownFilter);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.dropdownYear, android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.dropdownYear, android.R.layout.simple_spinner_dropdown_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
 
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), "Nice", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         listView = (ListView) getActivity().findViewById(R.id.textView);
         arrayList = new ArrayList<>();
@@ -150,6 +162,15 @@ public class OverviewFragment extends Fragment {
             e.printStackTrace();
         }
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), "wow", Toast.LENGTH_SHORT);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     public void onClick(View v){

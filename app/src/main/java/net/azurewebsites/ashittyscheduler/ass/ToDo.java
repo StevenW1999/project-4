@@ -1,4 +1,5 @@
 package net.azurewebsites.ashittyscheduler.ass;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -6,11 +7,11 @@ public class ToDo {
     private String id;
     private String title;
     private String description;
-    private Date date;
+    private Calendar date;
 
     // TODO: Add getters and setters for these
     private String time;
-    private Date dateReminder;
+    private Calendar dateReminder;
 
     public String getId() {
         return id;
@@ -24,7 +25,7 @@ public class ToDo {
         return description;
     }
 
-    public Date getDate() {
+    public Calendar getDate() {
         return date;
     }
 
@@ -40,7 +41,7 @@ public class ToDo {
         this.description = description;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Calendar date) {
         this.date = date;
     }
 
