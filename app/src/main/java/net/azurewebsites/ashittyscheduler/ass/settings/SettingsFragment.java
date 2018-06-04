@@ -1,6 +1,7 @@
 package net.azurewebsites.ashittyscheduler.ass.settings;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,12 +12,27 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import net.azurewebsites.ashittyscheduler.ass.ApplicationConstants;
+import net.azurewebsites.ashittyscheduler.ass.LoginActivity;
+import net.azurewebsites.ashittyscheduler.ass.MainMenu;
 import net.azurewebsites.ashittyscheduler.ass.R;
+import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class SettingsFragment extends Fragment {
 
@@ -32,8 +48,9 @@ public class SettingsFragment extends Fragment {
 
     public static class MyPreferenceFragment extends PreferenceFragment {
 
-        private SwitchPreference notificationPreference;
-        private SwitchPreference locationServicesPreference;
+        private EditTextPreference editDisplayName, editDescription;
+        private EditTextPreference editUsername, editEmail, editPassword;
+        private SwitchPreference notificationPreference, locationServicesPreference;
 
         public MyPreferenceFragment() {
             // required empty constructor
@@ -53,22 +70,85 @@ public class SettingsFragment extends Fragment {
 
             // Get preferences
             PreferenceScreen preferenceScreen = getPreferenceScreen();
+
+            editDisplayName = (EditTextPreference)preferenceScreen.findPreference("edit_displayname");
+            editDescription = (EditTextPreference)preferenceScreen.findPreference("edit_description");
+            editUsername = (EditTextPreference)preferenceScreen.findPreference("edit_username");
+            editEmail = (EditTextPreference)preferenceScreen.findPreference("edit_email");
+            editPassword = (EditTextPreference)preferenceScreen.findPreference("edit_password");
             notificationPreference = (SwitchPreference)preferenceScreen.findPreference("switch_notifications_todos");
             locationServicesPreference = (SwitchPreference)preferenceScreen.findPreference("switch_location_services");
 
-            // Add event listeners
-            notificationPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            editUsername.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    if (locationServicesPreference.isEnabled()) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Enabled.", Toast.LENGTH_SHORT).show();
+                public boolean onPreferenceChange(final Preference preference, final Object newValue) {
+
+                    Toast.makeText(getActivity().getApplicationContext(), "IT WORKS", Toast.LENGTH_SHORT).show();
+
+                    // parameters
+                    Pair[] parameters = new Pair[] {
+                            new Pair<>("username", newValue.toString()),
+                    };
+
+                    try {
+                        HttpTask task = new HttpTask(getActivity().getApplicationContext(), HttpMethod.PUT,
+                                "https://ashittyscheduler.azurewebsites.net/api/settings/changeusername",
+                                new AsyncHttpListener() {
+
+                                    private ProgressDialog progressDialog;
+
+                                    @Override
+                                    public void onBeforeExecute() {
+                                        // show a progress dialog (duh)
+                                        progressDialog = ProgressDialog.show(getActivity().getApplicationContext(),
+                                                "Updating username...",
+                                                "Please wait");
+                                    }
+
+                                    @Override
+                                    public void onResponse(HttpResponse httpResponse) {
+
+                                        // obtain code
+                                        int code = httpResponse.getCode();
+
+                                        if(code == HttpStatusCode.OK.getCode()){
+                                            // obtain response message (our token in this case)
+                                            preference.setSummary(newValue.toString());
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError() {
+
+                                    }
+
+                                    @Override
+                                    public void onFinishExecuting() {
+                                        // dismiss the progress dialog (duh)
+                                        progressDialog.dismiss();
+                                    }
+                                });
+
+                        task.setBodyParameters(parameters);
+                        task.execute();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    else {
-                        Toast.makeText(getActivity().getApplicationContext(), "DISABLED.", Toast.LENGTH_SHORT).show();
-                    }
-                    return false;
+
+                    return true;
                 }
             });
+
+            editDescription.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    preference.setSummary(newValue.toString());
+                    return true;
+                }
+            });
+
+
         }
     }
 
