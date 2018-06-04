@@ -217,7 +217,6 @@ public class SettingsFragment extends Fragment {
                                 int code = httpResponse.getCode();
 
                                 if(code == HttpStatusCode.OK.getCode()){
-                                    // obtain response message (our token in this case)
                                     preference.setSummary(value.toString());
                                 }
 
