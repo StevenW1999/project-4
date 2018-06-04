@@ -107,14 +107,16 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject tokenObj = new JSONObject(httpResponse.getMessage());
 
                         String token = tokenObj.get("TokenId").toString();
+                        String userId = tokenObj.get("UserId").toString();
 
-                        // TODO: Save token to sharedpreferences
-
+                        // Save token to sharedpreferences
                         SharedPreferences sharedPreferences = getSharedPreferences(ApplicationConstants.PREFERENCES ,Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("Token", token);
+                        editor.putString("UserId", userId);
                         editor.apply();
                         Log.d("TOKEN ID", token);
+                        Log.d("USER ID", userId);
                         Toast.makeText(getApplicationContext(),"Login successful.", Toast.LENGTH_SHORT).show();
 
                         LoadNewPage(MainMenu.class);

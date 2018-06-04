@@ -3,6 +3,7 @@ package net.azurewebsites.ashittyscheduler.ass;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -111,7 +112,15 @@ public class MainMenu extends AppCompatActivity
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
                 getSupportActionBar().setTitle("Profile");
+
+                // use the logged in users' own user id to show their profile
+                String userId = getSharedPreferences(ApplicationConstants.PREFERENCES, Context.MODE_PRIVATE).getString("UserId", null);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("UserId", userId);
+
                 fragmentToSet = new ProfileFragment();
+                fragmentToSet.setArguments(bundle);
 
                 drawer.closeDrawer(Gravity.LEFT, true);
             }

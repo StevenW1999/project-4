@@ -7,15 +7,13 @@
             android:key="edit_displayname"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Change Display Name"
-            android:summary="Display name summary"/>
+            android:title="Change Display Name" />
         <EditTextPreference
             android:defaultValue="Default value"
             android:key="edit_description"
             android:selectAllOnFocus="true"
             android:singleLine="false"
-            android:title="Change Profile Description"
-            android:summary="Profile Description summary"/>
+            android:title="Change Profile Description" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="User Settings">
@@ -24,22 +22,19 @@
             android:key="edit_username"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Change Username"
-            android:summary="Username summary"/>
+            android:title="Change Username" />
         <EditTextPreference
             android:defaultValue="Default value"
             android:key="edit_email"
             android:selectAllOnFocus="true"
             android:singleLine="false"
-            android:title="Change Email"
-            android:summary="user@ashittyscheduler.azurewebsites.net"/>
+            android:title="Change Email" />
         <EditTextPreference
             android:defaultValue="Default value"
             android:key="edit_password"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Change Password"
-            android:summary="Password summary"/>
+            android:title="Change Password"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Location Services">
