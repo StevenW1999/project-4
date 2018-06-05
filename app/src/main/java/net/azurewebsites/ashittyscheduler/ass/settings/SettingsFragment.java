@@ -1,8 +1,10 @@
 package net.azurewebsites.ashittyscheduler.ass.settings;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -79,63 +81,34 @@ public class SettingsFragment extends Fragment {
             notificationPreference = (SwitchPreference)preferenceScreen.findPreference("switch_notifications_todos");
             locationServicesPreference = (SwitchPreference)preferenceScreen.findPreference("switch_location_services");
 
+            editDisplayName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(final Preference preference, final Object newValue) {
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changedisplayname");
+                    return true;
+                }
+            });
+
+            editEmail.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changeemail");
+                    return true;
+                }
+            });
+
             editUsername.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(final Preference preference, final Object newValue) {
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changeusername");
+                    return true;
+                }
+            });
 
-                    Toast.makeText(getActivity().getApplicationContext(), "IT WORKS", Toast.LENGTH_SHORT).show();
-
-                    // parameters
-                    Pair[] parameters = new Pair[] {
-                            new Pair<>("username", newValue.toString()),
-                    };
-
-                    try {
-                        HttpTask task = new HttpTask(getActivity().getApplicationContext(), HttpMethod.PUT,
-                                "https://ashittyscheduler.azurewebsites.net/api/settings/changeusername",
-                                new AsyncHttpListener() {
-
-                                    private ProgressDialog progressDialog;
-
-                                    @Override
-                                    public void onBeforeExecute() {
-                                        // show a progress dialog (duh)
-                                        progressDialog = ProgressDialog.show(getActivity().getApplicationContext(),
-                                                "Updating username...",
-                                                "Please wait");
-                                    }
-
-                                    @Override
-                                    public void onResponse(HttpResponse httpResponse) {
-
-                                        // obtain code
-                                        int code = httpResponse.getCode();
-
-                                        if(code == HttpStatusCode.OK.getCode()){
-                                            // obtain response message (our token in this case)
-                                            preference.setSummary(newValue.toString());
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError() {
-
-                                    }
-
-                                    @Override
-                                    public void onFinishExecuting() {
-                                        // dismiss the progress dialog (duh)
-                                        progressDialog.dismiss();
-                                    }
-                                });
-
-                        task.setBodyParameters(parameters);
-                        task.execute();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
+            editPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changepassword");
                     return true;
                 }
             });
@@ -143,13 +116,135 @@ public class SettingsFragment extends Fragment {
             editDescription.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    preference.setSummary(newValue.toString());
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changedescription");
                     return true;
                 }
             });
 
-
+            loadSettings();
         }
+
+        public void loadSettings(){
+
+            try {
+                HttpTask task = new HttpTask(this.getContext(),
+                        HttpMethod.GET,
+                        "http://ashittyscheduler.azurewebsites.net/api/users/self",
+                        new AsyncHttpListener() {
+
+                            private ProgressDialog progressDialog;
+
+                            @Override
+                            public void onBeforeExecute() {
+                                progressDialog = ProgressDialog.show(getContext(),"Loading settings","Please wait");
+                            }
+
+                            @Override
+                            public void onResponse(HttpResponse httpResponse) {
+                                int code = httpResponse.getCode();
+
+                                if (code == HttpStatusCode.OK.getCode()) {
+                                    try {
+                                        JSONObject userObj = new JSONObject(httpResponse.getMessage());
+
+                                        String username = userObj.getString("Username");
+                                        String displayName = userObj.getString("DisplayName");
+                                        String description = userObj.getString("Description");
+                                        String email = userObj.getString("Email");
+                                        boolean isOnline = userObj.getBoolean("IsOnline");
+
+                                        editDisplayName.setText(displayName);
+                                        editDisplayName.setSummary(displayName);
+
+                                        editUsername.setText(username);
+                                        editUsername.setSummary(username);
+
+                                        editEmail.setText(email);
+                                        editEmail.setSummary(email);
+
+                                        editDescription.setText(description);
+                                        editDescription.setSummary(description);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onError() {
+                                Toast.makeText(getContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFinishExecuting() {
+                                progressDialog.dismiss();
+                            }
+                        });
+
+                task.execute();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void updatePreference(final Preference preference, final String value, final String url) {
+            // parameters
+            Pair[] parameters = new Pair[] {
+                    new Pair<>("", value),
+            };
+
+            try {
+                HttpTask task = new HttpTask(getPreferenceScreen().getContext(), HttpMethod.PUT,
+                        url,
+                        new AsyncHttpListener() {
+
+                            private ProgressDialog progressDialog;
+
+                            @Override
+                            public void onBeforeExecute() {
+                                // show a progress dialog (duh)
+                                progressDialog = ProgressDialog.show(getPreferenceScreen().getContext(),
+                                        "Updating",
+                                        "Please wait");
+                            }
+
+                            @Override
+                            public void onResponse(HttpResponse httpResponse) {
+
+                                // obtain code
+                                int code = httpResponse.getCode();
+
+                                if(code == HttpStatusCode.OK.getCode()){
+                                    preference.setSummary(value.toString());
+                                }
+
+                            }
+
+                            @Override
+                            public void onError() {
+                                new AlertDialog.Builder(getPreferenceScreen().getContext())
+                                        .setTitle("Error")
+                                        .setMessage("Something went wrong. Please try again later.")
+                                        .setNeutralButton("OK", null).show();
+                            }
+
+                            @Override
+                            public void onFinishExecuting() {
+                                // dismiss the progress dialog (duh)
+                                progressDialog.dismiss();
+                            }
+                        });
+
+                task.setBodyParameters(parameters);
+                task.execute();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }

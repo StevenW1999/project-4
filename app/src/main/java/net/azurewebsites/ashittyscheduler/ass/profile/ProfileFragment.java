@@ -73,10 +73,20 @@ public class ProfileFragment extends Fragment {
 
     public void loadProfile() {
 
+        Bundle bundle = getArguments();
+
+        // show the profile for the given user id
+        String userId = bundle.getString("UserId", "");
+
+        // parameters
+        Pair[] parameters = new Pair[] {
+                new Pair<>("userId", userId),
+        };
+
         try {
             HttpTask task = new HttpTask(this.getContext(),
                     HttpMethod.GET,
-                    "http://ashittyscheduler.azurewebsites.net/api/users/self",
+                    "http://ashittyscheduler.azurewebsites.net/api/users",
                     new AsyncHttpListener() {
 
                         private ProgressDialog progressDialog;
@@ -96,12 +106,13 @@ public class ProfileFragment extends Fragment {
 
                                     String username = userObj.getString("Username");
                                     String displayName = userObj.getString("DisplayName");
+                                    String description = userObj.getString("Description");
                                     String email = userObj.getString("Email");
                                     boolean isOnline = userObj.getBoolean("IsOnline");
 
                                     tv_displayname.setText(displayName);
                                     tv_username.setText(username);
-                                    tv_description.setText("TODO: Create description for user profile");
+                                    tv_description.setText(description);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -120,6 +131,7 @@ public class ProfileFragment extends Fragment {
                         }
                     });
 
+            task.setUriParameters(parameters);
             task.execute();
 
         } catch (IOException e) {
