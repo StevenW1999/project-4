@@ -33,16 +33,20 @@ public class detailscreen extends AppCompatActivity {
     private TextView tv_description;
     private TextView tv_date;
     private TextView tv_time;
+    private TextView tv_Rdate;
+    private TextView tv_Rtime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailscreen);
 
-        tv_title = findViewById(R.id.detailTitle);
-        tv_description = findViewById(R.id.detailDescription);
-        tv_date = findViewById(R.id.detailDate);
-        tv_time = findViewById(R.id.detailTime);
+        tv_title = findViewById(R.id.DTitle);
+        tv_description = findViewById(R.id.DDetails);
+        tv_date = findViewById(R.id.DDate);
+        tv_time = findViewById(R.id.DTime);
+        tv_Rdate = findViewById(R.id.DreminderDate);
+        tv_Rtime = findViewById(R.id.DreminderTime);
 
         Intent intent = getIntent();
         String todoId = intent.getStringExtra("todoId");
@@ -89,6 +93,16 @@ public class detailscreen extends AppCompatActivity {
                                         // ignore last three characters
                                         tv_time.setText(dateTime[1].substring(0, dateTime[1].length() - 3));
                                     }
+                                    String[] RdateTime = todo.getString("DateReminder").split("T");
+
+                                    tv_Rdate.setText(dateTime[0]);
+
+                                    // if there is a time
+                                    if (RdateTime.length > 1) {
+                                        // ignore last three characters
+                                        tv_Rtime.setText(RdateTime[1].substring(0, RdateTime[1].length() - 3));
+                                    }
+
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();

@@ -119,6 +119,8 @@ public class OverviewFragment extends Fragment {
                             ToDo todo = new ToDo();
                             todo.setId(todoJSON.getString("Id"));
                             todo.setTitle(todoJSON.getString("Title"));
+                            todo.setDescription(todoJSON.getString("Description"));
+
                             //TODO: Add Date, DateReminder etc...
 
                             toDoItems.add(todo);
