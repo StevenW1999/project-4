@@ -8,49 +8,50 @@
 
     <EditText
         android:id="@+id/EditTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="361dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:hint="Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/EditDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="351dp"
+        android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
-        android:text="TextView"
+        android:hint="Description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditTitle" />
 
     <TextView
         android:id="@+id/EditDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="77dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="48dp"
-        android:text="TextView"
+        android:clickable="true"
+        android:hint="Date dd/mm/yy"
         app:layout_constraintEnd_toEndOf="@+id/EditDescription"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/EditDescription"
-        app:layout_constraintTop_toBottomOf="@+id/EditDescription"
-        android:clickable="true"/>
+        app:layout_constraintTop_toBottomOf="@+id/EditDescription" />
 
     <TextView
         android:id="@+id/EditTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="87dp"
+        android:layout_height="49dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="48dp"
-        android:text="TextView"
+        android:layout_marginTop="36dp"
+        android:clickable="true"
+        android:hint="Time 00:00"
+        android:inputType="time"
         app:layout_constraintEnd_toEndOf="@+id/EditDate"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/EditDate"
-        app:layout_constraintTop_toBottomOf="@+id/EditDate"
-        android:clickable="true"/>
+        app:layout_constraintTop_toBottomOf="@+id/EditDate" />
 
     <Button
         android:id="@+id/EditButton"
@@ -63,4 +64,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="EditButtonClicked"
         android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/EditRDate"
+        android:layout_width="160dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="48dp"
+        android:hint="reminderdate dd/mm/yy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditDescription" />
+
+    <TextView
+        android:id="@+id/EditRTime"
+        android:layout_width="137dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="36dp"
+        android:inputType="time"
+        android:hint="reminder time 00:00"
+        app:layout_constraintStart_toEndOf="@+id/EditTime"
+        app:layout_constraintTop_toBottomOf="@+id/EditRDate" />
 </android.support.constraint.ConstraintLayout>

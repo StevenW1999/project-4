@@ -38,14 +38,15 @@
 
     <TextView
         android:id="@+id/timePlainText"
-        android:layout_width="358dp"
-        android:layout_height="wrap_content"
+        android:layout_width="167dp"
+        android:layout_height="24dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:clickable="true"
         android:ems="10"
-        android:hint="Time"
+        android:hint="Time 00:00"
         android:inputType="time"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/notificationsTextView"
@@ -53,20 +54,18 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date"
-        android:clickable="true"
-        android:text="Time"
         android:onClick="TimeClicked"/>
 
     <TextView
         android:id="@+id/date"
-        android:layout_width="358dp"
-        android:layout_height="wrap_content"
+        android:layout_width="168dp"
+        android:layout_height="20dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Date"
+        android:hint="Date dd/mm/yy"
         android:inputType="date"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/timePlainText"
@@ -181,6 +180,32 @@
         app:layout_constraintStart_toStartOf="@+id/repeatInterval"
         app:layout_constraintTop_toBottomOf="@+id/repeatInterval"
         android:onClick="CancelButtonClicked"/>
+
+    <TextView
+        android:id="@+id/reminderdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:hint="reminderdate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.936"
+        app:layout_constraintStart_toEndOf="@+id/date"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionText" />
+
+    <TextView
+        android:id="@+id/remindertime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:hint="remindertime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.937"
+        app:layout_constraintStart_toEndOf="@+id/timePlainText"
+        app:layout_constraintTop_toBottomOf="@+id/reminderdate" />
 
 
 </android.support.constraint.ConstraintLayout>

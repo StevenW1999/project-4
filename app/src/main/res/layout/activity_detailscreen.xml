@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".detailscreen">
 
+    <TextView
+        android:id="@+id/detailTime2"
+        android:layout_width="151dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="60dp"
+        android:text="Reminder TIme"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/detailDate"
+        app:layout_constraintTop_toBottomOf="@+id/detailDate" />
+
+    <TextView
+        android:id="@+id/DreminderTime"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginEnd="8dp"
+        android:text="textview"
+        app:layout_constraintEnd_toEndOf="@+id/detailTime2"
+        app:layout_constraintTop_toBottomOf="@+id/detailTime2" />
+
     <Button
         android:id="@+id/editButton"
         android:layout_width="wrap_content"
@@ -19,13 +39,10 @@
         android:onClick="EditButtonClicked"/>
 
 
-
-
-
     <TextView
         android:id="@+id/detailTitle"
         android:layout_width="119dp"
-        android:layout_height="47dp"
+        android:layout_height="24dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Title"
@@ -36,7 +53,7 @@
     <TextView
         android:id="@+id/detailDescription"
         android:layout_width="119dp"
-        android:layout_height="47dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="60dp"
         android:text="Details"
@@ -48,7 +65,7 @@
     <TextView
         android:id="@+id/detailDate"
         android:layout_width="119dp"
-        android:layout_height="47dp"
+        android:layout_height="23dp"
         android:layout_marginTop="60dp"
         android:text="Date"
         android:textSize="20dp"
@@ -56,9 +73,20 @@
         app:layout_constraintTop_toBottomOf="@+id/detailDescription" />
 
     <TextView
+        android:id="@+id/detailDate2"
+        android:layout_width="133dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="60dp"
+        android:text="Reminder Date"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/detailDescription"
+        app:layout_constraintTop_toBottomOf="@+id/detailDescription" />
+
+    <TextView
         android:id="@+id/detailTime"
         android:layout_width="119dp"
-        android:layout_height="47dp"
+        android:layout_height="23dp"
         android:layout_marginTop="60dp"
         android:text="Time"
         android:textSize="20dp"
@@ -68,7 +96,7 @@
     <TextView
         android:id="@+id/detailNotification"
         android:layout_width="119dp"
-        android:layout_height="47dp"
+        android:layout_height="21dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="60dp"
         android:text="Notification"
@@ -83,10 +111,64 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="112dp"
+        android:onClick="DeleteButtonClicked"
         android:text="Delete"
         app:layout_constraintStart_toStartOf="@+id/detailNotification"
-        app:layout_constraintTop_toBottomOf="@+id/detailNotification"
-        android:onClick="DeleteButtonClicked"/>
+        app:layout_constraintTop_toBottomOf="@+id/detailNotification" />
+
+    <TextView
+        android:id="@+id/DTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailTitle" />
+
+    <TextView
+        android:id="@+id/DDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailDescription" />
+
+    <TextView
+        android:id="@+id/DreminderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="308dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailDate" />
+
+    <TextView
+        android:id="@+id/DDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailDate" />
+
+    <TextView
+        android:id="@+id/DTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailTime" />
+
+    <TextView
+        android:id="@+id/DNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailNotification" />
 
 </android.support.constraint.ConstraintLayout>
