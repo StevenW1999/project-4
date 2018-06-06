@@ -137,6 +137,8 @@ private TextView reminderDate;
 
 
 
+
+
         datepickerdialogbutton = (TextView) findViewById(R.id.date);
         selecteddate = (TextView)findViewById(R.id.date);
 
@@ -202,11 +204,12 @@ private TextView reminderDate;
         }
 
     }
+    public void setInexactRepeating (int type, long triggerAtMillis, long intervalMillis, PendingIntent operation){
+        
+
+    }
 
     public void CancelButtonClicked(View view) {
-//        Intent intent = new Intent();
-//        intent.setClass(addtodo.this, MainMenu.class);
-//        startActivity(intent);
         finish();
     }
 
