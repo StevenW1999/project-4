@@ -39,7 +39,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
         this.uriParameters = "";
     }
 
-    public void setBodyParameters(Pair<String,String>[] params) {
+    public void setBodyParameters(Pair[] params) {
         try {
             this.bodyParameters = convertParams(params);
         } catch (IOException e) {
@@ -47,7 +47,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
         }
     }
 
-    public void setUriParameters(Pair<String,String>[] params) {
+    public void setUriParameters(Pair[] params) {
         try {
             this.uriParameters = "?" + convertParams(params);
         } catch (IOException e) {
@@ -55,16 +55,16 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
         }
     }
 
-    private String convertParams(Pair<String, String>[] params) throws IOException {
+    private String convertParams(Pair[] params) throws IOException {
 
         StringBuilder sb = new StringBuilder();
 
         for(int i = 0; i < params.length; ++i) {
-            Pair<String, String> param = params[i];
+            Pair param = params[i];
 
-            sb.append(URLEncoder.encode(param.first,"UTF-8"));
+            sb.append(URLEncoder.encode(String.valueOf(param.first),"UTF-8"));
             sb.append("=");
-            sb.append(URLEncoder.encode(param.second,"UTF-8"));
+            sb.append(URLEncoder.encode(String.valueOf(param.second),"UTF-8"));
 
             if (i + 1 < params.length) {
                 sb.append("&");

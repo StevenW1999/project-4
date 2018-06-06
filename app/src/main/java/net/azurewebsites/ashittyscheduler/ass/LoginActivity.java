@@ -73,12 +73,11 @@ public class LoginActivity extends AppCompatActivity {
         EditText usernameBox = (EditText)findViewById(R.id.Username);
         EditText passwordBox = (EditText)findViewById(R.id.Password);
 
-        // parameters
+        // login parameters
         Pair[] parameters = new Pair[] {
                 new Pair<>("username", usernameBox.getText().toString()),
                 new Pair<>("password", passwordBox.getText().toString())
         };
-
 
         HttpTask task = new HttpTask(this, HttpMethod.POST,
                 "https://ashittyscheduler.azurewebsites.net/api/users/login",
@@ -101,8 +100,8 @@ public class LoginActivity extends AppCompatActivity {
                 int code = httpResponse.getCode();
 
                 if(code == HttpStatusCode.OK.getCode()){
-                    // obtain response message (our token in this case)
 
+                    // obtain response message (our token in this case)
                     try {
                         JSONObject tokenObj = new JSONObject(httpResponse.getMessage());
 
