@@ -44,19 +44,27 @@ Calendar calendar;
 private TextView AccesTime;
 private int CalendarHour;
 private  int CalendarMinute;
+Calendar remindercalendar;
+private int ReminderCalendarHour;
+private  int ReminderCalendarMinute;
 private String format;
 TextView DisplayTime;
 TextView repeattText;
 private String mRepeat;
 private String mRepeatNo;
 private String mRepeatType;
+private TextView reminderdatepickerdialogbutton;
 private TextView datepickerdialogbutton;
 private TextView selecteddate;
+private TextView reminderselecteddate;
 private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText, mRepeatIntervalText;
 private Switch repeatSwitch, notificationSwitch;
 private TextView notificationText;
 private AlarmManager alarmManager;
 private PendingIntent alarmIntent;
+private TextView reminderTime;
+private TextView reminderDisplayTime;
+private TextView reminderDate;
 
 
 
@@ -69,6 +77,12 @@ private PendingIntent alarmIntent;
         //Set Time Picker
         AccesTime = (TextView) findViewById(R.id.timePlainText);
         DisplayTime = (TextView) findViewById(R.id.timePlainText);
+
+        reminderTime = (TextView) findViewById(R.id.remindertime);
+        reminderDisplayTime = (TextView) findViewById(R.id.remindertime);
+
+
+
         repeattText = (TextView) findViewById(R.id.repeatText) ;
         mRepeatTypeText = (TextView)findViewById(R.id.repeatType);
         mRepeatText = (TextView) findViewById(R.id.repeatType);
@@ -80,6 +94,26 @@ private PendingIntent alarmIntent;
         repeatSwitch.setOnCheckedChangeListener(this);
 
 //Clock
+       reminderTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                remindercalendar = Calendar.getInstance();
+                ReminderCalendarHour= remindercalendar.get(Calendar.HOUR_OF_DAY);
+                ReminderCalendarMinute = remindercalendar.get(Calendar.MINUTE);
+
+                timePickerDialog = new TimePickerDialog(addtodo.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDayr, int minuter) {
+                        String timeStamp = String.format("%02d:%02d", hourOfDayr, minuter);
+                        reminderDisplayTime.setText(timeStamp);
+                    }
+                },
+                        ReminderCalendarHour,ReminderCalendarMinute, false);
+                timePickerDialog.show();
+
+                    }
+        });
+
         AccesTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +131,7 @@ private PendingIntent alarmIntent;
                         CalendarHour,CalendarMinute, false);
                 timePickerDialog.show();
 
-                    }
+            }
         });
 
 
@@ -106,23 +140,40 @@ private PendingIntent alarmIntent;
         datepickerdialogbutton = (TextView) findViewById(R.id.date);
         selecteddate = (TextView)findViewById(R.id.date);
 
+        reminderdatepickerdialogbutton = (TextView) findViewById(R.id.reminderdate);
+        reminderselecteddate = (TextView)findViewById(R.id.reminderdate);
+
+
         datepickerdialogbutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
+        public void onClick(View v) {
+            // TODO Auto-generated method stub
 
-                DialogFragment dialogfragment = new DatePickerDialogClass();
+            DialogFragment dialogfragment = new DatePickerDialogClass();
+
+            dialogfragment.show(getFragmentManager(), "Date Picker Dialog");
+
+
+        }
+
+    });
+        reminderdatepickerdialogbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment dialogfragment = new ReminderDatePickerDialogClass();
 
                 dialogfragment.show(getFragmentManager(), "Date Picker Dialog");
 
-//            intent.putExtra(Intent_Constants.KEY_DATE, dateText);
+
+            }});
 
 
 
 
-            }
-        });
+
+
     }
 
     //Repeat Switch
@@ -160,35 +211,70 @@ private PendingIntent alarmIntent;
     }
 
 
+
+
+
     //Calendar
-    public static class DatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+    public static class DatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState){
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
 
             final Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+
             DatePickerDialog datepickerdialog = new DatePickerDialog(getActivity(),
-                    AlertDialog.THEME_DEVICE_DEFAULT_DARK,this,year,month,day);
+                    AlertDialog.THEME_DEVICE_DEFAULT_DARK, this, year, month, day);
+
 
             return datepickerdialog;
 
 
-
-
-
         }
 
-        public void onDateSet(DatePicker view, int year, int month, int day){
+        public void onDateSet(DatePicker view, int year, int month, int day) {
 
-            TextView textview = (TextView)getActivity().findViewById(R.id.date);
+            TextView textview = (TextView) getActivity().findViewById(R.id.date);
 
-            textview.setText(year + "-" +(month+1)  + "-" +day );
+            textview.setText(year + "-" + (month + 1) + "-" + day);
         }
     }
+    public static class ReminderDatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            final Calendar remindercalendar = Calendar.getInstance();
+            int ryear = remindercalendar.get(Calendar.YEAR);
+            int rmonth = remindercalendar.get(Calendar.MONTH);
+            int rday = remindercalendar.get(Calendar.DAY_OF_MONTH);
+
+
+            DatePickerDialog reminderdatepickerdialog = new DatePickerDialog(getActivity(),
+                    AlertDialog.THEME_DEVICE_DEFAULT_DARK, this, ryear, rmonth, rday);
+
+
+            return reminderdatepickerdialog;
+
+
+        }
+
+        public void onDateSet(DatePicker view, int ryear, int rmonth, int rday) {
+
+            TextView textview = (TextView) getActivity().findViewById(R.id.reminderdate);
+
+            textview.setText(ryear + "-" + (rmonth + 1) + "-" + rday);
+        }
+    }
+
+
+
+
+
+
 
 
 
@@ -269,6 +355,8 @@ private PendingIntent alarmIntent;
         String DescText = ((EditText)findViewById(R.id.descriptionText)).getText().toString();
         String dateText = ((TextView)findViewById(R.id.date)).getText().toString();
         String timeText = ((TextView)findViewById(R.id.timePlainText)).getText().toString();
+        String reminderdateText = ((TextView)findViewById(R.id.reminderdate)).getText().toString();
+        String remindertimeText = ((TextView)findViewById(R.id.remindertime)).getText().toString();
         String repeatTxt = ((TextView)findViewById(R.id.repeatText)).getText().toString();
         String notificationText = ((TextView)findViewById(R.id.notificationsTextView)).getText().toString();
 
@@ -286,7 +374,7 @@ private PendingIntent alarmIntent;
                         new Pair("Title", messageText),
                         new Pair("Description", DescText),
                         new Pair("Date", dateText+ "T" + timeText),
-                        new Pair("DateReminder", dateText+ "T" + timeText) // TODO: Add reminder date
+                        new Pair("DateReminder", reminderdateText+ "T" + remindertimeText) // TODO: Add reminder date
                 };
 
                 HttpTask task = new HttpTask(this.getApplicationContext(),
@@ -347,7 +435,8 @@ private PendingIntent alarmIntent;
         }
     }
 
-}
+
+        }
 
 
 

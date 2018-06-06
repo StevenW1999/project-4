@@ -43,44 +43,48 @@ import java.util.Date;
 
 public class edittodo extends AppCompatActivity {
     TimePickerDialog timePickerDialog;
+    Calendar Eremindercalendar;
     Calendar calendar;
-    private TextView AccesTime;
+    private TextView EAccesTime;
     private int CalendarHour;
     private  int CalendarMinute;
+    private int EReminderCalendarHour;
+    private  int EReminderCalendarMinute;
     private String format;
-    TextView DisplayTime;
+    TextView EDisplayTime;
     TextView repeattText;
     private String mRepeat;
     private String mRepeatNo;
     private String mRepeatType;
     private TextView datepickerdialogbutton;
+    private TextView Edatepickerdialogbutton;
     private TextView selecteddate;
     private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText, mRepeatIntervalText;
     private Switch repeatSwitch, notificationSwitch;
     private TextView notificationText;
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
-
-
-
-
-
+    private TextView EreminderTime;
+    private TextView EreminderDisplayTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edittodo);
 
-        //Set Time Picker
-        AccesTime = (TextView) findViewById(R.id.EditTime);
-        DisplayTime = (TextView) findViewById(R.id.EditTime);
 
+        //Set Time Picker
+        EAccesTime = (TextView) findViewById(R.id.EditTime);
+        EDisplayTime = (TextView) findViewById(R.id.EditTime);
+
+        EreminderTime = (TextView) findViewById(R.id.EditRTime);
+        EreminderDisplayTime = (TextView) findViewById(R.id.EditRTime);
 
 //        mRepeatIntervalText = (TextView) findViewById(R.id.repeatInterval);
 
 
 //Clock
-        AccesTime.setOnClickListener(new View.OnClickListener() {
+        EAccesTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calendar = Calendar.getInstance();
@@ -91,10 +95,29 @@ public class edittodo extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         String timeStamp = String.format("%02d:%02d", hourOfDay, minute);
-                        DisplayTime.setText(timeStamp);
+                        EDisplayTime.setText(timeStamp);
                     }
                 },
                         CalendarHour,CalendarMinute, false);
+                timePickerDialog.show();
+
+            }
+        });
+        EreminderTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Eremindercalendar = Calendar.getInstance();
+                EReminderCalendarHour= Eremindercalendar.get(Calendar.HOUR_OF_DAY);
+                EReminderCalendarMinute = Eremindercalendar.get(Calendar.MINUTE);
+
+                timePickerDialog = new TimePickerDialog(edittodo.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDayr, int minuter) {
+                        String timeStamp = String.format("%02d:%02d", hourOfDayr, minuter);
+                        EreminderDisplayTime.setText(timeStamp);
+                    }
+                },
+                        EReminderCalendarHour,EReminderCalendarMinute, false);
                 timePickerDialog.show();
 
             }
@@ -106,24 +129,37 @@ public class edittodo extends AppCompatActivity {
         datepickerdialogbutton = (TextView) findViewById(R.id.EditDate);
         selecteddate = (TextView)findViewById(R.id.EditDate);
 
+        Edatepickerdialogbutton = (TextView) findViewById(R.id.EditRDate);
+        TextView Eselecteddate = (TextView)findViewById(R.id.EditRDate);
+
         datepickerdialogbutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
 
-                DialogFragment dialogfragment = new DatePickerDialogClass();
+                DialogFragment dialogfragment = new EditDatePickerDialogClass();
 
                 dialogfragment.show(getFragmentManager(), "Date Picker Dialog");
 
-//            intent.putExtra(Intent_Constants.KEY_DATE, dateText);
+
 
 
 
 
             }
         });
+        Edatepickerdialogbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dialogfragment = new EditReminderDatePickerDialogClass();
+
+                dialogfragment.show(getFragmentManager(), "Date Picker Dialog");
+            }
+        });
+
     }
+
 
     //Repeat Switch
 
@@ -142,20 +178,20 @@ public class edittodo extends AppCompatActivity {
 
 
     //Calendar
-    public static class DatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+    public static class EditDatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState){
 
-            final Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            final Calendar Editcalendar = Calendar.getInstance();
+            int Eyear = Editcalendar.get(Calendar.YEAR);
+            int Emonth = Editcalendar.get(Calendar.MONTH);
+            int Eday = Editcalendar.get(Calendar.DAY_OF_MONTH);
 
-            DatePickerDialog datepickerdialog = new DatePickerDialog(getActivity(),
-                    AlertDialog.THEME_DEVICE_DEFAULT_DARK,this,year,month,day);
+            DatePickerDialog Editdatepickerdialog = new DatePickerDialog(getActivity(),
+                    AlertDialog.THEME_DEVICE_DEFAULT_DARK,this,Eyear,Emonth,Eday);
 
-            return datepickerdialog;
+            return Editdatepickerdialog;
 
 
 
@@ -163,78 +199,43 @@ public class edittodo extends AppCompatActivity {
 
         }
 
-        public void onDateSet(DatePicker view, int year, int month, int day){
+        public void onDateSet(DatePicker view, int Eyear, int Emonth, int Eday){
 
             TextView textview = (TextView)getActivity().findViewById(R.id.EditDate);
 
-            textview.setText(year + "-" +(month+1)  + "-" +day );
+            textview.setText(Eyear + "-" +(Emonth+1)  + "-" +Eday );
+        }
+    }
+    public static class EditReminderDatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            final Calendar Eremindercalendar = Calendar.getInstance();
+            int Eryear = Eremindercalendar.get(Calendar.YEAR);
+            int Ermonth = Eremindercalendar.get(Calendar.MONTH);
+            int Erday = Eremindercalendar.get(Calendar.DAY_OF_MONTH);
+
+
+            DatePickerDialog Editreminderdatepickerdialog = new DatePickerDialog(getActivity(),
+                    AlertDialog.THEME_DEVICE_DEFAULT_DARK, this, Eryear, Ermonth, Erday);
+
+
+            return Editreminderdatepickerdialog;
+
+
+        }
+
+        public void onDateSet(DatePicker view, int Eryear, int Ermonth, int Erday) {
+
+            TextView textview = (TextView) getActivity().findViewById(R.id.EditRDate);
+
+            textview.setText(Eryear + "-" + (Ermonth + 1) + "-" + Erday);
         }
     }
 
 
 
-
-
-
-
-
-
-
-    //select repeat type
-//    public void selectRepeatType(View v){
-//        final String[] items = new String[3];
-//        items[0] = "Day";
-//        items[1] = "Week";
-//        items[2] = "Month";
-//
-//        // Create List Dialog
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Select Type");
-//        builder.setItems(items, new DialogInterface.OnClickListener() {
-//
-//            public void onClick(DialogInterface dialog, int item) {
-//
-//                mRepeatType = items[item];
-//                mRepeatTypeText.setText(mRepeatType);
-//                mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
-//            }
-//        });
-//        AlertDialog alert = builder.create();
-//        alert.show();
-//    }
-
-    //input repeat interval
-//    public void setRepeatNo(View v){
-//        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-//        alert.setTitle("Enter Number");
-//
-//        // Create EditText box to input repeat number
-//        final EditText input = new EditText(this);
-//        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-//        alert.setView(input);
-//        alert.setPositiveButton("Ok",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int whichButton) {
-//
-//                        if (input.getText().toString().length() == 0) {
-//                            mRepeatNo = Integer.toString(1);
-//                            mRepeatNoText.setText(mRepeatNo);
-//                            mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
-//                        }
-//                        else {
-//                            mRepeatNo = input.getText().toString().trim();
-//                            mRepeatNoText.setText(mRepeatNo);
-//                            mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
-//                        }
-//                    }
-//                });
-//        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int whichButton) {
-//                // do nothing
-//            }
-//        });
-//        alert.show();
-//    }
 
 
 
@@ -250,9 +251,12 @@ public class edittodo extends AppCompatActivity {
         String DescText = ((EditText)findViewById(R.id.EditDescription)).getText().toString();
         String dateText = ((TextView)findViewById(R.id.EditDate)).getText().toString();
         String timeText = ((TextView)findViewById(R.id.EditTime)).getText().toString();
+        String RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
+        String RtimeText = ((TextView)findViewById(R.id.EditRTime)).getText().toString();
 //        String repeatTxt = ((TextView)findViewById(R.id.repeatText)).getText().toString();
 //        String notificationText = ((TextView)findViewById(R.id.notificationsTextView)).getText().toString();
-
+        Intent intent = getIntent();
+        String todoId = intent.getStringExtra("todoId");
 
         if (messageText.equals("")){
             Toast.makeText(this, "PLEASE GIVE THE TODO A TITLE", Toast.LENGTH_SHORT).show();
@@ -262,12 +266,14 @@ public class edittodo extends AppCompatActivity {
 
             try {
 
+
                 // create body parameters
                 Pair[] parameters = new Pair[]{
+                        new Pair("todoId", todoId),
                         new Pair("Title", messageText),
                         new Pair("Description", DescText),
                         new Pair("Date", dateText+ "T" + timeText),
-                        new Pair("DateReminder", dateText+ "T" + timeText) // TODO: Add reminder date
+                        new Pair("DateReminder", RdateText+ "T" + RtimeText)
                 };
 
                 HttpTask task = new HttpTask(this.getApplicationContext(),
@@ -314,13 +320,14 @@ public class edittodo extends AppCompatActivity {
                 );
 
                 // set body parameters
-                task.setUriParameters(parameters);
+                task.setBodyParameters(parameters);
                 task.execute();
 
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
 
 
             finish();
