@@ -264,70 +264,61 @@ public class edittodo extends AppCompatActivity {
         }
         else {
 
-            try {
+            // create body parameters
+            Pair[] parameters = new Pair[]{
+                    new Pair("todoId", todoId),
+                    new Pair("Title", messageText),
+                    new Pair("Description", DescText),
+                    new Pair("Date", dateText+ "T" + timeText),
+                    new Pair("DateReminder", RdateText+ "T" + RtimeText)
+            };
 
+            HttpTask task = new HttpTask(this.getApplicationContext(),
+                    HttpMethod.PUT,
+                    "http://ashittyscheduler.azurewebsites.net/api/todo/update",
+                    new AsyncHttpListener() {
+                        private ProgressDialog progressDialog;
 
-                // create body parameters
-                Pair[] parameters = new Pair[]{
-                        new Pair("todoId", todoId),
-                        new Pair("Title", messageText),
-                        new Pair("Description", DescText),
-                        new Pair("Date", dateText+ "T" + timeText),
-                        new Pair("DateReminder", RdateText+ "T" + RtimeText)
-                };
-
-                HttpTask task = new HttpTask(this.getApplicationContext(),
-                        HttpMethod.PUT,
-                        "http://ashittyscheduler.azurewebsites.net/api/todo/update",
-                        new AsyncHttpListener() {
-                            private ProgressDialog progressDialog;
-
-                            @Override
-                            public void onBeforeExecute() {
-                                // show a progress dialog (duh)
-                                progressDialog = android.app.ProgressDialog.show(edittodo.this,
-                                        "Updating todo",
-                                        "Please wait");
-                            }
-
-                            @Override
-                            public void onResponse(HttpResponse httpResponse) {
-
-                                int code = httpResponse.getCode();
-
-                                if (code == HttpStatusCode.OK.getCode()){
-                                    Toast.makeText(getApplicationContext(), "TODO UPDATED", Toast.LENGTH_SHORT).show();
-                                }
-                                else{
-                                    Toast.makeText(getApplicationContext(), "FAILED TO update TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-
-
-                            }
-
-                            @Override
-                            public void onError() {
-
-
-                            }
-
-                            @Override
-                            public void onFinishExecuting() {
-                                // dismiss the progress dialog (duh)
-                                progressDialog.dismiss();
-                            }
+                        @Override
+                        public void onBeforeExecute() {
+                            // show a progress dialog (duh)
+                            progressDialog = android.app.ProgressDialog.show(edittodo.this,
+                                    "Updating todo",
+                                    "Please wait");
                         }
-                );
 
-                // set body parameters
-                task.setBodyParameters(parameters);
-                task.execute();
+                        @Override
+                        public void onResponse(HttpResponse httpResponse) {
+
+                            int code = httpResponse.getCode();
+
+                            if (code == HttpStatusCode.OK.getCode()){
+                                Toast.makeText(getApplicationContext(), "TODO UPDATED", Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "FAILED TO update TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
 
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                        }
 
+                        @Override
+                        public void onError() {
+
+
+                        }
+
+                        @Override
+                        public void onFinishExecuting() {
+                            // dismiss the progress dialog (duh)
+                            progressDialog.dismiss();
+                        }
+                    }
+            );
+
+            // set body parameters
+            task.setBodyParameters(parameters);
+            task.execute();
 
 
             finish();

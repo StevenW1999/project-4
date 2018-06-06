@@ -83,59 +83,55 @@ public class ProfileFragment extends Fragment {
                 new Pair<>("userId", userId),
         };
 
-        try {
-            HttpTask task = new HttpTask(this.getContext(),
-                    HttpMethod.GET,
-                    "http://ashittyscheduler.azurewebsites.net/api/users",
-                    new AsyncHttpListener() {
+        HttpTask task = new HttpTask(this.getContext(),
+                HttpMethod.GET,
+                "http://ashittyscheduler.azurewebsites.net/api/users",
+                new AsyncHttpListener() {
 
-                        private ProgressDialog progressDialog;
+                    private ProgressDialog progressDialog;
 
-                        @Override
-                        public void onBeforeExecute() {
-                            progressDialog = ProgressDialog.show(getContext(),"Loading profile","Please wait");
-                        }
+                    @Override
+                    public void onBeforeExecute() {
+                        progressDialog = ProgressDialog.show(getContext(),"Loading profile","Please wait");
+                    }
 
-                        @Override
-                        public void onResponse(HttpResponse httpResponse) {
-                            int code = httpResponse.getCode();
+                    @Override
+                    public void onResponse(HttpResponse httpResponse) {
+                        int code = httpResponse.getCode();
 
-                            if (code == HttpStatusCode.OK.getCode()) {
-                                try {
-                                    JSONObject userObj = new JSONObject(httpResponse.getMessage());
+                        if (code == HttpStatusCode.OK.getCode()) {
+                            try {
+                                JSONObject userObj = new JSONObject(httpResponse.getMessage());
 
-                                    String username = userObj.getString("Username");
-                                    String displayName = userObj.getString("DisplayName");
-                                    String description = userObj.getString("Description");
-                                    String email = userObj.getString("Email");
-                                    boolean isOnline = userObj.getBoolean("IsOnline");
+                                String username = userObj.getString("Username");
+                                String displayName = userObj.getString("DisplayName");
+                                String description = userObj.getString("Description");
+                                String email = userObj.getString("Email");
+                                boolean isOnline = userObj.getBoolean("IsOnline");
 
-                                    tv_displayname.setText(displayName);
-                                    tv_username.setText(username);
-                                    tv_description.setText(description);
+                                tv_displayname.setText(displayName);
+                                tv_username.setText(username);
+                                tv_description.setText(description);
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
+                    }
 
-                        @Override
-                        public void onError() {
-                            Toast.makeText(getContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onError() {
+                        Toast.makeText(getContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onFinishExecuting() {
-                            progressDialog.dismiss();
-                        }
-                    });
+                    @Override
+                    public void onFinishExecuting() {
+                        progressDialog.dismiss();
+                    }
+                });
 
-            task.setUriParameters(parameters);
-            task.execute();
+        task.setUriParameters(parameters);
+        task.execute();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

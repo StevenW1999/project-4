@@ -30,7 +30,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
 
     private final AsyncHttpListener listener;
 
-    public HttpTask(Context context, HttpMethod method, String url, AsyncHttpListener listener) throws IOException {
+    public HttpTask(Context context, HttpMethod method, String url, AsyncHttpListener listener) {
         this.context = context;
         this.method = method;
         this.url = url;

@@ -111,17 +111,10 @@ public class Agenda extends AppCompatActivity {
             }
         };
 
-        try {
-            HttpTask task = new HttpTask(getApplicationContext(),
-                    HttpMethod.GET, "http://ashittyscheduler.azurewebsites.net/api/todo/getmytodos",
-                    listener);
-            task.execute();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+        HttpTask task = new HttpTask(getApplicationContext(),
+                HttpMethod.GET, "http://ashittyscheduler.azurewebsites.net/api/todo/getmytodos",
+                listener);
+        task.execute();
 
         //For every item onclick in listview, go to detailscreen for that item
         listViewToDo.setOnItemClickListener(new AdapterView.OnItemClickListener() {

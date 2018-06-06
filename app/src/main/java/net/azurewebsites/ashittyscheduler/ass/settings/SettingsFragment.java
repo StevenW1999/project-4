@@ -70,9 +70,10 @@ public class SettingsFragment extends Fragment {
         public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            // Get preferences
+            // Get preferences screen
             PreferenceScreen preferenceScreen = getPreferenceScreen();
 
+            // find and store all preferences
             editDisplayName = (EditTextPreference)preferenceScreen.findPreference("edit_displayname");
             editDescription = (EditTextPreference)preferenceScreen.findPreference("edit_description");
             editUsername = (EditTextPreference)preferenceScreen.findPreference("edit_username");
@@ -84,7 +85,7 @@ public class SettingsFragment extends Fragment {
             editDisplayName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(final Preference preference, final Object newValue) {
-                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changedisplayname");
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changedisplayname", true);
                     return true;
                 }
             });
@@ -92,7 +93,7 @@ public class SettingsFragment extends Fragment {
             editEmail.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changeemail");
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changeemail", true);
                     return true;
                 }
             });
@@ -100,7 +101,7 @@ public class SettingsFragment extends Fragment {
             editUsername.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(final Preference preference, final Object newValue) {
-                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changeusername");
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changeusername", true);
                     return true;
                 }
             });
@@ -108,7 +109,7 @@ public class SettingsFragment extends Fragment {
             editPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changepassword");
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changepassword", true);
                     return true;
                 }
             });
@@ -116,133 +117,123 @@ public class SettingsFragment extends Fragment {
             editDescription.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changedescription");
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changedescription", true);
                     return true;
                 }
             });
 
+            // load the user settings
             loadSettings();
         }
 
         public void loadSettings(){
 
-            try {
-                HttpTask task = new HttpTask(this.getContext(),
-                        HttpMethod.GET,
-                        "http://ashittyscheduler.azurewebsites.net/api/users/self",
-                        new AsyncHttpListener() {
+            HttpTask task = new HttpTask(this.getContext(),
+                    HttpMethod.GET,
+                    "http://ashittyscheduler.azurewebsites.net/api/users/self",
+                    new AsyncHttpListener() {
 
-                            private ProgressDialog progressDialog;
+                        private ProgressDialog progressDialog;
 
-                            @Override
-                            public void onBeforeExecute() {
-                                progressDialog = ProgressDialog.show(getContext(),"Loading settings","Please wait");
-                            }
+                        @Override
+                        public void onBeforeExecute() {
+                            progressDialog = ProgressDialog.show(getContext(),"Loading settings","Please wait");
+                        }
 
-                            @Override
-                            public void onResponse(HttpResponse httpResponse) {
-                                int code = httpResponse.getCode();
+                        @Override
+                        public void onResponse(HttpResponse httpResponse) {
+                            int code = httpResponse.getCode();
 
-                                if (code == HttpStatusCode.OK.getCode()) {
-                                    try {
-                                        JSONObject userObj = new JSONObject(httpResponse.getMessage());
+                            if (code == HttpStatusCode.OK.getCode()) {
+                                try {
+                                    JSONObject userObj = new JSONObject(httpResponse.getMessage());
 
-                                        String username = userObj.getString("Username");
-                                        String displayName = userObj.getString("DisplayName");
-                                        String description = userObj.getString("Description");
-                                        String email = userObj.getString("Email");
-                                        boolean isOnline = userObj.getBoolean("IsOnline");
+                                    String username = userObj.getString("Username");
+                                    String displayName = userObj.getString("DisplayName");
+                                    String description = userObj.getString("Description");
+                                    String email = userObj.getString("Email");
+                                    boolean isOnline = userObj.getBoolean("IsOnline");
 
-                                        editDisplayName.setText(displayName);
-                                        editDisplayName.setSummary(displayName);
+                                    editDisplayName.setText(displayName);
+                                    editDisplayName.setSummary(displayName);
 
-                                        editUsername.setText(username);
-                                        editUsername.setSummary(username);
+                                    editUsername.setText(username);
+                                    editUsername.setSummary(username);
 
-                                        editEmail.setText(email);
-                                        editEmail.setSummary(email);
+                                    editEmail.setText(email);
+                                    editEmail.setSummary(email);
 
-                                        editDescription.setText(description);
-                                        editDescription.setSummary(description);
+                                    editDescription.setText(description);
+                                    editDescription.setSummary(description);
 
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
                             }
+                        }
 
-                            @Override
-                            public void onError() {
-                                Toast.makeText(getContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
-                            }
+                        @Override
+                        public void onError() {
+                            Toast.makeText(getContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                        }
 
-                            @Override
-                            public void onFinishExecuting() {
-                                progressDialog.dismiss();
-                            }
-                        });
+                        @Override
+                        public void onFinishExecuting() {
+                            progressDialog.dismiss();
+                        }
+                    });
 
-                task.execute();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            task.execute();
         }
 
-        public void updatePreference(final Preference preference, final String value, final String url) {
-            // parameters
+        public void updatePreference(final Preference preference, final String value, final String url, final boolean updateSummary) {
+            // Body parameters
             Pair[] parameters = new Pair[] {
+                    // Name is empty since it's a single value.
                     new Pair<>("", value),
             };
 
-            try {
-                HttpTask task = new HttpTask(getPreferenceScreen().getContext(), HttpMethod.PUT,
-                        url,
-                        new AsyncHttpListener() {
+            HttpTask task = new HttpTask(getPreferenceScreen().getContext(), HttpMethod.PUT,
+                    url,
+                    new AsyncHttpListener() {
 
-                            private ProgressDialog progressDialog;
+                        private ProgressDialog progressDialog;
 
-                            @Override
-                            public void onBeforeExecute() {
-                                // show a progress dialog (duh)
-                                progressDialog = ProgressDialog.show(getPreferenceScreen().getContext(),
-                                        "Updating",
-                                        "Please wait");
+                        @Override
+                        public void onBeforeExecute() {
+                            // show a progress dialog? disabled
+                            //progressDialog = ProgressDialog.show(getPreferenceScreen().getContext(),"Updating","Please wait");
+                        }
+
+                        @Override
+                        public void onResponse(HttpResponse httpResponse) {
+
+                            // obtain code
+                            int code = httpResponse.getCode();
+
+                            // preference update succeeded, update the summary (if needed)
+                            if(code == HttpStatusCode.OK.getCode() && updateSummary){
+                                preference.setSummary(value.toString());
                             }
 
-                            @Override
-                            public void onResponse(HttpResponse httpResponse) {
+                        }
 
-                                // obtain code
-                                int code = httpResponse.getCode();
+                        @Override
+                        public void onError() {
+                            new AlertDialog.Builder(getPreferenceScreen().getContext())
+                                    .setTitle("Error")
+                                    .setMessage("Something went wrong. Please try again later.")
+                                    .setNeutralButton("OK", null).show();
+                        }
 
-                                if(code == HttpStatusCode.OK.getCode()){
-                                    preference.setSummary(value.toString());
-                                }
+                        @Override
+                        public void onFinishExecuting() {
+                            //progressDialog.dismiss();
+                        }
+                    });
 
-                            }
-
-                            @Override
-                            public void onError() {
-                                new AlertDialog.Builder(getPreferenceScreen().getContext())
-                                        .setTitle("Error")
-                                        .setMessage("Something went wrong. Please try again later.")
-                                        .setNeutralButton("OK", null).show();
-                            }
-
-                            @Override
-                            public void onFinishExecuting() {
-                                // dismiss the progress dialog (duh)
-                                progressDialog.dismiss();
-                            }
-                        });
-
-                task.setBodyParameters(parameters);
-                task.execute();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            task.setBodyParameters(parameters);
+            task.execute();
         }
 
     }

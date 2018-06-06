@@ -55,85 +55,79 @@ public class detailscreen extends AppCompatActivity {
                 new Pair("todoId", todoId)
         };
 
-        try {
-            final HttpTask httpTask = new HttpTask(this.getApplicationContext(),
-                    HttpMethod.GET,
-                    "http://ashittyscheduler.azurewebsites.net/api/todo/get",
+        final HttpTask httpTask = new HttpTask(this.getApplicationContext(),
+                HttpMethod.GET,
+                "http://ashittyscheduler.azurewebsites.net/api/todo/get",
 
-                    new AsyncHttpListener()
+                new AsyncHttpListener()
 
-                    {
-                        private ProgressDialog progressDialog;
+                {
+                    private ProgressDialog progressDialog;
 
-                        @Override
-                        public void onBeforeExecute() {
-                            // show a progress dialog (duh)
-                            progressDialog = android.app.ProgressDialog.show(detailscreen.this,
-                                    "Getting todo",
-                                    "Please wait");
-                        }
+                    @Override
+                    public void onBeforeExecute() {
+                        // show a progress dialog (duh)
+                        progressDialog = android.app.ProgressDialog.show(detailscreen.this,
+                                "Getting todo",
+                                "Please wait");
+                    }
 
-                        @Override
-                        public void onResponse(HttpResponse httpResponse) {
-                            int code = httpResponse.getCode();
-                            if (code == HttpStatusCode.OK.getCode()) {
+                    @Override
+                    public void onResponse(HttpResponse httpResponse) {
+                        int code = httpResponse.getCode();
+                        if (code == HttpStatusCode.OK.getCode()) {
 
-                                try {
-                                    JSONObject todo = new JSONObject(httpResponse.getMessage());
+                            try {
+                                JSONObject todo = new JSONObject(httpResponse.getMessage());
 
-                                    tv_title.setText(todo.getString("Title"));
-                                    tv_description.setText(todo.getString("Description"));
+                                tv_title.setText(todo.getString("Title"));
+                                tv_description.setText(todo.getString("Description"));
 
-                                    String[] dateTime = todo.getString("Date").split("T");
+                                String[] dateTime = todo.getString("Date").split("T");
 
-                                    tv_date.setText(dateTime[0]);
+                                tv_date.setText(dateTime[0]);
 
-                                    // if there is a time
-                                    if (dateTime.length > 1) {
-                                        // ignore last three characters
-                                        tv_time.setText(dateTime[1].substring(0, dateTime[1].length() - 3));
-                                    }
-                                    String[] RdateTime = todo.getString("DateReminder").split("T");
+                                // if there is a time
+                                if (dateTime.length > 1) {
+                                    // ignore last three characters
+                                    tv_time.setText(dateTime[1].substring(0, dateTime[1].length() - 3));
+                                }
+                                String[] RdateTime = todo.getString("DateReminder").split("T");
 
-                                    tv_Rdate.setText(dateTime[0]);
+                                tv_Rdate.setText(dateTime[0]);
 
-                                    // if there is a time
-                                    if (RdateTime.length > 1) {
-                                        // ignore last three characters
-                                        tv_Rtime.setText(RdateTime[1].substring(0, RdateTime[1].length() - 3));
-                                    }
-
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                // if there is a time
+                                if (RdateTime.length > 1) {
+                                    // ignore last three characters
+                                    tv_Rtime.setText(RdateTime[1].substring(0, RdateTime[1].length() - 3));
                                 }
 
 
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            else{
-                                Toast.makeText(getApplicationContext(), "FAILED TO GET TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+
 
                         }
-
-                        @Override
-                        public void onError() {
-                            //TODO: Handle error
-
+                        else{
+                            Toast.makeText(getApplicationContext(), "FAILED TO GET TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
-                        @Override
-                        public void onFinishExecuting() {
-                            progressDialog.dismiss();
-                        }
-                    });
-             httpTask.setUriParameters(parameters);
-             httpTask.execute();
+                    }
 
+                    @Override
+                    public void onError() {
+                        //TODO: Handle error
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                    }
+
+                    @Override
+                    public void onFinishExecuting() {
+                        progressDialog.dismiss();
+                    }
+                });
+         httpTask.setUriParameters(parameters);
+         httpTask.execute();
 
 
     }
@@ -161,58 +155,50 @@ public void DeleteButtonClicked(View view){
 
             @Override
             public void onClick(DialogInterface dialog, int i) {
-                try {
+                HttpTask httpTask = new HttpTask(getApplicationContext(),
+                        HttpMethod.DELETE,
+                        "http://ashittyscheduler.azurewebsites.net/api/todo/delete",
 
-                    HttpTask httpTask = new HttpTask(getApplicationContext(),
-                            HttpMethod.DELETE,
-                            "http://ashittyscheduler.azurewebsites.net/api/todo/delete",
+                        new AsyncHttpListener() {
 
-                            new AsyncHttpListener() {
+                            @Override
+                            public void onBeforeExecute() {
 
+                            }
 
-                                @Override
-                                public void onBeforeExecute() {
+                            @Override
+                            public void onResponse(HttpResponse httpResponse) {
+                                int code = httpResponse.getCode();
 
+                                if (code == HttpStatusCode.OK.getCode()){
+                                    Toast.makeText(getApplicationContext(), "TODO DELETED", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Toast.makeText(getApplicationContext(), "FAILED TO DELETE TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.d("DELETETODO", httpResponse.getMessage());
                                 }
 
-                                @Override
-                                public void onResponse(HttpResponse httpResponse) {
-                                    int code = httpResponse.getCode();
+                            }
 
-                                    if (code == HttpStatusCode.OK.getCode()){
-                                        Toast.makeText(getApplicationContext(), "TODO DELETED", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else{
-                                        Toast.makeText(getApplicationContext(), "FAILED TO DELETE TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                        Log.d("DELETETODO", httpResponse.getMessage());
-                                    }
-
-                                }
-
-                                @Override
-                                public void onError() {
-
-
-                                }
-
-                                @Override
-                                public void onFinishExecuting() {
-                                    finish();
-
-                                }
+                            @Override
+                            public void onError() {
 
 
                             }
 
-                    );
+                            @Override
+                            public void onFinishExecuting() {
+                                finish();
 
-                    httpTask.setUriParameters(parameters);
-                    httpTask.execute();
+                            }
 
-                } catch (IOException e) {
-                    e.printStackTrace();
 
-                }
+                        }
+
+                );
+
+                httpTask.setUriParameters(parameters);
+                httpTask.execute();
             }
 
         });

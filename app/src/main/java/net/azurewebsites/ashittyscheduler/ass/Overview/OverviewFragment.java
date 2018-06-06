@@ -155,15 +155,10 @@ public class OverviewFragment extends Fragment {
             }
         };
 
-        try {
-            HttpTask task = new HttpTask(getActivity().getApplicationContext(),
-                    HttpMethod.GET, "http://ashittyscheduler.azurewebsites.net/api/todo/getmytodos",
-                    listener);
-            task.execute();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        HttpTask task = new HttpTask(getActivity().getApplicationContext(),
+                HttpMethod.GET, "http://ashittyscheduler.azurewebsites.net/api/todo/getmytodos",
+                listener);
+        task.execute();
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
