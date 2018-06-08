@@ -18,22 +18,17 @@
 
     <PreferenceCategory android:title="User Settings">
         <EditTextPreference
-            android:defaultValue="Default value"
             android:key="edit_username"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="Change Username" />
         <EditTextPreference
-            android:defaultValue="Default value"
             android:key="edit_email"
             android:selectAllOnFocus="true"
-            android:singleLine="false"
-            android:title="Change Email" />
-        <EditTextPreference
-            android:defaultValue="Default value"
-            android:key="edit_password"
-            android:selectAllOnFocus="true"
             android:singleLine="true"
+            android:title="Change Email" />
+        <Preference
+            android:key="edit_password"
             android:title="Change Password"/>
     </PreferenceCategory>
 
