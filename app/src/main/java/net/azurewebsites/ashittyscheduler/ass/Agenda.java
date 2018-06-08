@@ -58,7 +58,6 @@ public class Agenda extends AppCompatActivity {
         listViewToDo.setAdapter(toDoItems);
 
         toDoItems.clear();
-        //toDoItems.addAll();
 
         AsyncHttpListener listener = new AsyncHttpListener() {
             @Override
@@ -120,8 +119,6 @@ public class Agenda extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
         //For every item onclick in listview, go to detailscreen for that item
         listViewToDo.setOnItemClickListener(new AdapterView.OnItemClickListener() {

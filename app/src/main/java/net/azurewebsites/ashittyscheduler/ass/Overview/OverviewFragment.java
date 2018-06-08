@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -36,6 +38,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 public class OverviewFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -47,6 +55,7 @@ public class OverviewFragment extends Fragment {
     ArrayList<String> arrayList;
     ArrayAdapter<String> arrayAdapter;
     String messageText;
+    SwipeRefreshLayout refreshToDos;
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -61,31 +70,10 @@ public class OverviewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final Spinner spinner =(Spinner) getActivity().findViewById(R.id.dropDownFilter);
-
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.dropdownYear, android.R.layout.simple_spinner_dropdown_item);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(adapter);
-
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "Nice", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        setSpinner();
+        refreshToDos();
 
         listView = (ListView) getActivity().findViewById(R.id.textView);
-        arrayList = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,arrayList);
-        listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -105,11 +93,16 @@ public class OverviewFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
 
-        final ArrayAdapter<ToDo> toDoItems = new ArrayAdapter<ToDo>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1);
-        listView.setAdapter(toDoItems);
-
-        toDoItems.clear();
+    //Fills data of all the todos
+    private void fillDataToDo() {
+        final ArrayList<String> toDoItems = new ArrayList<>();
+        arrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,toDoItems);
+        listView.setAdapter(arrayAdapter);
+        final ArrayAdapter<ToDo> todoItems = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1);
+        ArrayList<ToDo> toDoItems2 = new ArrayList<ToDo>();
+        listView.setAdapter(todoItems);
 
         AsyncHttpListener listener = new AsyncHttpListener() {
             @Override
@@ -124,7 +117,6 @@ public class OverviewFragment extends Fragment {
                 {
                     try {
                         JSONArray todos = new JSONArray(httpResponse.getMessage());
-
                         for (int i = 0; i < todos.length(); i++) {
                             JSONObject todoJSON = todos.getJSONObject(i);
 
@@ -135,8 +127,8 @@ public class OverviewFragment extends Fragment {
 
                             //TODO: Add Date, DateReminder etc...
 
-                            toDoItems.add(todo);
-
+                            todoItems.add(todo);
+                            refreshToDos.setRefreshing(false);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -160,31 +152,55 @@ public class OverviewFragment extends Fragment {
                     HttpMethod.GET, "http://ashittyscheduler.azurewebsites.net/api/todo/getmytodos",
                     listener);
             task.execute();
-
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
+    }
 
+    //Spinner used for filtering of todos by year
+    private void setSpinner() {
+        Spinner spinner =(Spinner) getActivity().findViewById(R.id.dropDownFilter);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.dropdownYear, android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        //Dropdown list of years
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "wow", Toast.LENGTH_SHORT);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
 
-    public void onClick(View v){
+        public void onClick(View v){
         Intent intent = new Intent();
         intent.setClass(getActivity().getApplicationContext(), addtodo.class);
         startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE);
     }
 
+    private void refreshToDos () {
+        refreshToDos = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeRefresh);
+        refreshToDos.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        fillDataToDo();
+                    }
+                }
+        );
+    }
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onResume() {
+        super.onResume();
+        fillDataToDo();
     }
 
     @Nullable
