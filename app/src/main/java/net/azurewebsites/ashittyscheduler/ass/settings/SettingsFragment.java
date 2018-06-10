@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
@@ -14,6 +16,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.util.Log;
 import android.util.Pair;
@@ -57,7 +60,7 @@ public class SettingsFragment extends Fragment {
         private EditTextPreference editDisplayName, editDescription;
         private EditTextPreference editUsername, editEmail;
         private Preference editPassword;
-        private SwitchPreference notificationPreference, locationServicesPreference;
+        private SwitchPreference notificationPreference_todo, notificationPreference_chat, notificationPreference_friends;
 
         public MyPreferenceFragment() {
             // required empty constructor
@@ -84,21 +87,36 @@ public class SettingsFragment extends Fragment {
             editUsername = (EditTextPreference)preferenceScreen.findPreference("edit_username");
             editEmail = (EditTextPreference)preferenceScreen.findPreference("edit_email");
             editPassword = preferenceScreen.findPreference("edit_password");
-            notificationPreference = (SwitchPreference)preferenceScreen.findPreference("switch_notifications_todos");
-            locationServicesPreference = (SwitchPreference)preferenceScreen.findPreference("switch_location_services");
+            notificationPreference_todo = (SwitchPreference)preferenceScreen.findPreference("switch_notifications_todos");
+            notificationPreference_chat = (SwitchPreference)preferenceScreen.findPreference("switch_notifications_chat");
+            notificationPreference_friends = (SwitchPreference)preferenceScreen.findPreference("switch_notifications_friends");
 
             editDisplayName.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(final Preference preference, final Object newValue) {
-                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changedisplayname", true);
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changedisplayname", new UpdateListener() {
+                        @Override
+                        public void onSuccess() {
+                            preference.setSummary(newValue.toString());
+                            Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                    "Your Display Name has been updated succesfully.", Snackbar.LENGTH_LONG).show();
+                        }
+                    });
                     return true;
                 }
             });
 
             editEmail.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changeemail", true);
+                public boolean onPreferenceChange(final Preference preference, final Object newValue) {
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changeemail", new UpdateListener() {
+                        @Override
+                        public void onSuccess() {
+                            preference.setSummary(newValue.toString());
+                            Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                    "Your e-mail has been updated succesfully.", Snackbar.LENGTH_LONG).show();
+                        }
+                    });
                     return true;
                 }
             });
@@ -106,7 +124,14 @@ public class SettingsFragment extends Fragment {
             editUsername.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(final Preference preference, final Object newValue) {
-                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changeusername", true);
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changeusername", new UpdateListener() {
+                        @Override
+                        public void onSuccess() {
+                            preference.setSummary(newValue.toString());
+                            Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                    "Your username has been updated succesfully.", Snackbar.LENGTH_LONG).show();
+                        }
+                    });
                     return true;
                 }
             });
@@ -144,9 +169,16 @@ public class SettingsFragment extends Fragment {
                                 return;
                             }
 
+                            // Update the preference
                             updatePreference(editPassword, passwordField.getText().toString(),
                                     "https://ashittyscheduler.azurewebsites.net/api/settings/changepassword",
-                                    false);
+                                    new UpdateListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "Your password has been updated succesfully.", Snackbar.LENGTH_LONG);
+                                            snackbar.show();
+                                        }
+                                    });
 
                             changePasswordDialog.cancel();
                         }
@@ -167,11 +199,20 @@ public class SettingsFragment extends Fragment {
 
             editDescription.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changedescription", true);
+                public boolean onPreferenceChange(final Preference preference, final Object newValue) {
+                    updatePreference(preference, newValue.toString(), "https://ashittyscheduler.azurewebsites.net/api/settings/changedescription", new UpdateListener() {
+                        @Override
+                        public void onSuccess() {
+                            preference.setSummary(newValue.toString());
+                            Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                    "Your description has been updated succesfully.", Snackbar.LENGTH_LONG).show();
+                        }
+                    });
                     return true;
                 }
             });
+
+            // TODO: Add onPreferenceChangeListeners for the switch (toggle) preferences !!!!!!!!!!!!!!!!!!!!!!!!!!1
 
             // load the user settings
             loadSettings();
@@ -245,7 +286,7 @@ public class SettingsFragment extends Fragment {
         /*
         Updates a single preference and optionally updates its summary with the given value
          */
-        public void updatePreference(final Preference preference, final String value, final String url, final boolean updateSummary) {
+        public void updatePreference(final Preference preference, final String value, final String url, final UpdateListener listener) {
             // Body parameters
             Pair[] parameters = new Pair[] {
                     // Name is empty since it's a single value.
@@ -261,7 +302,7 @@ public class SettingsFragment extends Fragment {
                         @Override
                         public void onBeforeExecute() {
                             // show a progress dialog? currently disabled
-                            //progressDialog = ProgressDialog.show(getPreferenceScreen().getContext(),"Updating","Please wait");
+                            progressDialog = ProgressDialog.show(getPreferenceScreen().getContext(),"Updating","Please wait");
                         }
 
                         @Override
@@ -271,8 +312,14 @@ public class SettingsFragment extends Fragment {
                             int code = httpResponse.getCode();
 
                             // preference update succeeded, update the summary (if needed)
-                            if(code == HttpStatusCode.OK.getCode() && updateSummary){
-                                preference.setSummary(value.toString());
+                            if(code == HttpStatusCode.OK.getCode()){
+                                listener.onSuccess();
+                            }
+                            else {
+                                Snackbar.make(getActivity().findViewById(android.R.id.content),
+                                        "Something went wrong. Please try again later.",
+                                        Snackbar.LENGTH_LONG)
+                                        .setActionTextColor(Color.RED).show();
                             }
 
                         }
@@ -288,7 +335,7 @@ public class SettingsFragment extends Fragment {
 
                         @Override
                         public void onFinishExecuting() {
-                            //progressDialog.dismiss();
+                            progressDialog.dismiss();
                         }
                     });
 

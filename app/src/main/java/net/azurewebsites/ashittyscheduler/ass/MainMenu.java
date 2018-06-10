@@ -51,12 +51,15 @@ public class MainMenu extends AppCompatActivity
 
         @Override
         public void onDrawerClosed(@NonNull View drawerView) {
+            // If there is a fragment to set
             if (fragmentToSet != null) {
+                // Replace the framelayout with the fragment to set
                 getFragmentManager()
                         .beginTransaction()
                         .replace(R.id.frameLayout, fragmentToSet)
                         .commit();
 
+                // And reset the variable
                 fragmentToSet = null;
             }
         }
@@ -99,7 +102,7 @@ public class MainMenu extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
         //TextView t = (TextView)findViewById(R.id.textViewIdForUsername);
@@ -122,6 +125,7 @@ public class MainMenu extends AppCompatActivity
                 fragmentToSet = new ProfileFragment();
                 fragmentToSet.setArguments(bundle);
 
+                // and close the menu
                 drawer.closeDrawer(Gravity.LEFT, true);
             }
         });

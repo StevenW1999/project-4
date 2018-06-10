@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class User implements Serializable{
     private String id;
     private String username;
-    private String password;
+    private String description;
     private String name;
 
     public String getId() {
@@ -32,4 +32,11 @@ public class User implements Serializable{
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
