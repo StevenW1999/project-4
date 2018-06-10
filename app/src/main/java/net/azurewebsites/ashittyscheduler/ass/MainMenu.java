@@ -29,6 +29,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import net.azurewebsites.ashittyscheduler.ass.Overview.OverviewFragment;
+import net.azurewebsites.ashittyscheduler.ass.profile.ProfileActivity;
 import net.azurewebsites.ashittyscheduler.ass.profile.ProfileFragment;
 import net.azurewebsites.ashittyscheduler.ass.settings.SettingsFragment;
 
@@ -112,20 +113,26 @@ public class MainMenu extends AppCompatActivity
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-                getSupportActionBar().setTitle("Profile");
 
                 // use the logged in users' own user id to show their profile
                 String userId = getSharedPreferences(ApplicationConstants.PREFERENCES, Context.MODE_PRIVATE).getString("UserId", null);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("UserId", userId);
+                Intent intent = new Intent();
+                intent.setClass(MainMenu.this, ProfileActivity.class);
+                intent.putExtra("UserId", userId);
 
-                fragmentToSet = new ProfileFragment();
-                fragmentToSet.setArguments(bundle);
+                // make sure all the menu items are uncheckedd
+                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                int size = navigationView.getMenu().size();
+                for(int i=0; i<size; ++i) {
+                    navigationView.getMenu().getItem(i).setChecked(false);
+                }
+
+                // start the profile activity
+                startActivity(intent);
 
                 // and close the menu
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(Gravity.LEFT, true);
             }
         });
