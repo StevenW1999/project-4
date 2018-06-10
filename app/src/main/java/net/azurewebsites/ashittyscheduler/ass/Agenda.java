@@ -126,9 +126,11 @@ public class Agenda extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                if (position < filteredTodoItems) {
-                    Intent intent = new Intent(getApplicationContext(), MainMenu.class);
-                    startActivityForResult(intent, 0);
-                    Toast.makeText(Agenda.this, "It worked ☺", Toast.LENGTH_SHORT).show();
+                ToDo todo = (ToDo) parent.getItemAtPosition(position);
+                Intent intent = new Intent(getApplicationContext(), detailscreen.class);
+                intent.putExtra("todoId", todo.getId());
+                startActivity(intent);
+//                    Toast.makeText(Agenda.this, "It worked ☺", Toast.LENGTH_SHORT).show();
 //                }
             }
         });

@@ -51,12 +51,8 @@ public class OverviewFragment extends Fragment {
     // TODO: Rename and change types of parameters
 
     ListView listView;
-    ArrayList<String> arrayList;
     ArrayAdapter<String> arrayAdapter;
-    String messageText;
     SwipeRefreshLayout refreshTodos;
-    private boolean sortAscending = true;
-    private boolean unSorted = true;
     private static ArrayList<String> objects = new ArrayList<>();
 
     public OverviewFragment() {
@@ -72,7 +68,10 @@ public class OverviewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //Method for setting up the spinner and it's function
         setSpinner();
+
+        //Update todos after refresh
         refreshTodos();
 
         listView = (ListView) getActivity().findViewById(R.id.textView);
@@ -97,12 +96,14 @@ public class OverviewFragment extends Fragment {
         });
     }
 
-    //Fills data of all the todos
+    //Fills data with all the user's todos
     private void fillDataToDo() {
         final ArrayList<String> toDoItems = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,toDoItems);
+        arrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(),
+                android.R.layout.simple_list_item_1,toDoItems);
         listView.setAdapter(arrayAdapter);
-        final ArrayAdapter<ToDo> todoItems = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1);
+        final ArrayAdapter<ToDo> todoItems = new ArrayAdapter<>(getActivity().getApplicationContext(),
+                android.R.layout.simple_list_item_1);
         ArrayList<ToDo> toDoItems2 = new ArrayList<ToDo>();
         listView.setAdapter(todoItems);
         todoItems.clear();
@@ -156,6 +157,7 @@ public class OverviewFragment extends Fragment {
                             todo.setId(sortedTodosGet.getString("Id"));
                             todo.setTitle(sortedTodosGet.getString("Title"));
                             todoItems.add(todo);
+                            refreshTodos.setRefreshing(false);
                             //JSONObject todoJSON = todos.getJSONObject(i);
 
 //                            ToDo todo = new ToDo();
@@ -200,21 +202,12 @@ public class OverviewFragment extends Fragment {
         }
     }
 
-    //Sort items by name alphabetically (test phase!!!) todo: EDIT!
-    private void sortData(boolean ascend) {
-        //SORT ARRAY ASCENDING AND DESCENDING
-        if (ascend) {
-            Collections.sort(objects);
-        } else {
-            Collections.reverse(objects);
-        }
-        listView.setAdapter(arrayAdapter);
-    }
-
     //Spinner used for filtering of todos by year
     private void setSpinner() {
         Spinner spinner =(Spinner) getActivity().findViewById(R.id.dropDownFilter);
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(), R.array.dropdownYear, android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                getActivity().getApplicationContext(), R.array.dropdownYear,
+                android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
@@ -238,6 +231,7 @@ public class OverviewFragment extends Fragment {
         startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE);
     }
 
+    //Swipe to refrsh/ update todos
     private void refreshTodos () {
         refreshTodos = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeRefresh);
         refreshTodos.setOnRefreshListener(
