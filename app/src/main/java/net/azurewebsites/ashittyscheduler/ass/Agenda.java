@@ -130,17 +130,16 @@ public class Agenda extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), detailscreen.class);
                 intent.putExtra("todoId", todo.getId());
                 startActivity(intent);
-//                    Toast.makeText(Agenda.this, "It worked ☺", Toast.LENGTH_SHORT).show();
 //                }
             }
         });
 
-        //Todo: On button click, return to current month
+        //Return to view of current month
         btnToday = (Button) findViewById(R.id.btnToday);
         btnToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Agenda.this, "You clicked on this button! ☺", Toast.LENGTH_SHORT).show();
+                calendarView.setDate(Calendar.getInstance().getTimeInMillis(), true, true);
             }
         });
 
