@@ -6,6 +6,9 @@ public class User implements Serializable{
     private String id;
     private String username;
     private String description;
+    private String email;
+    private boolean isOnline;
+    private boolean isFriend;
     private String name;
 
     public String getId() {
@@ -38,5 +41,29 @@ public class User implements Serializable{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean isOnline() {
+        return isOnline;
+    }
+
+    public void setOnline(boolean online) {
+        isOnline = online;
+    }
+
+    public boolean isFriend() {
+        return isFriend;
+    }
+
+    public void setFriend(boolean friend) {
+        isFriend = friend;
     }
 }
