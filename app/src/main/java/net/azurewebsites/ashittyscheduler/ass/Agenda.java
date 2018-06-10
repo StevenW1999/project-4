@@ -120,14 +120,16 @@ public class Agenda extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         //For every item onclick in listview, go to detailscreen for that item
         listViewToDo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position < toDo.length) {
+//                if (position < filteredTodoItems) {
                     Intent intent = new Intent(getApplicationContext(), MainMenu.class);
                     startActivityForResult(intent, 0);
-                }
+                    Toast.makeText(Agenda.this, "It worked ☺", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 

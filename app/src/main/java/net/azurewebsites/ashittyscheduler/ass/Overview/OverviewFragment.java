@@ -39,7 +39,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -55,7 +54,10 @@ public class OverviewFragment extends Fragment {
     ArrayList<String> arrayList;
     ArrayAdapter<String> arrayAdapter;
     String messageText;
-    SwipeRefreshLayout refreshToDos;
+    SwipeRefreshLayout refreshTodos;
+    private boolean sortAscending = true;
+    private boolean unSorted = true;
+    private static ArrayList<String> objects = new ArrayList<>();
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -71,7 +73,7 @@ public class OverviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setSpinner();
-        refreshToDos();
+        refreshTodos();
 
         listView = (ListView) getActivity().findViewById(R.id.textView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -103,6 +105,7 @@ public class OverviewFragment extends Fragment {
         final ArrayAdapter<ToDo> todoItems = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1);
         ArrayList<ToDo> toDoItems2 = new ArrayList<ToDo>();
         listView.setAdapter(todoItems);
+        todoItems.clear();
 
         AsyncHttpListener listener = new AsyncHttpListener() {
             @Override
@@ -113,24 +116,62 @@ public class OverviewFragment extends Fragment {
             @Override
             public void onResponse(HttpResponse httpResponse) {
                 int code = httpResponse.getCode();
-                if (code == HttpStatusCode.OK.getCode())
-                {
+                if (code == HttpStatusCode.OK.getCode()) {
                     try {
                         JSONArray todos = new JSONArray(httpResponse.getMessage());
+                        JSONArray sortedTodos = new JSONArray();
+                        List<JSONObject> jsonValues = new ArrayList<JSONObject>();
                         for (int i = 0; i < todos.length(); i++) {
-                            JSONObject todoJSON = todos.getJSONObject(i);
+                            jsonValues.add(todos.getJSONObject(i));
+                        }
 
+                        Collections.sort(jsonValues, new Comparator<JSONObject>() {
+                            private static final String KEY_NAME = "Date";
+
+                            @Override
+                            public int compare(JSONObject o1, JSONObject o2) {
+                                String valA = new String();
+                                String valB = new String();
+
+                                try {
+                                    valA = (String) o1.get(KEY_NAME);
+                                    valB = (String) o2.get(KEY_NAME);
+                                }
+                                catch (JSONException e){
+
+                                }
+
+                                return valA.compareTo(valB);
+                            }
+                        });
+
+                        for (int i = 0; i < todos.length() ; i++) {
+                            sortedTodos.put(jsonValues.get(i));
+                        }
+
+                        for (int i = 0; i < sortedTodos.length(); i++) {
                             ToDo todo = new ToDo();
-                            todo.setId(todoJSON.getString("Id"));
-                            todo.setTitle(todoJSON.getString("Title"));
-                            todo.setDescription(todoJSON.getString("Description"));
+                            JSONObject sortedTodosGet = sortedTodos.getJSONObject(i);
+                            jsonValues.add(sortedTodosGet);
+                            todo.setId(sortedTodosGet.getString("Id"));
+                            todo.setTitle(sortedTodosGet.getString("Title"));
+                            todoItems.add(todo);
+                            //JSONObject todoJSON = todos.getJSONObject(i);
+
+//                            ToDo todo = new ToDo();
+//                            todo.setId(todoJSON.getString("Id"));
+//                            todo.setTitle(todoJSON.getString("Title"));
+//                            todo.setDescription(todoJSON.getString("Description"));
 
                             //TODO: Add Date, DateReminder etc...
 
-                            todoItems.add(todo);
-                            refreshToDos.setRefreshing(false);
+//                            todoItems.add(todo);
+//                            refreshTodos.setRefreshing(false);
+//                            Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT);
+
                         }
-                    } catch (JSONException e) {
+                    }
+                    catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
@@ -159,6 +200,17 @@ public class OverviewFragment extends Fragment {
         }
     }
 
+    //Sort items by name alphabetically (test phase!!!) todo: EDIT!
+    private void sortData(boolean ascend) {
+        //SORT ARRAY ASCENDING AND DESCENDING
+        if (ascend) {
+            Collections.sort(objects);
+        } else {
+            Collections.reverse(objects);
+        }
+        listView.setAdapter(arrayAdapter);
+    }
+
     //Spinner used for filtering of todos by year
     private void setSpinner() {
         Spinner spinner =(Spinner) getActivity().findViewById(R.id.dropDownFilter);
@@ -170,6 +222,7 @@ public class OverviewFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), "It worked ☺", Toast.LENGTH_SHORT);
             }
 
             @Override
@@ -185,9 +238,9 @@ public class OverviewFragment extends Fragment {
         startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE);
     }
 
-    private void refreshToDos () {
-        refreshToDos = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeRefresh);
-        refreshToDos.setOnRefreshListener(
+    private void refreshTodos () {
+        refreshTodos = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeRefresh);
+        refreshTodos.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
