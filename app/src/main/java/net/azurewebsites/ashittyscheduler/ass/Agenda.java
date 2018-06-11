@@ -58,7 +58,6 @@ public class Agenda extends AppCompatActivity {
         listViewToDo.setAdapter(toDoItems);
 
         toDoItems.clear();
-        //toDoItems.addAll();
 
         AsyncHttpListener listener = new AsyncHttpListener() {
             @Override
@@ -120,19 +119,21 @@ public class Agenda extends AppCompatActivity {
         listViewToDo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position < toDo.length) {
-                    Intent intent = new Intent(getApplicationContext(), MainMenu.class);
-                    startActivityForResult(intent, 0);
-                }
+//                if (position < filteredTodoItems) {
+                ToDo todo = (ToDo) parent.getItemAtPosition(position);
+                Intent intent = new Intent(getApplicationContext(), detailscreen.class);
+                intent.putExtra("todoId", todo.getId());
+                startActivity(intent);
+//                }
             }
         });
 
-        //Todo: On button click, return to current month
+        //Return to view of current month
         btnToday = (Button) findViewById(R.id.btnToday);
         btnToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Agenda.this, "You clicked on this button! ☺", Toast.LENGTH_SHORT).show();
+                calendarView.setDate(Calendar.getInstance().getTimeInMillis(), true, true);
             }
         });
 
@@ -150,16 +151,16 @@ public class Agenda extends AppCompatActivity {
 
                 final ArrayAdapter<ToDo> filteredTodoItems = new ArrayAdapter<ToDo>(getApplicationContext(), android.R.layout.simple_list_item_1);
 
-                // Loop door de lijst met todo's
+                // Loop through the list with todos
                 for(int i=0; i< toDoItems.getCount(); ++i) {
                     ToDo todo = (ToDo) toDoItems.getItem(i);
 
                     Calendar todoDate = todo.getDate();
 
-                    // Als de datum van de todo gelijk is aan de geselecteerde datum
+                    // If the date of the todo is equals to the selected date
                     if (todoDate.get(Calendar.YEAR) == selectedDate.get(Calendar.YEAR) &&
                             todoDate.get(Calendar.DAY_OF_YEAR) == selectedDate.get(Calendar.DAY_OF_YEAR)) {
-                        // Toevoegen aan lijst met gefilterde todos
+                        // Add to list with filtered todos
                         filteredTodoItems.add(todo);
                     }
                 }

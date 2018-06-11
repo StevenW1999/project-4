@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Overview.OverviewFragment">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -16,16 +18,25 @@
         tools:context=".MainMenu"
         tools:showIn="@layout/app_bar_main_menu">
 
-        <ListView
-            android:id="@+id/textView"
-            android:layout_width="383dp"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@color/colorBlack"
-            android:dividerHeight="1dp"
-            android:footerDividersEnabled="true"
-            app:layout_constraintTop_toBottomOf="@+id/dropDownFilter" >
+            android:paddingTop="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dropDownFilter">
 
-        </ListView>
+            <ListView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:divider="@color/colorBlack"
+                android:dividerHeight="1dp"
+                android:drawSelectorOnTop="false"
+                android:footerDividersEnabled="true" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <Spinner
             android:id="@+id/dropDownFilter"
@@ -34,7 +45,8 @@
             android:entries="@array/dropdownYear"
             android:popupBackground="@color/colorGrey"
             android:spinnerMode="dropdown"
-            android:paddingLeft="8dp" />
+            android:paddingLeft="8dp"
+            app:layout_constraintBottom_toTopOf="@id/swipeRefresh"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
