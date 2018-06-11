@@ -38,8 +38,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 public class OverviewFragment extends Fragment {
@@ -192,7 +194,18 @@ public class OverviewFragment extends Fragment {
                 HttpMethod.GET, "http://ashittyscheduler.azurewebsites.net/api/todo/getmytodos",
                 listener);
         task.execute();
+    }
 
+    //Spinner used for filtering of todos by year
+    private void setSpinner() {
+        Spinner spinner =(Spinner) getActivity().findViewById(R.id.dropDownFilter);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                getActivity().getApplicationContext(), R.array.dropdownYear,
+                android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        //Dropdown list of years
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -206,7 +219,7 @@ public class OverviewFragment extends Fragment {
         });
     }
 
-        public void onClick(View v){
+    public void onClick(View v){
         Intent intent = new Intent();
         intent.setClass(getActivity().getApplicationContext(), addtodo.class);
         startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE);
