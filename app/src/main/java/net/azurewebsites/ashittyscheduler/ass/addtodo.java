@@ -38,6 +38,8 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
+import static android.app.AlarmManager.ELAPSED_REALTIME_WAKEUP;
+
 public class addtodo extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 TimePickerDialog timePickerDialog;
 Calendar calendar;
@@ -89,7 +91,7 @@ private TextView reminderDate;
         mRepeatNoText = (TextView) findViewById(R.id.repeatType);
         repeatSwitch = (Switch) findViewById(R.id.repeatSwitch);
 
-        mRepeatIntervalText = (TextView) findViewById(R.id.repeatInterval);
+
 
         repeatSwitch.setOnCheckedChangeListener(this);
 
@@ -133,6 +135,8 @@ private TextView reminderDate;
 
             }
         });
+
+
 
 
 
@@ -183,18 +187,18 @@ private TextView reminderDate;
         if (repeatSwitch.isChecked()){
             repeattText.setText("Repeat ON");
             mRepeatText.setText(  "SELECT REPEAT TYPE");
-            mRepeatIntervalText.setText("Interval");
+
             mRepeatTypeText.setEnabled(true);
-            mRepeatIntervalText.setEnabled(true);
+
 
 
         }
         else {
             repeattText.setText("Repeat OFF");
             mRepeatText.setText("Repeat OFF");
-            mRepeatIntervalText.setText("Repeat OFF");
+
             mRepeatTypeText.setEnabled(false);
-            mRepeatIntervalText.setEnabled(false);
+
 
 
 
@@ -203,10 +207,9 @@ private TextView reminderDate;
 
     }
 
+
+
     public void CancelButtonClicked(View view) {
-//        Intent intent = new Intent();
-//        intent.setClass(addtodo.this, MainMenu.class);
-//        startActivity(intent);
         finish();
     }
 
@@ -288,9 +291,9 @@ private TextView reminderDate;
 //select repeat type
     public void selectRepeatType(View v){
         final String[] items = new String[3];
-        items[0] = "Day";
-        items[1] = "Week";
-        items[2] = "Month";
+        items[0] = "Daily";
+        items[1] = "Weekly";
+        items[2] = "Monthly";
 
         // Create List Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -301,45 +304,14 @@ private TextView reminderDate;
 
                 mRepeatType = items[item];
                 mRepeatTypeText.setText(mRepeatType);
-                mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
+                mRepeatText.setText(mRepeatType);
             }
         });
         AlertDialog alert = builder.create();
         alert.show();
     }
 
-//input repeat interval
-    public void setRepeatNo(View v){
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Enter Number");
 
-        // Create EditText box to input repeat number
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        alert.setView(input);
-        alert.setPositiveButton("Ok",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                        if (input.getText().toString().length() == 0) {
-                            mRepeatNo = Integer.toString(1);
-                            mRepeatNoText.setText(mRepeatNo);
-                            mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
-                        }
-                        else {
-                            mRepeatNo = input.getText().toString().trim();
-                            mRepeatNoText.setText(mRepeatNo);
-                            mRepeatText.setText("Every " + mRepeatNo + " " + mRepeatType + "(s)");
-                        }
-                    }
-                });
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // do nothing
-            }
-        });
-        alert.show();
-    }
 
 
 
@@ -359,6 +331,7 @@ private TextView reminderDate;
         String remindertimeText = ((TextView)findViewById(R.id.remindertime)).getText().toString();
         String repeatTxt = ((TextView)findViewById(R.id.repeatText)).getText().toString();
         String notificationText = ((TextView)findViewById(R.id.notificationsTextView)).getText().toString();
+        Boolean Status = false;
 
 
         if (messageText.equals("")){
@@ -366,12 +339,14 @@ private TextView reminderDate;
 
         }
         else {
+
             // create body parameters
             Pair[] parameters = new Pair[]{
                     new Pair("Title", messageText),
                     new Pair("Description", DescText),
                     new Pair("Date", dateText+ "T" + timeText),
-                    new Pair("DateReminder", reminderdateText+ "T" + remindertimeText) // TODO: Add reminder date
+                    new Pair("DateReminder", reminderdateText+ "T" + remindertimeText),
+                    new Pair("Todo_Status", Status)
             };
 
             HttpTask task = new HttpTask(this.getApplicationContext(),
@@ -383,7 +358,7 @@ private TextView reminderDate;
                         @Override
                         public void onBeforeExecute() {
                             // show a progress dialog (duh)
-                            progressDialog = android.app.ProgressDialog.show(addtodo.this,
+                            progressDialog = ProgressDialog.show(addtodo.this,
                                     "Creating todo",
                                     "Please wait");
                         }
@@ -400,7 +375,6 @@ private TextView reminderDate;
                                 Toast.makeText(getApplicationContext(), "FAILED TO CREATE TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
 
-                            Log.d("ERROR CREATE TODO", httpResponse.getMessage());
 
                         }
 
