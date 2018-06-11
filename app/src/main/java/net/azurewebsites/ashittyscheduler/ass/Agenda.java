@@ -121,7 +121,7 @@ public class Agenda extends AppCompatActivity {
         }
 
 
-        //For every item onclick in listview, go to detailscreen for that item
+        //For every item onclick in listview, go to detailscreen for that corresponding item
         listViewToDo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -157,16 +157,16 @@ public class Agenda extends AppCompatActivity {
 
                 final ArrayAdapter<ToDo> filteredTodoItems = new ArrayAdapter<ToDo>(getApplicationContext(), android.R.layout.simple_list_item_1);
 
-                // Loop door de lijst met todo's
+                // Loop through the list with todos
                 for(int i=0; i< toDoItems.getCount(); ++i) {
                     ToDo todo = (ToDo) toDoItems.getItem(i);
 
                     Calendar todoDate = todo.getDate();
 
-                    // Als de datum van de todo gelijk is aan de geselecteerde datum
+                    // If the date of the todo is equals to the selected date
                     if (todoDate.get(Calendar.YEAR) == selectedDate.get(Calendar.YEAR) &&
                             todoDate.get(Calendar.DAY_OF_YEAR) == selectedDate.get(Calendar.DAY_OF_YEAR)) {
-                        // Toevoegen aan lijst met gefilterde todos
+                        // Add to list with filtered todos
                         filteredTodoItems.add(todo);
                     }
                 }
