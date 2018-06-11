@@ -253,10 +253,11 @@ public class edittodo extends AppCompatActivity {
         String timeText = ((TextView)findViewById(R.id.EditTime)).getText().toString();
         String RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
         String RtimeText = ((TextView)findViewById(R.id.EditRTime)).getText().toString();
-//        String repeatTxt = ((TextView)findViewById(R.id.repeatText)).getText().toString();
-//        String notificationText = ((TextView)findViewById(R.id.notificationsTextView)).getText().toString();
+
+
         Intent intent = getIntent();
         String todoId = intent.getStringExtra("todoId");
+        Log.d("TODOID", todoId);
 
         if (messageText.equals("")){
             Toast.makeText(this, "PLEASE GIVE THE TODO A TITLE", Toast.LENGTH_SHORT).show();
@@ -264,13 +265,15 @@ public class edittodo extends AppCompatActivity {
         }
         else {
 
+
             // create body parameters
             Pair[] parameters = new Pair[]{
-                    new Pair("todoId", todoId),
+                    new Pair("Id", todoId),
                     new Pair("Title", messageText),
                     new Pair("Description", DescText),
                     new Pair("Date", dateText+ "T" + timeText),
-                    new Pair("DateReminder", RdateText+ "T" + RtimeText)
+                    new Pair("DateReminder", RdateText+ "T" + RtimeText),
+
             };
 
             HttpTask task = new HttpTask(this.getApplicationContext(),
@@ -282,7 +285,7 @@ public class edittodo extends AppCompatActivity {
                         @Override
                         public void onBeforeExecute() {
                             // show a progress dialog (duh)
-                            progressDialog = android.app.ProgressDialog.show(edittodo.this,
+                            progressDialog = ProgressDialog.show(edittodo.this,
                                     "Updating todo",
                                     "Please wait");
                         }

@@ -9,9 +9,10 @@ public class ToDo {
     private String description;
     private Calendar date;
 
+
     // TODO: Add getters and setters for these
     private String time;
-    private Calendar dateReminder;
+    private Calendar reminderDate;
 
     public String getId() {
         return id;
@@ -27,6 +28,14 @@ public class ToDo {
 
     public Calendar getDate() {
         return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public Calendar getReminderDate() {
+        return reminderDate;
     }
 
     public void setId(String id) {
@@ -45,6 +54,13 @@ public class ToDo {
         this.date = date;
     }
 
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setReminderDate(Calendar reminderDate) {
+        this.reminderDate = reminderDate;
+    }
 
     @Override
     public String toString() {

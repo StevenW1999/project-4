@@ -31,6 +31,7 @@ import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
+import net.azurewebsites.ashittyscheduler.ass.profile.ProfileActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,10 +66,15 @@ public class FriendsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-                User o = ((User) listView.getItemAtPosition(position));
-                Log.d("USERNAME:", "onItemClick: " + o);
-                Toast.makeText(getApplicationContext(), o.getUsername(), Toast.LENGTH_SHORT).show();
-                LoadFriendChat(FriendChatActivity.class , o);
+                User user = ((User) listView.getItemAtPosition(position));
+                Log.d("USERNAME:", "onItemClick: " + user);
+                Toast.makeText(getApplicationContext(), user.getUsername(), Toast.LENGTH_SHORT).show();
+
+                // Load the chat for this friend (DISABLED!!!)
+                //LoadFriendChat(FriendChatActivity.class , o);
+
+                // Load the profile for this friend
+                LoadFriendProfile(FriendChatActivity.class , user.getId());
             }
         });
         LoadFriendList();
@@ -268,6 +274,13 @@ public class FriendsActivity extends AppCompatActivity {
         Intent loadPage = new Intent(this,ActivityName);
         loadPage.putExtra("User" , o);
         startActivity(loadPage);
+    }
+
+    private void LoadFriendProfile(Class ActivityName, String userId) {
+        Intent intent = new Intent();
+        intent.setClass(FriendsActivity.this, ProfileActivity.class);
+        intent.putExtra("UserId", userId);
+        startActivity(intent);
     }
 }
 

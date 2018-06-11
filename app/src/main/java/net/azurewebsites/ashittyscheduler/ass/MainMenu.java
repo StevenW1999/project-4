@@ -1,10 +1,14 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
@@ -29,6 +33,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import net.azurewebsites.ashittyscheduler.ass.Overview.OverviewFragment;
+import net.azurewebsites.ashittyscheduler.ass.profile.ProfileActivity;
+import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
+import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
 import net.azurewebsites.ashittyscheduler.ass.profile.ProfileFragment;
 import net.azurewebsites.ashittyscheduler.ass.settings.SettingsFragment;
 
@@ -51,12 +61,15 @@ public class MainMenu extends AppCompatActivity
 
         @Override
         public void onDrawerClosed(@NonNull View drawerView) {
+            // If there is a fragment to set
             if (fragmentToSet != null) {
+                // Replace the framelayout with the fragment to set
                 getFragmentManager()
                         .beginTransaction()
                         .replace(R.id.frameLayout, fragmentToSet)
                         .commit();
 
+                // And reset the variable
                 fragmentToSet = null;
             }
         }
@@ -99,7 +112,7 @@ public class MainMenu extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
         //TextView t = (TextView)findViewById(R.id.textViewIdForUsername);
@@ -109,19 +122,26 @@ public class MainMenu extends AppCompatActivity
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-                getSupportActionBar().setTitle("Profile");
 
                 // use the logged in users' own user id to show their profile
                 String userId = getSharedPreferences(ApplicationConstants.PREFERENCES, Context.MODE_PRIVATE).getString("UserId", null);
 
-                Bundle bundle = new Bundle();
-                bundle.putString("UserId", userId);
+                Intent intent = new Intent();
+                intent.setClass(MainMenu.this, ProfileActivity.class);
+                intent.putExtra("UserId", userId);
 
-                fragmentToSet = new ProfileFragment();
-                fragmentToSet.setArguments(bundle);
+                // make sure all the menu items are uncheckedd
+                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                int size = navigationView.getMenu().size();
+                for(int i=0; i<size; ++i) {
+                    navigationView.getMenu().getItem(i).setChecked(false);
+                }
 
+                // start the profile activity
+                startActivity(intent);
+
+                // and close the menu
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(Gravity.LEFT, true);
             }
         });
@@ -153,11 +173,74 @@ public class MainMenu extends AppCompatActivity
         } else if (id == R.id.nav_Settings) {
 
             getSupportActionBar().setTitle("Settings");
-            // fragment to set = settings
+
+            // set the settings fragment after closing the drawer
             fragmentToSet = new SettingsFragment();
 
         } else if (id == R.id.nav_Rateus) {
             getSupportActionBar().setTitle("Rate us");
+        }
+        else if (id == R.id.nav_Logout) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Log out")
+                    .setMessage("Are you sure you want to leave us?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            String url = "http://ashittyscheduler.azurewebsites.net/api/users/logout";
+
+                            HttpTask logoutTask = new HttpTask(
+                                    MainMenu.this,
+                                    HttpMethod.PUT,
+                                    url,
+                                    new AsyncHttpListener() {
+
+                                        private ProgressDialog progressDialog;
+
+                                        @Override
+                                        public void onBeforeExecute() {
+                                            progressDialog = ProgressDialog.show(MainMenu.this,
+                                                    "Logging out",
+                                                    "Please wait");
+                                        }
+
+                                        @Override
+                                        public void onResponse(HttpResponse httpResponse) {
+                                            if (httpResponse.getCode() == HttpStatusCode.OK.getCode()) {
+                                                //200, we've successfully logged out
+                                                Toast.makeText(getApplicationContext(), "You have been logged out.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onFinishExecuting() {
+                                            progressDialog.dismiss();
+
+                                            // delete local token and user id
+                                            SharedPreferences.Editor editor = getSharedPreferences(ApplicationConstants.PREFERENCES, Context.MODE_PRIVATE).edit();
+                                            editor.remove("Token");
+                                            editor.remove("UserId");
+                                            editor.commit();
+
+                                            // return to the login screen
+                                            Intent i = new Intent();
+                                            i.setClass(MainMenu.this, LoginActivity.class);
+                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(i);
+                                        }
+                                    });
+
+                            logoutTask.execute();
+
+                        }
+                    })
+                    .setNegativeButton("No!", null)
+                    .show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

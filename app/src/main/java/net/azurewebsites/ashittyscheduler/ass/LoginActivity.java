@@ -37,10 +37,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //Set main thread policy to acces internet
         StrictMode.setThreadPolicy(policy);
-        //Default starting acitvity
+        //Default starting activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         final Button signIn = (Button) findViewById(R.id.signIn);
+
+        // Sign in button
         signIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -54,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Register new acc button
         final Button register = (Button) findViewById(R.id.register);
         register.setOnClickListener(new View.OnClickListener() {
 
@@ -62,10 +66,70 @@ public class LoginActivity extends AppCompatActivity {
                 LoadNewPage(RegisterActivity.class);
             }
         });
+
+        // If there's an active token, attempt a login with the token
+        String token = getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE).getString("Token", null);
+
+        if (token != null) {
+            // token is available... try to sign in using the token
+
+            //TODO: We should only do this if 'remember me' was checked!!! ok
+           automaticSignIn();
+        }
     }
 
     private void ShowFail() {
         Toast.makeText(this,"Something went wrong...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void automaticSignIn() {
+
+        HttpTask task = new HttpTask(this, HttpMethod.PUT,
+                "https://ashittyscheduler.azurewebsites.net/api/users/autologin",
+                new AsyncHttpListener() {
+
+                    private ProgressDialog progressDialog;
+
+                    @Override
+                    public void onBeforeExecute() {
+                        // show a progress dialog (duh)
+                        progressDialog = ProgressDialog.show(LoginActivity.this,
+                                "Logging in",
+                                "Please wait");
+                    }
+
+                    @Override
+                    public void onResponse(HttpResponse httpResponse) {
+
+                        // obtain code
+                        int code = httpResponse.getCode();
+
+                        if(code == HttpStatusCode.OK.getCode()){
+
+                            // we have been automatically logged back in. good.
+                            String welcomeMessage = httpResponse.getMessage().replace("\"", "");
+                            Toast.makeText(getApplicationContext(), welcomeMessage, Toast.LENGTH_LONG).show();
+
+                            LoadNewPage(MainMenu.class);
+                            finish();
+
+                        } else if (code == HttpStatusCode.UNAUTHORIZED.getCode()){
+                            Toast.makeText(getApplicationContext(), "Please log in.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError() {
+                        Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFinishExecuting() {
+                        progressDialog.dismiss();
+                    }
+                });
+
+        task.execute();
     }
 
     private void signIn() throws IOException {
