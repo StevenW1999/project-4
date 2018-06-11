@@ -322,7 +322,7 @@ private TextView reminderDate;
     //add todo to the listview
     public void addButtonClicked (View v){
         String messageText = ((EditText)findViewById(R.id.titleText)).getText().toString();
-        String DescText = ((EditText)findViewById(R.id.locationText)).getText().toString();
+        String DescText = ((EditText)findViewById(R.id.descriptionText)).getText().toString();
         String dateText = ((TextView)findViewById(R.id.date)).getText().toString();
         String timeText = ((TextView)findViewById(R.id.timePlainText)).getText().toString();
         String reminderdateText = ((TextView)findViewById(R.id.reminderdate)).getText().toString();
