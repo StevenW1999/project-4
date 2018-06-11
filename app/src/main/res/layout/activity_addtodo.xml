@@ -143,28 +143,13 @@
         android:id="@+id/repeatType"
         android:layout_width="358dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:onClick="selectRepeatType"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/repeatInterval"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatText" />
-
-    <TextView
-        android:id="@+id/repeatInterval"
-        android:layout_width="358dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:layout_marginStart="16dp"
-        android:clickable="true"
-        android:onClick="setRepeatNo"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repeatType" />
 
     <Button
         android:id="@+id/button"
@@ -172,14 +157,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:onClick="CancelButtonClicked"
         android:text="Cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/notificationsTextView"
-        app:layout_constraintStart_toStartOf="@+id/repeatInterval"
-        app:layout_constraintTop_toBottomOf="@+id/repeatInterval"
-        android:onClick="CancelButtonClicked"/>
+        app:layout_constraintEnd_toEndOf="@+id/notificationsTextView" />
 
     <TextView
         android:id="@+id/reminderdate"

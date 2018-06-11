@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,15 +28,21 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class detailscreen extends AppCompatActivity {
+public class detailscreen extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
 
+    private String todoId;
     private TextView tv_title;
     private TextView tv_description;
     private TextView tv_date;
     private TextView tv_time;
     private TextView tv_Rdate;
     private TextView tv_Rtime;
+    private Switch statusSwitch;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +55,13 @@ public class detailscreen extends AppCompatActivity {
         tv_time = findViewById(R.id.DTime);
         tv_Rdate = findViewById(R.id.DreminderDate);
         tv_Rtime = findViewById(R.id.DreminderTime);
+        statusSwitch = findViewById(R.id.StatusSwitch);
+        statusSwitch.setOnCheckedChangeListener(this);
 
         Intent intent = getIntent();
-        String todoId = intent.getStringExtra("todoId");
+        this.todoId = intent.getStringExtra("todoId");
+
+
 
         Pair[] parameters = new Pair[]{
                 new Pair("todoId", todoId)
@@ -67,7 +79,7 @@ public class detailscreen extends AppCompatActivity {
                     @Override
                     public void onBeforeExecute() {
                         // show a progress dialog (duh)
-                        progressDialog = android.app.ProgressDialog.show(detailscreen.this,
+                        progressDialog = ProgressDialog.show(detailscreen.this,
                                 "Getting todo",
                                 "Please wait");
                     }
@@ -94,7 +106,7 @@ public class detailscreen extends AppCompatActivity {
                                 }
                                 String[] RdateTime = todo.getString("DateReminder").split("T");
 
-                                tv_Rdate.setText(dateTime[0]);
+                                tv_Rdate.setText(RdateTime[0]);
 
                                 // if there is a time
                                 if (RdateTime.length > 1) {
@@ -126,8 +138,8 @@ public class detailscreen extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                 });
-         httpTask.setUriParameters(parameters);
-         httpTask.execute();
+        httpTask.setUriParameters(parameters);
+        httpTask.execute();
 
 
     }
@@ -135,8 +147,8 @@ public class detailscreen extends AppCompatActivity {
     public void EditButtonClicked(View view) {
         Intent intent = new Intent();
         intent.setClass(detailscreen.this, edittodo.class);
-        String todoId = intent.getStringExtra("todoId");
-        intent.putExtra("todoId", todoId);
+
+        intent.putExtra("todoId", this.todoId);
         startActivity(intent);
 
 }
@@ -147,19 +159,18 @@ public void DeleteButtonClicked(View view){
         mBuilder.setMessage(R.string.dialog_message);
         mBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
-
-            Intent intent = getIntent();
-            String todoId = intent.getStringExtra("todoId");
             Pair[] parameters = new Pair[]{
                     new Pair("todoId", todoId)};
 
             @Override
             public void onClick(DialogInterface dialog, int i) {
+
                 HttpTask httpTask = new HttpTask(getApplicationContext(),
                         HttpMethod.DELETE,
                         "http://ashittyscheduler.azurewebsites.net/api/todo/delete",
 
                         new AsyncHttpListener() {
+
 
                             @Override
                             public void onBeforeExecute() {
@@ -199,6 +210,7 @@ public void DeleteButtonClicked(View view){
 
                 httpTask.setUriParameters(parameters);
                 httpTask.execute();
+
             }
 
         });
@@ -214,5 +226,78 @@ public void DeleteButtonClicked(View view){
     }
 
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (statusSwitch.isChecked()){
+            Toast.makeText(getApplicationContext(), "HI ", Toast.LENGTH_SHORT).show();
+            statusSwitch.setText("DONE");
+//            try {
+//
+//
+//                // create body parameters
+//                Pair[] parameters = new Pair[]{
+//                        new Pair("Id", todoId),
+//                        new Pair("Todo_Status", statusSwitch)
+//
+//                };
+//
+//                HttpTask task = new HttpTask(this.getApplicationContext(),
+//                        HttpMethod.PUT,
+//                        "http://ashittyscheduler.azurewebsites.net/api/todo/update",
+//                        new AsyncHttpListener() {
+//                            private ProgressDialog progressDialog;
+//
+//                            @Override
+//                            public void onBeforeExecute() {
+//                                // show a progress dialog (duh)
+//                                progressDialog = android.app.ProgressDialog.show(detailscreen.this,
+//                                        "Updating todo",
+//                                        "Please wait");
+//                            }
+//
+//                            @Override
+//                            public void onResponse(HttpResponse httpResponse) {
+//
+//                                int code = httpResponse.getCode();
+//
+//                                if (code == HttpStatusCode.OK.getCode()){
+//                                    Toast.makeText(getApplicationContext(), "TODO UPDATED", Toast.LENGTH_SHORT).show();
+//                                }
+//                                else{
+//                                    Toast.makeText(getApplicationContext(), "FAILED TO update TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+//                                }
+//
+//
+//                            }
+//
+//                            @Override
+//                            public void onError() {
+//
+//
+//                            }
+//
+//                            @Override
+//                            public void onFinishExecuting() {
+//                                // dismiss the progress dialog (duh)
+//                                progressDialog.dismiss();
+//                            }
+//                        }
+//                );
+//
+//                // set body parameters
+//                task.setBodyParameters(parameters);
+//                task.execute();
+//
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//
+//            finish();
+//        }
+        }
+    }}
 
-}
+
