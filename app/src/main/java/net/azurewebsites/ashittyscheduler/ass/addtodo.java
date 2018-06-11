@@ -8,15 +8,10 @@ import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -36,7 +31,6 @@ import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 
 public class addtodo extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 TimePickerDialog timePickerDialog;
@@ -355,7 +349,7 @@ private TextView reminderDate;
     //add todo to the listview
     public void addButtonClicked (View v){
         String messageText = ((EditText)findViewById(R.id.titleText)).getText().toString();
-        String DescText = ((EditText)findViewById(R.id.descriptionText)).getText().toString();
+        String DescText = ((EditText)findViewById(R.id.locationText)).getText().toString();
         String dateText = ((TextView)findViewById(R.id.date)).getText().toString();
         String timeText = ((TextView)findViewById(R.id.timePlainText)).getText().toString();
         String reminderdateText = ((TextView)findViewById(R.id.reminderdate)).getText().toString();
