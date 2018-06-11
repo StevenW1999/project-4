@@ -36,6 +36,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class OverviewFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -132,7 +133,6 @@ public class OverviewFragment extends Fragment {
                             todo.setId(todoJSON.getString("Id"));
                             todo.setTitle(todoJSON.getString("Title"));
                             todo.setDescription(todoJSON.getString("Description"));
-
                             //TODO: Add Date, DateReminder etc...
 
                             toDoItems.add(todo);
@@ -187,4 +187,9 @@ public class OverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_overview, container, false);
     }
+
+//    public void onResume() {
+//        super.onResume();
+//
+//    }
 }
