@@ -100,43 +100,39 @@ public class FriendChatActivity extends AppCompatActivity {
                 new Pair<>("UsernameFriend", this.talkingTo),
                 new Pair<>("Message" , texts.message)
         };
-        try {
-            HttpTask task = new HttpTask(context, HttpMethod.POST, "http://ashittyscheduler.azurewebsites.net/api/chat/sendMessage", new AsyncHttpListener() {
-                private ProgressDialog progressDialog;
-                @Override
-                public void onBeforeExecute() {
-                    progressDialog = ProgressDialog.show(context,
-                            "Sending message",
-                            "Please wait");
-                }
+        HttpTask task = new HttpTask(context, HttpMethod.POST, "http://ashittyscheduler.azurewebsites.net/api/chat/sendMessage", new AsyncHttpListener() {
+            private ProgressDialog progressDialog;
+            @Override
+            public void onBeforeExecute() {
+                progressDialog = ProgressDialog.show(context,
+                        "Sending message",
+                        "Please wait");
+            }
 
-                @Override
-                public void onResponse(HttpResponse httpResponse) {
-                    int code = httpResponse.getCode();
-                    httpResponse.getMessage();
-                    if(code == HttpStatusCode.OK.getCode()){
-                        Toast.makeText(context,"Message send", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context,"Could not submit message", Toast.LENGTH_SHORT).show();
-                    }
+            @Override
+            public void onResponse(HttpResponse httpResponse) {
+                int code = httpResponse.getCode();
+                httpResponse.getMessage();
+                if(code == HttpStatusCode.OK.getCode()){
+                    Toast.makeText(context,"Message send", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context,"Could not submit message", Toast.LENGTH_SHORT).show();
                 }
+            }
 
-                @Override
-                public void onError() {
-                    Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
-                }
+            @Override
+            public void onError() {
+                Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+            }
 
-                @Override
-                public void onFinishExecuting() {
-                    progressDialog.dismiss();
-                    adapter.getData(user);
-                }
-            });
-            task.setBodyParameters(parameters);
-            task.execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void onFinishExecuting() {
+                progressDialog.dismiss();
+                adapter.getData(user);
+            }
+        });
+        task.setBodyParameters(parameters);
+        task.execute();
     }
 
 
@@ -251,52 +247,48 @@ class ListAdapter1 extends ArrayAdapter<Texts> {
         Pair[] parameters = new Pair[] {
                 new Pair<>("receiverId", user.getId()),
         };
-        try {
-            HttpTask task = new HttpTask(context, HttpMethod.GET, "http://ashittyscheduler.azurewebsites.net/api/chat/getmessages", new AsyncHttpListener() {
-                //private ProgressDialog progressDialog;
-                @Override
-                public void onBeforeExecute() {
-                    //progressDialog = ProgressDialog.show(context,
-                    //        "Getting messages",
-                    //        "Please wait");
-                }
+        HttpTask task = new HttpTask(context, HttpMethod.GET, "http://ashittyscheduler.azurewebsites.net/api/chat/getmessages", new AsyncHttpListener() {
+            //private ProgressDialog progressDialog;
+            @Override
+            public void onBeforeExecute() {
+                //progressDialog = ProgressDialog.show(context,
+                //        "Getting messages",
+                //        "Please wait");
+            }
 
-                @Override
-                public void onResponse(HttpResponse httpResponse) {
-                    try {
-                        JSONArray textsList = new JSONArray(httpResponse.getMessage());
+            @Override
+            public void onResponse(HttpResponse httpResponse) {
+                try {
+                    JSONArray textsList = new JSONArray(httpResponse.getMessage());
 
-                        for(int i =0; i<textsList.length(); ++i) {
-                            JSONObject texts = textsList.getJSONObject(i);
-                            Texts textMessage;
-                            if(texts.getString("SenderId").equals(friendId)){
-                                textMessage = new Texts(texts.getString("Message"), false);
-                            }else{
-                                textMessage = new Texts(texts.getString("Message"), true);
-                            }
-                            textsArrayList.add(textMessage);
+                    for(int i =0; i<textsList.length(); ++i) {
+                        JSONObject texts = textsList.getJSONObject(i);
+                        Texts textMessage;
+                        if(texts.getString("SenderId").equals(friendId)){
+                            textMessage = new Texts(texts.getString("Message"), false);
+                        }else{
+                            textMessage = new Texts(texts.getString("Message"), true);
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        textsArrayList.add(textMessage);
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+            }
 
-                @Override
-                public void onError() {
-                    Toast.makeText(context, "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
-                }
+            @Override
+            public void onError() {
+                Toast.makeText(context, "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+            }
 
-                @Override
-                public void onFinishExecuting() {
-                    //progressDialog.dismiss();
-                    setData(textsArrayList);
-                }
-            });
-            task.setUriParameters(parameters);
-            task.execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void onFinishExecuting() {
+                //progressDialog.dismiss();
+                setData(textsArrayList);
+            }
+        });
+        task.setUriParameters(parameters);
+        task.execute();
     }
 
 }
