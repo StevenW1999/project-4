@@ -1,5 +1,6 @@
 package net.azurewebsites.ashittyscheduler.ass.http;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -21,6 +22,7 @@ public class HttpTask extends AsyncTask<Void, Void, HttpResponse>{
 
     public static final String USER_AGENT = "Mozilla/5.0";
 
+    @SuppressLint("StaticFieldLeak")
     private final Context context;
     private String url;
 

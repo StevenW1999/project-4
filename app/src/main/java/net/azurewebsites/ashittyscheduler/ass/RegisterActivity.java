@@ -18,10 +18,18 @@ import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
 
 import java.io.IOException;
 
+/**
+ *
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String URLString = "https://ashittyscheduler.azurewebsites.net/api/users/register";
+
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +58,17 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     */
     private void showFailed() {
         Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     private void registerAccount() throws IOException{
 
         EditText usernameField = (EditText)findViewById(R.id.usernameField);
@@ -117,6 +132,11 @@ public class RegisterActivity extends AppCompatActivity {
             task.execute();
         }
     }
+
+    /**
+     *
+     * @param ActivityName
+     */
     private void LoadNewPage(Class ActivityName) {
         Intent loadPage = new Intent(this,ActivityName);
         startActivity(loadPage);

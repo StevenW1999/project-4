@@ -25,14 +25,27 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+/**
+ * This is class is the activity for the login screen.
+ * This loads the home screen in which you come when you start the application.
+ * @see AppCompatActivity for base class.
+ * @author Beau
+ * @author Robin
+ */
+
 public class LoginActivity extends AppCompatActivity {
 
     //Setting internet acces policy
-    // Test
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-    //
+    //Class variables. These are static cause they remain the same for all within objects being created.
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String URLString = "https://ashittyscheduler.azurewebsites.net/api/users/login";
+
+    /**
+     * @param savedInstanceState needs a bundle instance on creation of the layout activity.
+     * @return an object activity containing the layout.
+     * Once this has been loaded the program will start to run.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Set main thread policy to acces internet
@@ -64,10 +77,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Toast that shows a fail has occurred when this method has been called.
+     */
     private void ShowFail() {
         Toast.makeText(this,"Something went wrong...", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * @throws IOException when given wrong information.
+     * Takes input from the fields from out layout.
+     * When this method is called the login sequence is being started.
+     * {@link HttpTask} for connection with the web api to login.
+     */
     private void signIn() throws IOException {
 
         EditText usernameBox = (EditText)findViewById(R.id.Username);
@@ -151,6 +173,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * @param ActivityName : Needs a class name and class specified as a parameter.
+     * Once this method is called with a correct parameter it will start a new activity.
+     * @return Void: but starts a new activity.
+     */
     private void LoadNewPage(Class ActivityName) {
         Intent loadPage = new Intent(this,ActivityName);
         startActivity(loadPage);
