@@ -40,8 +40,7 @@
             android:layout_height="wrap_content"
             android:entries="@array/dropdownYear"
             android:popupBackground="@color/colorGrey"
-            android:spinnerMode="dropdown"
-            android:paddingLeft="8dp" />
+            android:spinnerMode="dropdown" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
