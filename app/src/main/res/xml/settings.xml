@@ -18,45 +18,33 @@
 
     <PreferenceCategory android:title="User Settings">
         <EditTextPreference
-            android:defaultValue="Default value"
             android:key="edit_username"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="Change Username" />
         <EditTextPreference
-            android:defaultValue="Default value"
             android:key="edit_email"
             android:selectAllOnFocus="true"
-            android:singleLine="false"
-            android:title="Change Email" />
-        <EditTextPreference
-            android:defaultValue="Default value"
-            android:key="edit_password"
-            android:selectAllOnFocus="true"
             android:singleLine="true"
+            android:title="Change Email" />
+        <Preference
+            android:key="edit_password"
             android:title="Change Password"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="Location Services">
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="switch_location_services"
-            android:title="Enable Location Services" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Notifications">
         <SwitchPreference
             android:defaultValue="true"
             android:key="switch_notifications_todos"
-            android:title="Receive notifications for todo's" />
+            android:title="Notifications for To-do's" />
         <SwitchPreference
             android:defaultValue="true"
             android:key="switch_notifications_chat"
-            android:title="Receive notifications for chat messages" />
+            android:title="Notifications for chat messages" />
         <SwitchPreference
             android:defaultValue="true"
             android:key="switch_notifications_friends"
-            android:title="Receive notifications for friend requests" />
+            android:title="Notifications for friend requests" />
     </PreferenceCategory>
 
 </PreferenceScreen>
