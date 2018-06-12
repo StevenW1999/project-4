@@ -153,29 +153,11 @@ public class ProfileActivity extends Activity {
                                 else {
                                     if (user.isFriend()) {
                                         // User is already my friend, change to remove button
-                                        btn_friend.setText("Remove friend");
-                                        btn_friend.setBackgroundColor(Color.RED);
-
-                                        btn_friend.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                // TODO: STATE: FRIENDED,
-                                                // TODO: REMOVE FRIEND FUNCTION (with confirmation dialog of course)
-                                            }
-                                        });
+                                        SetFriendButton(FriendButtonState.REMOVE);
                                     }
                                     else {
-                                        // User is not a friend yet, friend request button
-                                        btn_friend.setText("Send friend request");
-                                        btn_friend.setBackgroundColor(Color.GREEN);
-                                        //TODO: Check if friend request pending... ??
-                                        btn_friend.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                // TODO: SEND FRIEND REQUEST FUNCTION
-                                                // TODO: STATES : (ADD, PENDING, REMOVE)
-                                            }
-                                        });
+                                        // User is not a friend yet, 'send friend request' button
+                                        SetFriendButton(FriendButtonState.ADD);
                                     }
 
                                     // Chat button action
@@ -212,4 +194,43 @@ public class ProfileActivity extends Activity {
         task.setUriParameters(parameters);
         task.execute();
     }
+
+    private void SetFriendButton(FriendButtonState state) {
+        switch(state) {
+            case ADD:
+                btn_friend.setText("Send friend request");
+                btn_friend.setBackgroundColor(Color.GREEN);
+                btn_friend.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_input_add,0, 0, 0);
+                btn_friend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO: Send friend request
+                    }
+                });
+                break;
+            case PENDING:
+                btn_friend.setText("Cancel friend request");
+                btn_friend.setBackgroundColor(Color.rgb(255, 102, 0));
+                btn_friend.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_input_delete,0, 0, 0);
+                btn_friend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO: Cancel friend request
+                    }
+                });
+                break;
+            case REMOVE:
+                btn_friend.setText("Remove friend");
+                btn_friend.setBackgroundColor(Color.RED);
+                btn_friend.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_menu_delete,0, 0, 0);
+                btn_friend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO: Remove friend
+                    }
+                });
+                break;
+        }
+    }
+
 }
