@@ -198,7 +198,8 @@ public class ProfileActivity extends Activity {
 
                     @Override
                     public void onError() {
-                        Toast.makeText(ProfileActivity.this, "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, "Could not load profile. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     @Override
