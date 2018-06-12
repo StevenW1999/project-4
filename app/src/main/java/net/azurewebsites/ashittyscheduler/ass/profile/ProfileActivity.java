@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -47,12 +48,18 @@ public class ProfileActivity extends Activity {
             btn_friend,
             btn_chat;
 
+    private ConstraintLayout cs_layout;
+
     private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        // Layout
+        cs_layout = findViewById(R.id.profile_layout);
+        cs_layout.setVisibility(View.INVISIBLE);
 
         // Image views
         iv_avatar = findViewById(R.id.avatar);
@@ -94,6 +101,7 @@ public class ProfileActivity extends Activity {
 
                     @Override
                     public void onBeforeExecute() {
+                        cs_layout.setVisibility(View.INVISIBLE);
                         progressDialog = ProgressDialog.show(ProfileActivity.this,"Loading profile","Please wait");
                     }
 
@@ -195,6 +203,7 @@ public class ProfileActivity extends Activity {
 
                     @Override
                     public void onFinishExecuting() {
+                        cs_layout.setVisibility(View.VISIBLE);
                         progressDialog.dismiss();
                     }
                 });

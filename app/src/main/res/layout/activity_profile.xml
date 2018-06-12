@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/profile_layout"
     tools:context=".profile.ProfileActivity">
 
     <ImageView
@@ -27,7 +28,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
-        android:text="123456789012345678901234567890"
+        android:text="Display Name"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.Compat.Notification.Title"
         android:textColor="@color/white"
