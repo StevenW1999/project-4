@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -47,12 +48,18 @@ public class ProfileActivity extends Activity {
             btn_friend,
             btn_chat;
 
+    private ConstraintLayout cs_layout;
+
     private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        // Layout
+        cs_layout = findViewById(R.id.profile_layout);
+        cs_layout.setVisibility(View.INVISIBLE);
 
         // Image views
         iv_avatar = findViewById(R.id.avatar);
@@ -94,6 +101,7 @@ public class ProfileActivity extends Activity {
 
                     @Override
                     public void onBeforeExecute() {
+                        cs_layout.setVisibility(View.INVISIBLE);
                         progressDialog = ProgressDialog.show(ProfileActivity.this,"Loading profile","Please wait");
                     }
 
@@ -145,30 +153,11 @@ public class ProfileActivity extends Activity {
                                 else {
                                     if (user.isFriend()) {
                                         // User is already my friend, change to remove button
-                                        btn_friend.setText("Remove friend");
-                                        btn_friend.setBackgroundColor(Color.RED);
-
-                                        btn_friend.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                // TODO: STATE: FRIENDED,
-                                                // TODO: REMOVE FRIEND FUNCTION (with confirmation dialog of course)
-                                                RemoveFriendAction(user);
-                                            }
-                                        });
+                                        SetFriendButton(FriendButtonState.REMOVE);
                                     }
                                     else {
-                                        // User is not a friend yet, friend request button
-                                        btn_friend.setText("Send friend request");
-                                        btn_friend.setBackgroundColor(Color.GREEN);
-                                        //TODO: Check if friend request pending... ??
-                                        btn_friend.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                // TODO: SEND FRIEND REQUEST FUNCTION
-                                                // TODO: STATES : (ADD, PENDING, REMOVE)
-                                            }
-                                        });
+                                        // User is not a friend yet, 'send friend request' button
+                                        SetFriendButton(FriendButtonState.ADD);
                                     }
 
                                     // Chat button action
@@ -191,11 +180,13 @@ public class ProfileActivity extends Activity {
 
                     @Override
                     public void onError() {
-                        Toast.makeText(ProfileActivity.this, "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, "Could not load profile. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     @Override
                     public void onFinishExecuting() {
+                        cs_layout.setVisibility(View.VISIBLE);
                         progressDialog.dismiss();
                     }
                 });
@@ -203,6 +194,45 @@ public class ProfileActivity extends Activity {
         task.setUriParameters(parameters);
         task.execute();
     }
+
+    private void SetFriendButton(FriendButtonState state) {
+        switch(state) {
+            case ADD:
+                btn_friend.setText("Send friend request");
+                btn_friend.setBackgroundColor(Color.GREEN);
+                btn_friend.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_input_add,0, 0, 0);
+                btn_friend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO: Send friend request
+                    }
+                });
+                break;
+            case PENDING:
+                btn_friend.setText("Cancel friend request");
+                btn_friend.setBackgroundColor(Color.rgb(255, 102, 0));
+                btn_friend.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_input_delete,0, 0, 0);
+                btn_friend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO: Cancel friend request
+                    }
+                });
+                break;
+            case REMOVE:
+                btn_friend.setText("Remove friend");
+                btn_friend.setBackgroundColor(Color.RED);
+                btn_friend.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_menu_delete,0, 0, 0);
+                btn_friend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO: RemoveFriendAction();
+                    }
+                });
+                break;
+        }
+    }
+
 
     /**
      * This function removes a friend who is specified as input parameter.
