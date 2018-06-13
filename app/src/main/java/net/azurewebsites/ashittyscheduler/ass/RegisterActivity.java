@@ -2,6 +2,7 @@ package net.azurewebsites.ashittyscheduler.ass;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.service.autofill.RegexValidator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Pair;
@@ -39,12 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                try {
-                    registerAccount();
-                } catch (IOException e) {
-                    showFailed();
-                    e.printStackTrace();
-                }
+                registerAccount();
             }
         });
         final Button cancel = (Button) findViewById(R.id.cancelButton);
@@ -65,72 +61,85 @@ public class RegisterActivity extends AppCompatActivity {
         Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     *
-     * @throws IOException
+    /*
+     Register a new user account
      */
-    private void registerAccount() throws IOException{
+    private void registerAccount() {
 
         EditText usernameField = (EditText)findViewById(R.id.usernameField);
         EditText passwordField = (EditText)findViewById(R.id.passwordField);
         EditText passwordField2 = (EditText)findViewById(R.id.passwordField2);
 
+        if (!usernameField.getText().toString().matches("^[a-zA-Z0-9]+$")) {
+            usernameField.setError("Username may only contain letters and numbers!");
+            usernameField.requestFocus();
+            return;
+        }
+
+        if (usernameField.getText().toString().length() < 3 ||
+                usernameField.getText().toString().length() > 20) {
+            usernameField.setError("Username must be between 3 and 20 characters long.");
+            usernameField.requestFocus();
+            return;
+        }
+
         if(!passwordField.getText().toString().equals(passwordField2.getText().toString()) ){
             passwordField2.setError("Passwords dont match");
             Toast.makeText(this,"Passwords dont match",Toast.LENGTH_SHORT).show();
-        }else {
-            // parameters
-            Pair[] parameters = new Pair[]{
-                    new Pair<>("username", usernameField.getText().toString()),
-                    new Pair<>("password", passwordField.getText().toString())
-            };
-
-            HttpTask task = new HttpTask(this, HttpMethod.POST,
-                    "https://ashittyscheduler.azurewebsites.net/api/users/register",
-                    new AsyncHttpListener() {
-
-                private ProgressDialog progressDialog;
-
-                @Override
-                public void onBeforeExecute() {
-                    // show a progress dialog (duh)
-                    progressDialog = ProgressDialog.show(RegisterActivity.this,
-                            "Creating account ",
-                            "Please wait");
-                }
-
-                @Override
-                public void onResponse(HttpResponse httpResponse) {
-                    // obtain code
-                    int code = httpResponse.getCode();
-
-                    if (code == HttpStatusCode.OK.getCode()) {
-                        Toast.makeText(getApplicationContext(), "Account created", Toast.LENGTH_SHORT).show();
-
-                        // TODO: Perform a login here? instead of returning to the login screen
-                        LoadNewPage(LoginActivity.class);
-                        finish();
-                    } else if (code == HttpStatusCode.BAD_REQUEST.getCode()) {
-                        Toast.makeText(getApplicationContext(), httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onError() {
-                    // TODO: Handle error
-                    Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFinishExecuting() {
-                    progressDialog.dismiss();
-                }
-            });
-
-            task.setBodyParameters(parameters);
-
-            task.execute();
+            return;
         }
+
+        // parameters
+        Pair[] parameters = new Pair[]{
+                new Pair<>("username", usernameField.getText().toString()),
+                new Pair<>("password", passwordField.getText().toString())
+        };
+
+        HttpTask task = new HttpTask(this, HttpMethod.POST,
+                "https://ashittyscheduler.azurewebsites.net/api/users/register",
+                new AsyncHttpListener() {
+
+            private ProgressDialog progressDialog;
+
+            @Override
+            public void onBeforeExecute() {
+                // show a progress dialog (duh)
+                progressDialog = ProgressDialog.show(RegisterActivity.this,
+                        "Creating account ",
+                        "Please wait");
+            }
+
+            @Override
+            public void onResponse(HttpResponse httpResponse) {
+                // obtain code
+                int code = httpResponse.getCode();
+
+                if (code == HttpStatusCode.OK.getCode()) {
+                    Toast.makeText(getApplicationContext(), "Account created", Toast.LENGTH_SHORT).show();
+
+                    // TODO: Perform a login here? instead of returning to the login screen
+                    LoadNewPage(LoginActivity.class);
+                    finish();
+                } else if (code == HttpStatusCode.BAD_REQUEST.getCode()) {
+                    Toast.makeText(getApplicationContext(), httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError() {
+                // TODO: Handle error
+                Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinishExecuting() {
+                progressDialog.dismiss();
+            }
+        });
+
+        task.setBodyParameters(parameters);
+
+        task.execute();
     }
 
     /**
