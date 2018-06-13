@@ -71,11 +71,12 @@ public class RegisterActivity extends AppCompatActivity {
         EditText passwordField2 = (EditText)findViewById(R.id.passwordField2);
 
         if (!usernameField.getText().toString().matches("^[a-zA-Z0-9]+$")) {
-            usernameField.setError("Username may only contain letters and numbers!");
+            usernameField.setError("Username may only contain letters and numbers.");
             usernameField.requestFocus();
             return;
         }
 
+        // Username must be between 3 and 20 characters
         if (usernameField.getText().toString().length() < 3 ||
                 usernameField.getText().toString().length() > 20) {
             usernameField.setError("Username must be between 3 and 20 characters long.");
@@ -83,8 +84,22 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        // password must be >=5 characters
+        if (passwordField.getText().toString().length() < 5) {
+            passwordField.setError("Password must contain at least 5 characters.");
+            passwordField.requestFocus();
+        }
+
+        // password cant be the same as the username
+        if (passwordField.getText().toString().equals(usernameField.getText().toString())) {
+            passwordField.setError("Password cannot be equal to the username.");
+            passwordField.requestFocus();
+        }
+
+        // passwords have to match
         if(!passwordField.getText().toString().equals(passwordField2.getText().toString()) ){
             passwordField2.setError("Passwords dont match");
+            passwordField2.requestFocus();
             Toast.makeText(this,"Passwords dont match",Toast.LENGTH_SHORT).show();
             return;
         }
