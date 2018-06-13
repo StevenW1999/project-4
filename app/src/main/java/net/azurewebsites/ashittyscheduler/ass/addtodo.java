@@ -71,6 +71,8 @@ private Boolean Repeat;
         setContentView(R.layout.activity_addtodo);
 
 
+
+
         //Set Time Picker
         AccesTime = (TextView) findViewById(R.id.timePlainText);
         DisplayTime = (TextView) findViewById(R.id.timePlainText);
