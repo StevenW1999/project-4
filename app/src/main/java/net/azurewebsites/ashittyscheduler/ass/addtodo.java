@@ -61,6 +61,7 @@ private PendingIntent alarmIntent;
 private TextView reminderTime;
 private TextView reminderDisplayTime;
 private TextView reminderDate;
+private Boolean Repeat;
 
 
 
@@ -181,6 +182,7 @@ private TextView reminderDate;
         if (repeatSwitch.isChecked()){
             repeattText.setText("Repeat ON");
             mRepeatText.setText(  "SELECT REPEAT TYPE");
+            Repeat = true;
 
             mRepeatTypeText.setEnabled(true);
 
@@ -190,6 +192,7 @@ private TextView reminderDate;
         else {
             repeattText.setText("Repeat OFF");
             mRepeatText.setText("Repeat OFF");
+            Repeat = false;
 
             mRepeatTypeText.setEnabled(false);
 
@@ -344,7 +347,10 @@ private TextView reminderDate;
                     new Pair("Description", DescText),
                     new Pair("Date", dateText+ "T" + timeText),
                     new Pair("DateReminder", reminderdateText+ "T" + remindertimeText),
-                    new Pair("Todo_Status", Status)
+                    new Pair("Todo_Status", Status),
+                    new Pair("Repeat", Repeat),
+                    new Pair("Repeat_Interval", mRepeatType)
+
             };
 
             HttpTask task = new HttpTask(this.getApplicationContext(),
