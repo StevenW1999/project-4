@@ -8,15 +8,10 @@ import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -36,7 +31,6 @@ import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 
 import static android.app.AlarmManager.ELAPSED_REALTIME_WAKEUP;
 
@@ -204,6 +198,10 @@ private TextView reminderDate;
 
 
         }
+
+    }
+    public void setInexactRepeating (int type, long triggerAtMillis, long intervalMillis, PendingIntent operation){
+        
 
     }
 

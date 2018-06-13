@@ -153,6 +153,7 @@ public class ProfileActivity extends Activity {
                                             public void onClick(View view) {
                                                 // TODO: STATE: FRIENDED,
                                                 // TODO: REMOVE FRIEND FUNCTION (with confirmation dialog of course)
+                                                RemoveFriendAction(user);
                                             }
                                         });
                                     }
@@ -200,6 +201,49 @@ public class ProfileActivity extends Activity {
                 });
 
         task.setUriParameters(parameters);
+        task.execute();
+    }
+
+    /**
+     * This function removes a friend who is specified as input parameter.
+     * @param user is the peron u're trying to delete.
+     */
+    private void RemoveFriendAction(User user) {
+        // parameters
+        Pair[] parameters = new Pair[] {
+                new Pair<>("friendId", user.getId()),
+        };
+
+        HttpTask task = new HttpTask(this, HttpMethod.POST, "http://ashittyscheduler.azurewebsites.net/api/friend/RemoveFriend", new AsyncHttpListener() {
+            private ProgressDialog progressDialog;
+            @Override
+            public void onBeforeExecute() {
+                progressDialog = ProgressDialog.show(ProfileActivity.this,"Removing friend","Please wait");
+            }
+
+            @Override
+            public void onResponse(HttpResponse httpResponse) {
+                int code = httpResponse.getCode();
+                httpResponse.getMessage();
+                if(code == HttpStatusCode.OK.getCode()){
+                    Toast.makeText(ProfileActivity.this,"Removed friend", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ProfileActivity.this,"Could not remove friend", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError() {
+                Toast.makeText(ProfileActivity.this, "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinishExecuting() {
+                progressDialog.dismiss();
+                finish();
+            }
+        });
+        task.setBodyParameters(parameters);
         task.execute();
     }
 }

@@ -38,11 +38,15 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+<<<<<<<<< Temporary merge branch 1
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+=========
+import java.util.Date;
+>>>>>>>>> Temporary merge branch 2
 
 public class OverviewFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -62,12 +66,6 @@ public class OverviewFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Refresh
     }
 
     @Override
@@ -225,7 +223,7 @@ public class OverviewFragment extends Fragment {
         });
     }
 
-        public void onClick(View v){
+    public void onClick(View v){
         Intent intent = new Intent();
         intent.setClass(getActivity().getApplicationContext(), addtodo.class);
         startActivityForResult(intent, Intent_Constants.INTENT_REQUEST_CODE);
@@ -255,4 +253,9 @@ public class OverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_overview, container, false);
     }
+
+//    public void onResume() {
+//        super.onResume();
+//
+//    }
 }
