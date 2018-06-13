@@ -398,6 +398,7 @@ public class FriendsActivity extends AppCompatActivity {
     Assign thread to handler, otherwise no way to properly stop the thread from running
     Every 5 seconds gets the friends from our webservice
     Calls the "LoadFriendList" method.
+    Calls the "LoadMessageChecker" method.
     Uses a different thread to perform its designated tasks
      */
     private void StartGetFriendsThread(){
