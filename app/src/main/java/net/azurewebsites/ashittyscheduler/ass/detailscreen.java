@@ -228,9 +228,15 @@ public void DeleteButtonClicked(View view){
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (statusSwitch.isChecked()){
-            Toast.makeText(getApplicationContext(), "HI ", Toast.LENGTH_SHORT).show();
+        if (statusSwitch.isChecked()) {
+            Toast.makeText(getApplicationContext(), "Status To Do: Done", Toast.LENGTH_SHORT).show();
             statusSwitch.setText("DONE");
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Status To Do: Not Done", Toast.LENGTH_SHORT).show();
+            statusSwitch.setText("NOT DONE");
+        }
+
 //            try {
 //
 //
@@ -298,6 +304,6 @@ public void DeleteButtonClicked(View view){
 //            finish();
 //        }
         }
-    }}
+    }
 
 

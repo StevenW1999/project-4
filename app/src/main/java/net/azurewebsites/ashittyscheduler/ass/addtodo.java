@@ -8,7 +8,6 @@ import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.ClipData;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -56,7 +55,7 @@ private TextView selecteddate;
 private TextView reminderselecteddate;
 private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText, mRepeatIntervalText;
 private Switch repeatSwitch, notificationSwitch;
-private TextView notificationText;
+private TextView notificationsText;
 private AlarmManager alarmManager;
 private PendingIntent alarmIntent;
 private TextView reminderTime;
@@ -86,13 +85,6 @@ private boolean Repeat;
         mRepeatText = (TextView) findViewById(R.id.repeatType);
         mRepeatNoText = (TextView) findViewById(R.id.repeatType);
         repeatSwitch = (Switch) findViewById(R.id.repeatSwitch);
-
-
-        Repeat = false;
-
-
-
-
 
 
 
@@ -140,10 +132,6 @@ private boolean Repeat;
         });
 
 
-
-
-
-
         datepickerdialogbutton = (TextView) findViewById(R.id.date);
         selecteddate = (TextView)findViewById(R.id.date);
 
@@ -173,15 +161,10 @@ private boolean Repeat;
 
                 dialogfragment.show(getFragmentManager(), "Date Picker Dialog");
 
-
             }});
 
-
-
-
-
-
     }
+
 
     //Repeat Switch
 
@@ -189,65 +172,48 @@ private boolean Repeat;
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (repeatSwitch.isChecked()){
             repeattText.setText("Repeat ON");
-            mRepeatText.setText(  "SELECT REPEAT TYPE");
+            mRepeatText.setText("Select Repeat Type");
             Repeat = true;
 
             mRepeatTypeText.setEnabled(true);
 
-
-
         }
         else {
-            repeattText.setText("Repeat OFF");
-            mRepeatText.setText("Repeat OFF");
+            repeattText.setText(" ");
+            mRepeatText.setText(" ");
             Repeat = false;
-            mRepeatType = "";
-
 
             mRepeatTypeText.setEnabled(false);
 
-
-
-
         }
-    }
-
-
-
-    //select repeat type
-    public void selectRepeatType(View v){
-
-        final String[] items = new String[3];
-        items[0] = "Daily";
-        items[1] = "Weekly";
-        items[2] = "Monthly";
-
-
-
-
-
-        // Create List Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle("Select Type");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int item) {
-
-                mRepeatType = items[item];
-                mRepeatTypeText.setText(mRepeatType);
-                mRepeatText.setText(mRepeatType);
-
-            }
-
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
 
     }
 
+//    // Notifications switch
+//    @Override
+//    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//        if (notificationSwitch.isChecked()){
+//            notificationsText.setText("Notifications ON");
+//            reminderDate.setText("Date dd/mm/yy");
+//            reminderTime.setText("Time 00:00");
+//            Repeat = true;
+//
+//            mRepeatTypeText.setEnabled(true);
+//
+//        }
+//        else {
+//            reminderDate.setText(" ");
+//            reminderTime.setText(" ");
+//            Repeat = false;
+//
+//            mRepeatTypeText.setEnabled(false);
+//
+//        }
+//
+//    }
 
 
+    public void setInexactRepeating (int type, long triggerAtMillis, long intervalMillis, PendingIntent operation){ }
 
     public void CancelButtonClicked(View view) {
         finish();
@@ -315,27 +281,28 @@ private boolean Repeat;
 
 
 
+//select repeat type
+    public void selectRepeatType(View v){
+        final String[] items = new String[3];
+        items[0] = "Daily";
+        items[1] = "Weekly";
+        items[2] = "Monthly";
 
+        // Create List Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Type");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
 
+            public void onClick(DialogInterface dialog, int item) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                mRepeatType = items[item];
+                mRepeatTypeText.setText(mRepeatType);
+                mRepeatText.setText(mRepeatType);
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 
 
 
@@ -348,21 +315,11 @@ private boolean Repeat;
         String timeText = ((TextView)findViewById(R.id.timePlainText)).getText().toString();
         String reminderdateText = ((TextView)findViewById(R.id.reminderdate)).getText().toString();
         String remindertimeText = ((TextView)findViewById(R.id.remindertime)).getText().toString();
-        String Repeat_Interval;
-
-        if (Repeat == false){
-            Repeat_Interval = "NO INTERVAL";
-        }
-        else {
-            Repeat_Interval = ((TextView)findViewById(R.id.repeatType)).getText().toString();
-
-        }
-
         Boolean Status = false;
 
 
-        if (messageText.equals("") || dateText.equals("") || timeText.equals("") || reminderdateText.equals("") || remindertimeText.equals("")){
-            Toast.makeText(this, "PLEASE MAKE SURE ALL THE BLANKS ARE FILLED IN", Toast.LENGTH_SHORT).show();
+        if (messageText.equals("")){
+            Toast.makeText(this, "PLEASE GIVE THE TODO A TITLE", Toast.LENGTH_SHORT).show();
 
         }
         else {
@@ -375,7 +332,7 @@ private boolean Repeat;
                     new Pair("DateReminder", reminderdateText+ "T" + remindertimeText),
                     new Pair("Todo_Status", Status),
                     new Pair("Repeat", Repeat),
-                    new Pair("Repeat_Interval", Repeat_Interval)
+                    new Pair("Repeat_Interval", mRepeatType)
             };
 
             HttpTask task = new HttpTask(this.getApplicationContext(),
