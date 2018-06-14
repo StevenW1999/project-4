@@ -67,8 +67,8 @@ public class RegisterActivity extends AppCompatActivity {
         EditText passwordField = findViewById(R.id.passwordField);
         EditText passwordField2 = findViewById(R.id.passwordField2);
 
-        if (!usernameField.getText().toString().matches("^[a-zA-Z0-9]+$")) {
-            usernameField.setError("Username may only contain letters and numbers.");
+        if (!usernameField.getText().toString().matches("^[a-zA-Z0-9._-]$")) {
+            usernameField.setError("Username may only contain letters, numbers, dashes, dots and underscores.");
             usernameField.requestFocus();
             return;
         }
@@ -95,9 +95,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         // passwords have to match
         if(!passwordField.getText().toString().equals(passwordField2.getText().toString()) ){
-            passwordField2.setError("Passwords dont match");
+            passwordField2.setError("Passwords do not match.");
             passwordField2.requestFocus();
-            Toast.makeText(this,"Passwords dont match",Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -130,13 +129,7 @@ public class RegisterActivity extends AppCompatActivity {
                 int code = httpResponse.getCode();
 
                 if (code == HttpStatusCode.OK.getCode()) {
-                    Toast.makeText(getApplicationContext(), "Account created", Toast.LENGTH_SHORT).show();
-
-                    // TODO: Perform a login here? instead of returning to the login screen
-                    // TODO: (Since we have the username and password)
-                    //username
-                    //password
-
+                    Toast.makeText(getApplicationContext(), "Account created.", Toast.LENGTH_SHORT).show();
                     LoadNewPage(LoginActivity.class);
                     finish();
                 } else if (code == HttpStatusCode.BAD_REQUEST.getCode()) {
@@ -147,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onError() {
                 // TODO: Handle error
-                Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "An error occurred. Please try again later ☹", Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -141,20 +141,27 @@ public class LoginActivity extends AppCompatActivity {
                             LoadNewPage(MainMenu.class);
                             finish();
 
-                        } else if (code == HttpStatusCode.UNAUTHORIZED.getCode()){
+                        }
+                        else {
+                            // make layout visible again
+                            layout.setVisibility(View.VISIBLE);
+                        }
+
+                        if (code == HttpStatusCode.UNAUTHORIZED.getCode()){
                             Toast.makeText(getApplicationContext(), "Please log in.", Toast.LENGTH_LONG).show();
                         }
                     }
 
                     @Override
                     public void onError() {
-                        Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "An error occurred. Please try again later ☹", Toast.LENGTH_SHORT).show();
+
+                        // make layout visible again
+                        layout.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onFinishExecuting() {
-                        // make layout visible again
-                        layout.setVisibility(View.VISIBLE);
                         progressDialog.dismiss();
                     }
                 });
@@ -230,7 +237,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError() {
-                Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "An error occurred. Please try again later ☹", Toast.LENGTH_SHORT).show();
             }
 
             @Override
