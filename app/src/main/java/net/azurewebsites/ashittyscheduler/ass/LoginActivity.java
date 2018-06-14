@@ -36,8 +36,8 @@ import java.io.IOException;
 public class LoginActivity extends AppCompatActivity {
 
     //Setting internet acces policy
-    // Test
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
     //Class variables. These are static cause they remain the same for all within objects being created.
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String URLString = "https://ashittyscheduler.azurewebsites.net/api/users/login";
@@ -61,13 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                try {
-                    signIn();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.w("Failed connection", ""+ e.getMessage());
-                    ShowFail();
-                }
+                signIn();
             }
         });
 
@@ -90,13 +84,6 @@ public class LoginActivity extends AppCompatActivity {
             //TODO: We should only do this if 'remember me' was checked!!! ok
            automaticSignIn();
         }
-    }
-
-    /**
-     * Toast that shows a fail has occurred when this method has been called.
-     */
-    private void ShowFail() {
-        Toast.makeText(this,"Something went wrong...", Toast.LENGTH_SHORT).show();
     }
 
     private void automaticSignIn() {
@@ -150,15 +137,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * @throws IOException when given wrong information.
      * Takes input from the fields from out layout.
      * When this method is called the login sequence is being started.
      * {@link HttpTask} for connection with the web api to login.
      */
-    private void signIn() throws IOException {
+    private void signIn() {
 
-        EditText usernameBox = (EditText)findViewById(R.id.Username);
-        EditText passwordBox = (EditText)findViewById(R.id.Password);
+        EditText usernameBox = findViewById(R.id.Username);
+        EditText passwordBox = findViewById(R.id.Password);
 
         // login parameters
         Pair[] parameters = new Pair[] {
@@ -195,7 +181,7 @@ public class LoginActivity extends AppCompatActivity {
                         String token = tokenObj.get("TokenId").toString();
                         String userId = tokenObj.get("UserId").toString();
 
-                        // Save token to sharedpreferences
+                        // Save token to shared preferences
                         SharedPreferences sharedPreferences = getSharedPreferences(ApplicationConstants.PREFERENCES ,Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("Token", token);

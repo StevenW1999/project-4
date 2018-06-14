@@ -39,12 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                try {
-                    registerAccount();
-                } catch (IOException e) {
-                    showFailed();
-                    e.printStackTrace();
-                }
+                registerAccount();
             }
         });
         final Button cancel = (Button) findViewById(R.id.cancelButton);
@@ -65,15 +60,11 @@ public class RegisterActivity extends AppCompatActivity {
         Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     *
-     * @throws IOException
-     */
-    private void registerAccount() throws IOException{
+    private void registerAccount() {
 
-        EditText usernameField = (EditText)findViewById(R.id.usernameField);
-        EditText passwordField = (EditText)findViewById(R.id.passwordField);
-        EditText passwordField2 = (EditText)findViewById(R.id.passwordField2);
+        EditText usernameField = findViewById(R.id.usernameField);
+        EditText passwordField = findViewById(R.id.passwordField);
+        EditText passwordField2 = findViewById(R.id.passwordField2);
 
         if(!passwordField.getText().toString().equals(passwordField2.getText().toString()) ){
             passwordField2.setError("Passwords dont match");
