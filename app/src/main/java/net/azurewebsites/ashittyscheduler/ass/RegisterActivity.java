@@ -67,8 +67,8 @@ public class RegisterActivity extends AppCompatActivity {
         EditText passwordField = findViewById(R.id.passwordField);
         EditText passwordField2 = findViewById(R.id.passwordField2);
 
-        if (!usernameField.getText().toString().matches("^[a-zA-Z0-9._-]$")) {
-            usernameField.setError("Username may only contain letters, numbers, dashes, dots and underscores.");
+        if (!usernameField.getText().toString().matches("^[a-zA-Z0-9]+$")) {
+            usernameField.setError("Username may only contain letters and numbers.");
             usernameField.requestFocus();
             return;
         }
@@ -85,12 +85,14 @@ public class RegisterActivity extends AppCompatActivity {
         if (passwordField.getText().toString().length() < 5) {
             passwordField.setError("Password must contain at least 5 characters.");
             passwordField.requestFocus();
+            return;
         }
 
         // password cant be the same as the username
         if (passwordField.getText().toString().equals(usernameField.getText().toString())) {
             passwordField.setError("Password cannot be equal to the username.");
             passwordField.requestFocus();
+            return;
         }
 
         // passwords have to match
