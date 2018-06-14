@@ -4,154 +4,187 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".detailscreen"
-    tools:layout_editor_absoluteY="25dp">
+    tools:context=".detailscreen">
 
     <TextView
         android:id="@+id/detailTime2"
         android:layout_width="151dp"
         android:layout_height="21dp"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="60dp"
         android:text="Reminder TIme"
         android:textSize="20dp"
-        tools:layout_editor_absoluteX="228dp"
-        tools:layout_editor_absoluteY="260dp" />
+        app:layout_constraintStart_toStartOf="@+id/detailDate"
+        app:layout_constraintTop_toBottomOf="@+id/detailDate" />
 
     <TextView
         android:id="@+id/DreminderTime"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:text="remindertime"
-        tools:layout_editor_absoluteX="319dp"
-        tools:layout_editor_absoluteY="281dp" />
+        android:layout_marginEnd="8dp"
+        android:text="textview"
+        app:layout_constraintEnd_toEndOf="@+id/detailTime2"
+        app:layout_constraintTop_toBottomOf="@+id/detailTime2" />
 
     <Button
         android:id="@+id/editButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:clickable="true"
-        android:onClick="EditButtonClicked"
         android:text="Edit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="EditButtonClicked"/>
 
 
-    <!--<TextView-->
-        <!--android:id="@+id/detailTitle"-->
-        <!--android:layout_width="53dp"-->
-        <!--android:layout_height="35dp"-->
-        <!--android:text="Title"-->
-        <!--android:textSize="20dp"-->
-        <!--tools:layout_editor_absoluteX="8dp"-->
-        <!--tools:layout_editor_absoluteY="8dp" />-->
+    <TextView
+        android:id="@+id/detailTitle"
+        android:layout_width="119dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Title"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/detailDescription"
+        android:layout_width="119dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
+        android:text="Details"
+        android:textSize="20dp"
 
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailTitle" />
 
+    <TextView
+        android:id="@+id/detailDate"
+        android:layout_width="119dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="60dp"
+        android:text="Date"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/detailDescription"
+        app:layout_constraintTop_toBottomOf="@+id/detailDescription" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/detailDate"-->
-        <!--android:layout_width="119dp"-->
-        <!--android:layout_height="23dp"-->
-        <!--android:text="Date"-->
-        <!--android:textSize="20dp"-->
-        <!--tools:layout_editor_absoluteX="8dp"-->
-        <!--tools:layout_editor_absoluteY="177dp" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/detailDate2"-->
-        <!--android:layout_width="133dp"-->
-        <!--android:layout_height="27dp"-->
-        <!--android:text="Reminder Date"-->
-        <!--android:textSize="20dp"-->
-        <!--tools:layout_editor_absoluteX="248dp"-->
-        <!--tools:layout_editor_absoluteY="177dp" />-->
-
+    <TextView
+        android:id="@+id/detailDate2"
+        android:layout_width="133dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="60dp"
+        android:text="Reminder Date"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/detailDescription"
+        app:layout_constraintTop_toBottomOf="@+id/detailDescription" />
 
     <TextView
         android:id="@+id/detailTime"
         android:layout_width="119dp"
         android:layout_height="23dp"
+        android:layout_marginTop="60dp"
         android:text="Time"
         android:textSize="20dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="260dp" />
+        app:layout_constraintStart_toStartOf="@+id/detailDate"
+        app:layout_constraintTop_toBottomOf="@+id/detailDate" />
 
     <TextView
         android:id="@+id/detailNotification"
         android:layout_width="119dp"
         android:layout_height="21dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="60dp"
         android:text="Notification"
         android:textSize="20dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="343dp" />
+        app:layout_constraintEnd_toEndOf="@+id/detailTime"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/detailTime"
+        app:layout_constraintTop_toBottomOf="@+id/detailTime" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="112dp"
         android:onClick="DeleteButtonClicked"
         android:text="Delete"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/detailNotification"
+        app:layout_constraintTop_toBottomOf="@+id/detailNotification" />
 
     <TextView
         android:id="@+id/DTitle"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:text="title"
-        android:textSize="18sp"
-        tools:layout_editor_absoluteX="69dp"
-        tools:layout_editor_absoluteY="8dp" />
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailTitle" />
 
     <TextView
         android:id="@+id/DDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="details"
-        tools:layout_editor_absoluteX="136dp"
-        tools:layout_editor_absoluteY="60dp" />
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailDescription" />
 
     <TextView
         android:id="@+id/DreminderDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="reminderdate"
-        tools:layout_editor_absoluteX="308dp"
-        tools:layout_editor_absoluteY="200dp" />
+        android:layout_marginStart="308dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailDate" />
 
     <TextView
         android:id="@+id/DDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="date"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="200dp" />
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailDate" />
 
     <TextView
         android:id="@+id/DTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="time"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="283dp" />
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailTime" />
 
     <TextView
         android:id="@+id/DNotification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="364dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailNotification" />
 
-    <Switch
-        android:id="@+id/StatusSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="27dp"
-        android:text="Status: Uncompleted"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="407dp" />
+
+    <Button
+        android:id="@+id/StatusButton"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+
+        android:layout_marginTop="60dp"
+        android:onClick="StatusButtonClicked"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="@+id/detailNotification"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/DNotification"
+        app:layout_constraintTop_toTopOf="@+id/detailNotification" />
 
 </android.support.constraint.ConstraintLayout>

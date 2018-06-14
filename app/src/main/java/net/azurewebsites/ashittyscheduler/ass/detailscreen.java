@@ -7,11 +7,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -38,7 +40,9 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
     private TextView tv_time;
     private TextView tv_Rdate;
     private TextView tv_Rtime;
-    private Switch statusSwitch;
+    private boolean Status;
+    private Button statusButton;
+
 
 
 
@@ -49,14 +53,16 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailscreen);
 
+
+
         tv_title = findViewById(R.id.DTitle);
         tv_description = findViewById(R.id.DDetails);
         tv_date = findViewById(R.id.DDate);
         tv_time = findViewById(R.id.DTime);
         tv_Rdate = findViewById(R.id.DreminderDate);
         tv_Rtime = findViewById(R.id.DreminderTime);
-        statusSwitch = findViewById(R.id.StatusSwitch);
-        statusSwitch.setOnCheckedChangeListener(this);
+
+        statusButton = findViewById(R.id.StatusButton);
 
         Intent intent = getIntent();
         this.todoId = intent.getStringExtra("todoId");
@@ -98,6 +104,22 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
                                 String[] dateTime = todo.getString("Date").split("T");
 
                                 tv_date.setText(dateTime[0]);
+                                if (todo.getString("Todo_Status") == "false" ){
+                                    statusButton.setText("SET AS DONE");
+                                    Status = false;
+
+
+                                }
+                                else {
+                                    statusButton.setText("SET AS UNDONE");
+                                    Status = true;
+
+                                }
+
+
+
+
+
 
                                 // if there is a time
                                 if (dateTime.length > 1) {
@@ -226,84 +248,77 @@ public void DeleteButtonClicked(View view){
     }
 
 
+
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (statusSwitch.isChecked()) {
-            Toast.makeText(getApplicationContext(), "Status To Do: Done", Toast.LENGTH_SHORT).show();
-            statusSwitch.setText("DONE");
-        }
-        else {
-            Toast.makeText(getApplicationContext(), "Status To Do: Not Done", Toast.LENGTH_SHORT).show();
-            statusSwitch.setText("NOT DONE");
-        }
 
-//            try {
-//
-//
-//                // create body parameters
-//                Pair[] parameters = new Pair[]{
-//                        new Pair("Id", todoId),
-//                        new Pair("Todo_Status", statusSwitch)
-//
-//                };
-//
-//                HttpTask task = new HttpTask(this.getApplicationContext(),
-//                        HttpMethod.PUT,
-//                        "http://ashittyscheduler.azurewebsites.net/api/todo/update",
-//                        new AsyncHttpListener() {
-//                            private ProgressDialog progressDialog;
-//
-//                            @Override
-//                            public void onBeforeExecute() {
-//                                // show a progress dialog (duh)
-//                                progressDialog = android.app.ProgressDialog.show(detailscreen.this,
-//                                        "Updating todo",
-//                                        "Please wait");
-//                            }
-//
-//                            @Override
-//                            public void onResponse(HttpResponse httpResponse) {
-//
-//                                int code = httpResponse.getCode();
-//
-//                                if (code == HttpStatusCode.OK.getCode()){
-//                                    Toast.makeText(getApplicationContext(), "TODO UPDATED", Toast.LENGTH_SHORT).show();
-//                                }
-//                                else{
-//                                    Toast.makeText(getApplicationContext(), "FAILED TO update TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
-//                                }
-//
-//
-//                            }
-//
-//                            @Override
-//                            public void onError() {
-//
-//
-//                            }
-//
-//                            @Override
-//                            public void onFinishExecuting() {
-//                                // dismiss the progress dialog (duh)
-//                                progressDialog.dismiss();
-//                            }
-//                        }
-//                );
-//
-//                // set body parameters
-//                task.setBodyParameters(parameters);
-//                task.execute();
-//
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//
-//
-//            finish();
-//        }
-        }
+
+
     }
+
+    public void StatusButtonClicked(View view) {
+
+
+
+
+        Pair[] parameters = new Pair[]{
+                new Pair("Id", todoId),
+                new Pair("Todo_Status",!Status)
+
+        };
+
+        HttpTask task = new HttpTask(this.getApplicationContext(),
+                HttpMethod.PUT,
+                "http://ashittyscheduler.azurewebsites.net/api/todo/updatestatus",
+                new AsyncHttpListener() {
+                    private ProgressDialog progressDialog;
+
+                    @Override
+                    public void onBeforeExecute() {
+                        // show a progress dialog (duh)
+                        progressDialog = ProgressDialog.show(detailscreen.this,
+                                "Updating todo",
+                                "Please wait");
+                    }
+
+                    @Override
+                    public void onResponse(HttpResponse httpResponse) {
+
+                        int code = httpResponse.getCode();
+
+                        if (code == HttpStatusCode.OK.getCode()){
+                            Toast.makeText(getApplicationContext(), "TODO UPDATED", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "FAILED TO update TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+
+                    }
+
+                    @Override
+                    public void onFinishExecuting() {
+                        // dismiss the progress dialog (duh)
+                        progressDialog.dismiss();
+                    }
+                }
+        );
+
+        // set body parameters
+        task.setBodyParameters(parameters);
+        task.execute();
+        finish();
+
+
+    }
+    }
+
+
 
 

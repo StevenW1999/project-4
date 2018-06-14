@@ -50,35 +50,124 @@ public class edittodo extends AppCompatActivity {
     private  int CalendarMinute;
     private int EReminderCalendarHour;
     private  int EReminderCalendarMinute;
-    private String format;
-    TextView EDisplayTime;
-    TextView repeattText;
-    private String mRepeat;
-    private String mRepeatNo;
-    private String mRepeatType;
+    private TextView EDisplayTime;
     private TextView datepickerdialogbutton;
     private TextView Edatepickerdialogbutton;
     private TextView selecteddate;
-    private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText, mRepeatIntervalText;
-    private Switch repeatSwitch, notificationSwitch;
-    private TextView notificationText;
-    private AlarmManager alarmManager;
-    private PendingIntent alarmIntent;
     private TextView EreminderTime;
     private TextView EreminderDisplayTime;
+    private TextView ETitle;
+    private TextView EDescription;
+    private String todoId;
+    private TextView EEditDate;
+    private TextView EReminderDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edittodo);
 
+        ETitle = (TextView)findViewById(R.id.EditTitle) ;
+        EDescription = (TextView)findViewById(R.id.EditDescription);
+
+        EEditDate = (TextView)findViewById(R.id.EditDate);
+        EReminderDate = (TextView) findViewById(R.id.EditRDate) ;
+
 
         //Set Time Picker
         EAccesTime = (TextView) findViewById(R.id.EditTime);
         EDisplayTime = (TextView) findViewById(R.id.EditTime);
 
+
         EreminderTime = (TextView) findViewById(R.id.EditRTime);
         EreminderDisplayTime = (TextView) findViewById(R.id.EditRTime);
+        Intent intent = getIntent();
+        this.todoId = intent.getStringExtra("todoId");
+
+
+
+        Pair[] parameters = new Pair[]{
+                new Pair("todoId", todoId)
+        };
+
+        final HttpTask httpTask = new HttpTask(this.getApplicationContext(),
+                HttpMethod.GET,
+                "http://ashittyscheduler.azurewebsites.net/api/todo/get",
+
+                new AsyncHttpListener()
+
+                {
+                    private ProgressDialog progressDialog;
+
+                    @Override
+                    public void onBeforeExecute() {
+                        // show a progress dialog (duh)
+                        progressDialog = ProgressDialog.show(edittodo.this,
+                                "Getting todo",
+                                "Please wait");
+                    }
+
+                    @Override
+                    public void onResponse(HttpResponse httpResponse) {
+                        int code = httpResponse.getCode();
+                        if (code == HttpStatusCode.OK.getCode()) {
+
+                            try {
+                                JSONObject todo = new JSONObject(httpResponse.getMessage());
+
+                                ETitle.setHint(todo.getString("Title"));
+                                EDescription.setHint(todo.getString("Description"));
+
+                                String[] dateTime = todo.getString("Date").split("T");
+
+                                EEditDate.setHint(dateTime[0]);
+
+                                // if there is a time
+                                if (dateTime.length > 1) {
+                                    // ignore last three characters
+                                    EDisplayTime.setHint(dateTime[1].substring(0, dateTime[1].length() - 3));
+                                }
+                                String[] RdateTime = todo.getString("DateReminder").split("T");
+
+                                EReminderDate.setHint(RdateTime[0]);
+
+                                // if there is a time
+                                if (RdateTime.length > 1) {
+                                    // ignore last three characters
+                                    EreminderDisplayTime.setHint(RdateTime[1].substring(0, RdateTime[1].length() - 3));
+                                }
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "FAILED TO GET TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        //TODO: Handle error
+
+                    }
+
+                    @Override
+                    public void onFinishExecuting() {
+                        progressDialog.dismiss();
+                    }
+                });
+        httpTask.setUriParameters(parameters);
+        httpTask.execute();
+
+
+    
+
 
 //        mRepeatIntervalText = (TextView) findViewById(R.id.repeatInterval);
 
@@ -253,6 +342,7 @@ public class edittodo extends AppCompatActivity {
         String timeText = ((TextView)findViewById(R.id.EditTime)).getText().toString();
         String RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
         String RtimeText = ((TextView)findViewById(R.id.EditRTime)).getText().toString();
+
 
 
         Intent intent = getIntent();
