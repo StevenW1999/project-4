@@ -61,7 +61,7 @@ private PendingIntent alarmIntent;
 private TextView reminderTime;
 private TextView reminderDisplayTime;
 private TextView reminderDate;
-private boolean Repeat;
+private Boolean Repeat;
 
 
 
@@ -69,6 +69,8 @@ private boolean Repeat;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addtodo);
+
+
 
 
         //Set Time Picker
@@ -330,6 +332,8 @@ private boolean Repeat;
         String timeText = ((TextView)findViewById(R.id.timePlainText)).getText().toString();
         String reminderdateText = ((TextView)findViewById(R.id.reminderdate)).getText().toString();
         String remindertimeText = ((TextView)findViewById(R.id.remindertime)).getText().toString();
+        String repeatTxt = ((TextView)findViewById(R.id.repeatText)).getText().toString();
+        String notificationText = ((TextView)findViewById(R.id.notificationsTextView)).getText().toString();
         Boolean Status = false;
 
 
@@ -348,6 +352,7 @@ private boolean Repeat;
                     new Pair("Todo_Status", Status),
                     new Pair("Repeat", Repeat),
                     new Pair("Repeat_Interval", mRepeatType)
+
             };
 
             HttpTask task = new HttpTask(this.getApplicationContext(),

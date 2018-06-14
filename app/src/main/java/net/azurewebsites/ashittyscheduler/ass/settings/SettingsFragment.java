@@ -241,27 +241,25 @@ public class SettingsFragment extends Fragment {
                                 try {
                                     JSONObject userObj = new JSONObject(httpResponse.getMessage());
 
-                                    String username = userObj.getString("Username");
-                                    String displayName = userObj.getString("DisplayName");
-                                    String description = userObj.getString("Description");
-                                    String email = userObj.getString("Email");
-                                    boolean isOnline = userObj.getBoolean("IsOnline");
+                                    User user = User.fromJson(userObj);
 
-                                    editDisplayName.setText(displayName);
-                                    editDisplayName.setSummary(displayName);
-                                    editDisplayName.setDefaultValue(displayName);
+                                    // TODO: Remove default value?
 
-                                    editUsername.setText(username);
-                                    editUsername.setSummary(username);
-                                    editUsername.setDefaultValue(username);
+                                    editDisplayName.setText(user.getName());
+                                    editDisplayName.setSummary(user.getName());
+                                    //editDisplayName.setDefaultValue(user.getName());
 
-                                    editEmail.setText(email);
-                                    editEmail.setSummary(email);
-                                    editEmail.setDefaultValue(email);
+                                    editUsername.setText(user.getUsername());
+                                    editUsername.setSummary(user.getUsername());
+                                    //editUsername.setDefaultValue(user.getUsername());
 
-                                    editDescription.setText(description);
-                                    editDescription.setSummary(description);
-                                    editDescription.setDefaultValue(description);
+                                    editEmail.setText(user.getEmail());
+                                    editEmail.setSummary(user.getEmail());
+                                    //editEmail.setDefaultValue(user.getEmail());
+
+                                    editDescription.setText(userObj.getString("Description"));
+                                    editDescription.setSummary(userObj.getString("Description"));
+                                    //editDescription.setDefaultValue(userObj.getString("Description"));
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
