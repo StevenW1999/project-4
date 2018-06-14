@@ -4,85 +4,279 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".edittodo">
+    tools:layout_editor_absoluteY="25dp">
+
+
+
+    <Button
+    android:id="@+id/EditButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="8dp"
+    android:text="Button"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:onClick="EditButtonClicked"
+    android:clickable="true"/>
 
     <EditText
-        android:id="@+id/EditTitle"
-        android:layout_width="361dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:id="@+id/EditlocationText"
+        android:layout_width="358dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:hint="Title"
+        android:ems="10"
+        android:hint="Location"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/EditDescription" />
 
     <EditText
         android:id="@+id/EditDescription"
-        android:layout_width="351dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="358dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
         android:hint="Description"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditTitle" />
 
     <TextView
-        android:id="@+id/EditDate"
-        android:layout_width="77dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="48dp"
-        android:clickable="true"
-        android:hint="Date dd/mm/yy"
-        app:layout_constraintEnd_toEndOf="@+id/EditDescription"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/EditDescription"
-        app:layout_constraintTop_toBottomOf="@+id/EditDescription" />
-
-    <TextView
         android:id="@+id/EditTime"
-        android:layout_width="87dp"
-        android:layout_height="49dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="36dp"
+        android:layout_width="358dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:clickable="true"
+        android:ems="10"
         android:hint="Time 00:00"
         android:inputType="time"
-        app:layout_constraintEnd_toEndOf="@+id/EditDate"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/EditDate"
+        android:onClick="TimeClicked"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditDate" />
 
-    <Button
-        android:id="@+id/EditButton"
+    <TextView
+        android:id="@+id/EShareText"
+        android:layout_width="358dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:ems="10"
+        android:hint="Share"
+        android:inputType="date"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.615"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditRepeatType" />
+
+    <TextView
+        android:id="@+id/EditDate"
+        android:layout_width="358dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:ems="10"
+        android:hint="Date dd/mm/yy"
+        android:inputType="date"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditlocationText" />
+
+    <EditText
+        android:id="@+id/EditTitle"
+        android:layout_width="358dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/title"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ENotificationsTextView"
+        android:layout_width="358dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:hint="Notifications"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditTime" />
+
+    <Switch
+        android:id="@+id/ENotificationsSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="EditButtonClicked"
-        android:clickable="true"/>
+        app:layout_constraintTop_toBottomOf="@+id/ENotificationsTextView" />
+
+    <TextView
+        android:id="@+id/ERepeatText"
+        android:layout_width="358dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:hint="Repeat OFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditRTime" />
+
+    <Switch
+        android:id="@+id/EditRepeatSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="1dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/remindertime" />
+
+    <TextView
+        android:id="@+id/EditRepeatType"
+        android:layout_width="358dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:onClick="selectRepeatType"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.615"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ERepeatText" />
+
+    <!--<Button-->
+    <!--android:id="@+id/button"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:onClick="CancelButtonClicked"-->
+    <!--android:text="Cancel"-->
+    <!--tools:layout_editor_absoluteX="16dp"-->
+    <!--tools:layout_editor_absoluteY="503dp" />-->
 
     <TextView
         android:id="@+id/EditRDate"
-        android:layout_width="160dp"
-        android:layout_height="45dp"
+        android:layout_width="358dp"
+        android:layout_height="35dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="48dp"
-        android:hint="reminderdate dd/mm/yy"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:hint="Date dd/mm/yy"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditDescription" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ENotificationsTextView" />
 
     <TextView
         android:id="@+id/EditRTime"
-        android:layout_width="137dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="36dp"
-        android:inputType="time"
-        android:hint="reminder time 00:00"
-        app:layout_constraintStart_toEndOf="@+id/EditTime"
+        android:layout_width="358dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:hint="Time 00:00"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.615"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditRDate" />
+
+
 </android.support.constraint.ConstraintLayout>
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--tools:context=".edittodo">-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/EditTitle"-->
+        <!--android:layout_width="361dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:hint="Title"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/EditDate"-->
+        <!--android:layout_width="77dp"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginTop="48dp"-->
+        <!--android:clickable="true"-->
+        <!--android:hint="Date dd/mm/yy"-->
+        <!--app:layout_constraintEnd_toEndOf="@+id/EditDescription"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/EditDescription"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/EditDescription" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/EditTime"-->
+        <!--android:layout_width="87dp"-->
+        <!--android:layout_height="49dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginTop="36dp"-->
+        <!--android:clickable="true"-->
+        <!--android:hint="Time 00:00"-->
+        <!--android:inputType="time"-->
+        <!--app:layout_constraintEnd_toEndOf="@+id/EditDate"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="@+id/EditDate"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/EditDate" />-->
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/EditRDate"-->
+        <!--android:layout_width="160dp"-->
+        <!--android:layout_height="45dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginTop="48dp"-->
+        <!--android:hint="reminderdate dd/mm/yy"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/EditDescription" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/EditRTime"-->
+        <!--android:layout_width="137dp"-->
+        <!--android:layout_height="23dp"-->
+        <!--android:layout_marginStart="136dp"-->
+        <!--android:layout_marginTop="36dp"-->
+        <!--android:inputType="time"-->
+        <!--android:hint="reminder time 00:00"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/EditTime"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/EditRDate" />-->
+<!--</android.support.constraint.ConstraintLayout>-->
