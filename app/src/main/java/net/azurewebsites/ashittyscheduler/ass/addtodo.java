@@ -44,25 +44,21 @@ private  int CalendarMinute;
 Calendar remindercalendar;
 private int ReminderCalendarHour;
 private  int ReminderCalendarMinute;
-private String format;
 TextView DisplayTime;
 TextView repeattText;
-private String mRepeat;
-private String mRepeatNo;
 private String mRepeatType;
 private TextView reminderdatepickerdialogbutton;
 private TextView datepickerdialogbutton;
 private TextView selecteddate;
 private TextView reminderselecteddate;
-private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText, mRepeatIntervalText;
+private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText;
 private Switch repeatSwitch, notificationSwitch;
 private TextView notificationText;
-private AlarmManager alarmManager;
-private PendingIntent alarmIntent;
 private TextView reminderTime;
 private TextView reminderDisplayTime;
 private TextView reminderDate;
 private boolean Repeat;
+private TextView notificationsText;
 
 
 
@@ -189,7 +185,7 @@ private boolean Repeat;
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (repeatSwitch.isChecked()){
             repeattText.setText("Repeat ON");
-            mRepeatText.setText(  "SELECT REPEAT TYPE");
+            mRepeatText.setText(  "Select Repeat Type");
             Repeat = true;
 
             mRepeatTypeText.setEnabled(true);
@@ -199,7 +195,7 @@ private boolean Repeat;
         }
         else {
             repeattText.setText("Repeat OFF");
-            mRepeatText.setText("Repeat OFF");
+            mRepeatText.setText(" ");
             Repeat = false;
             mRepeatType = "";
 
@@ -246,6 +242,28 @@ private boolean Repeat;
 
     }
 
+    //    // Notifications switch
+//    @Override
+//    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//        if (notificationSwitch.isChecked()){
+//            notificationsText.setText("Notifications ON");
+//            reminderDate.setText("Date dd/mm/yy");
+//            reminderTime.setText("Time 00:00");
+//            Repeat = true;
+//
+//            mRepeatTypeText.setEnabled(true);
+//
+//        }
+//        else {
+//            reminderDate.setText(" ");
+//            reminderTime.setText(" ");
+//            Repeat = false;
+//
+//            mRepeatTypeText.setEnabled(false);
+//
+//        }
+//
+//    }
 
 
 
