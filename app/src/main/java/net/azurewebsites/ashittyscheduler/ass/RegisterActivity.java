@@ -101,10 +101,13 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        final String username = usernameField.getText().toString();
+        final String password = passwordField.getText().toString();
+
         // parameters
         Pair[] parameters = new Pair[]{
-                new Pair<>("username", usernameField.getText().toString()),
-                new Pair<>("password", passwordField.getText().toString())
+                new Pair<>("username", username),
+                new Pair<>("password", password)
         };
 
         HttpTask task = new HttpTask(this, HttpMethod.POST,
@@ -130,6 +133,10 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Account created", Toast.LENGTH_SHORT).show();
 
                     // TODO: Perform a login here? instead of returning to the login screen
+                    // TODO: (Since we have the username and password)
+                    //username
+                    //password
+
                     LoadNewPage(LoginActivity.class);
                     finish();
                 } else if (code == HttpStatusCode.BAD_REQUEST.getCode()) {

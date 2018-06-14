@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.StrictMode;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -56,12 +58,24 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         final Button signIn = (Button) findViewById(R.id.signIn);
 
+        final EditText usernameField = findViewById(R.id.Username);
+        final EditText passwordField = findViewById(R.id.Password);
+
         // Sign in button
         signIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                signIn();
+
+
+                // Save remember me to shared preferences
+                CheckBox rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
+                SharedPreferences sharedPreferences = getSharedPreferences(ApplicationConstants.PREFERENCES ,Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("RememberMe", rememberMeCheckbox.isChecked());
+                editor.apply();
+
+                signIn(usernameField.getText().toString(), passwordField.getText().toString());
             }
         });
 
@@ -75,18 +89,24 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        SharedPreferences sp = getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE);
+
         // If there's an active token, attempt a login with the token
-        String token = getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE).getString("Token", null);
+        String token = sp.getString("Token", null);
 
         if (token != null) {
-            // token is available... try to sign in using the token
+            // token is available... try to sign in using the token if remember me is enabled
+            boolean rememberMe = sp.getBoolean("RememberMe", false);
 
-            //TODO: We should only do this if 'remember me' was checked!!! ok
-           automaticSignIn();
+            if (rememberMe) {
+                automaticSignIn();
+            }
         }
     }
 
     private void automaticSignIn() {
+
+        final ConstraintLayout layout = findViewById(R.id.Login_Layout);
 
         HttpTask task = new HttpTask(this, HttpMethod.PUT,
                 "https://ashittyscheduler.azurewebsites.net/api/users/autologin",
@@ -96,6 +116,10 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onBeforeExecute() {
+
+                        // make layout invisible
+                        layout.setVisibility(View.INVISIBLE);
+
                         // show a progress dialog (duh)
                         progressDialog = ProgressDialog.show(LoginActivity.this,
                                 "Logging in",
@@ -129,6 +153,8 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFinishExecuting() {
+                        // make layout visible again
+                        layout.setVisibility(View.VISIBLE);
                         progressDialog.dismiss();
                     }
                 });
@@ -141,15 +167,12 @@ public class LoginActivity extends AppCompatActivity {
      * When this method is called the login sequence is being started.
      * {@link HttpTask} for connection with the web api to login.
      */
-    private void signIn() {
-
-        EditText usernameBox = findViewById(R.id.Username);
-        EditText passwordBox = findViewById(R.id.Password);
+    private void signIn(String username, String password) {
 
         // login parameters
         Pair[] parameters = new Pair[] {
-                new Pair<>("username", usernameBox.getText().toString()),
-                new Pair<>("password", passwordBox.getText().toString())
+                new Pair<>("username", username),
+                new Pair<>("password", password)
         };
 
         HttpTask task = new HttpTask(this, HttpMethod.POST,
