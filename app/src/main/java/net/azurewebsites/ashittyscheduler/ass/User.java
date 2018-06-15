@@ -74,11 +74,13 @@ public class User implements Serializable{
         User u = new User();
 
         try {
+            u.setId(obj.getString("Id"));
             u.setUsername(obj.getString("Username"));
             u.setName(obj.getString("DisplayName"));
             u.setDescription(obj.getString("Description"));
             u.setEmail(obj.getString("Email"));
             u.setOnline(obj.getBoolean("IsOnline"));
+            u.setFriend(obj.getBoolean("IsFriend"));
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
