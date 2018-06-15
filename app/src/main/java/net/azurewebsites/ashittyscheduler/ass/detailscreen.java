@@ -107,6 +107,12 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
                                 //give the description of the detailscreen the description of the todo
                                 tv_description.setText(todo.getString("Description"));
                                 tv_location.setText(todo.getString("Location"));
+                                if (tv_location.getText().equals("")){
+                                    tv_location.setText("No Location Given.");
+                                }
+                                else {
+                                    tv_location.setText(todo.getString("Location"));
+                                }
 
                                 //split the time recieved from the todo (date and time are one in the database)
                                 String[] dateTime = todo.getString("Date").split("T");
