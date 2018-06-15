@@ -36,20 +36,13 @@ import java.util.Calendar;
 import static android.app.AlarmManager.ELAPSED_REALTIME_WAKEUP;
 
 public class addtodo extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
-TimePickerDialog timePickerDialog;
-Calendar calendar;
+    //declare Textviews etc
+private TimePickerDialog timePickerDialog;
+private Calendar calendar;
 private TextView AccesTime;
-private int CalendarHour;
-private  int CalendarMinute;
-Calendar remindercalendar;
-private int ReminderCalendarHour;
-private  int ReminderCalendarMinute;
-private String format;
-TextView DisplayTime;
-TextView repeattText;
-private String mRepeat;
-private String mRepeatNo;
-private String mRepeatType;
+private Calendar remindercalendar;
+private TextView DisplayTime;
+private TextView repeattText;
 private TextView reminderdatepickerdialogbutton;
 private TextView datepickerdialogbutton;
 private TextView selecteddate;
@@ -63,13 +56,18 @@ private TextView reminderTime;
 private TextView reminderDisplayTime;
 private TextView reminderDate;
 
+
+// declare variables
 private Boolean Repeat;
-
+private String mRepeat;
+private String mRepeatNo;
+private String mRepeatType;
 private TextView notificationsText;
-
-
-
-
+private int ReminderCalendarHour;
+private  int ReminderCalendarMinute;
+private String format;
+private int CalendarHour;
+private  int CalendarMinute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,35 +75,31 @@ private TextView notificationsText;
         setContentView(R.layout.activity_addtodo);
 
 
-
-
         //Set Time Picker
         AccesTime = (TextView) findViewById(R.id.timePlainText);
         DisplayTime = (TextView) findViewById(R.id.timePlainText);
-
+        //set notifcation text
         notificationsText = (TextView)findViewById(R.id.notificationsTextView);
 
+        //set reminder time
         reminderTime = (TextView) findViewById(R.id.remindertime);
         reminderDisplayTime = (TextView) findViewById(R.id.remindertime);
         reminderDate = (TextView)findViewById(R.id.reminderdate);
 
+        //set repeat text
         repeattText = (TextView) findViewById(R.id.repeatText) ;
         mRepeatTypeText = (TextView)findViewById(R.id.repeatType);
         mRepeatText = (TextView) findViewById(R.id.repeatType);
         mRepeatNoText = (TextView) findViewById(R.id.repeatType);
 
+        //set switches
         repeatSwitch = (Switch) findViewById(R.id.repeatSwitch);
         notificationSwitch = (Switch)findViewById(R.id.notificationsSwitch) ;
 
-
+        //set repeat as false when you started creating a todo
         Repeat = false;
 
-
-
-
-
-
-
+        //ref the switches to this class
         repeatSwitch.setOnCheckedChangeListener(this);
         notificationSwitch.setOnCheckedChangeListener(this);
 
@@ -113,14 +107,17 @@ private TextView notificationsText;
        reminderTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //delclare clock
                 remindercalendar = Calendar.getInstance();
+                //delclare clock variables
                 ReminderCalendarHour= remindercalendar.get(Calendar.HOUR_OF_DAY);
                 ReminderCalendarMinute = remindercalendar.get(Calendar.MINUTE);
-
+                //create clock pop-up
                 timePickerDialog = new TimePickerDialog(addtodo.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDayr, int minuter) {
                         String timeStamp = String.format("%02d:%02d", hourOfDayr, minuter);
+                        //display the selected time
                         reminderDisplayTime.setText(timeStamp);
                     }
                 },
@@ -133,14 +130,17 @@ private TextView notificationsText;
         AccesTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //delclare clock
                 calendar = Calendar.getInstance();
+                //delclare clock variables
                 CalendarHour= calendar.get(Calendar.HOUR_OF_DAY);
                 CalendarMinute = calendar.get(Calendar.MINUTE);
-
+                //create clock pop-up
                 timePickerDialog = new TimePickerDialog(addtodo.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         String timeStamp = String.format("%02d:%02d", hourOfDay, minute);
+                        //display the selected time
                         DisplayTime.setText(timeStamp);
                     }
                 },
@@ -149,10 +149,6 @@ private TextView notificationsText;
 
             }
         });
-
-
-
-
 
 
         datepickerdialogbutton = (TextView) findViewById(R.id.date);
@@ -187,58 +183,60 @@ private TextView notificationsText;
 
             }});
 
-
-
-
-
-
     }
 
     //Repeat Switch + notification switch
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        //if repeat switch is checked
         if (repeatSwitch.isChecked()){
             repeattText.setText("Repeat ON");
             mRepeatText.setText(  "Select Repeat Type");
+            //set the Repeat as true
             Repeat = true;
 
-            mRepeatTypeText.setEnabled(true);
-
-
+            //make repeat text clickable
+            mRepeatTypeText.setClickable(false);
+            // make the repeat text visible
+            mRepeatTypeText.setAlpha(1.0f);
 
         }
         else {
+            //if repeat switch is unchecked
+            //set the text as OFF
             repeattText.setText("Repeat OFF");
-            mRepeatText.setText(" ");
+            //set the repeat as false
             Repeat = false;
-            mRepeatType = "";
-
-
-
-            mRepeatTypeText.setEnabled(false);
-
-
-
+            //make repeat text unclickable
+            mRepeatTypeText.setClickable(true);
+            //make text invisible
+            mRepeatTypeText.setAlpha(0.0f);
 
         }
         if (notificationSwitch.isChecked()){
+            //if notification switch is checked
+            //set the text of the switch
             notificationsText.setText("Notifications ON");
             reminderDate.setText("Date dd/mm/yy");
             reminderTime.setText("Time 00:00");
-
-
-
+            //make the textviews visible and clickable
+            reminderTime.setAlpha(1.0f);
+            reminderDate.setAlpha(1.0f);
+            reminderDate.setClickable(true);
+            reminderTime.setClickable(true);
 
 
         }
         else {
-            reminderDate.setText(" ");
-            reminderTime.setText(" ");
+            //if notification switch is checked
+            //set the text of the switch
+            notificationsText.setText("Notifications OFF");
+            //make the textviews invisible and unclickable
+            reminderTime.setAlpha(0.0f);
+            reminderDate.setAlpha(0.0f);
             reminderDate.setClickable(false);
             reminderTime.setClickable(false);
-            notificationsText.setText("Notifications OFF");
-
 
 
         }
@@ -246,28 +244,24 @@ private TextView notificationsText;
     }
 
 
-
-
     //select repeat type
     public void selectRepeatType(View v){
-
+        //create array for the intervals
         final String[] items = new String[3];
         items[0] = "Daily";
         items[1] = "Weekly";
         items[2] = "Monthly";
 
 
-
-
-
         // Create List Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
+        //create pop-up
         builder.setTitle("Select Type");
         builder.setItems(items, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int item) {
-
+                //set the array items in the pop-up
+                //set the repeat type on the clicked item
                 mRepeatType = items[item];
                 mRepeatTypeText.setText(mRepeatType);
                 mRepeatText.setText(mRepeatType);
@@ -287,94 +281,69 @@ private TextView notificationsText;
     }
 
 
-
-
-
     //Calendar
     public static class DatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-
+            //declare calendar variables
             final Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-
+            //create calendar pop-up
             DatePickerDialog datepickerdialog = new DatePickerDialog(getActivity(),
                     AlertDialog.THEME_DEVICE_DEFAULT_DARK, this, year, month, day);
 
-
+            //return calendar pop-up
             return datepickerdialog;
 
-
         }
-
+        //function for selecting a date
         public void onDateSet(DatePicker view, int year, int month, int day) {
 
             TextView textview = (TextView) getActivity().findViewById(R.id.date);
-
+            //set the text for the selected date
             textview.setText(year + "-" + (month + 1) + "-" + day);
         }
     }
+
+
+    //Reminder Calendar
     public static class ReminderDatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-
+            //create reminder calendar
             final Calendar remindercalendar = Calendar.getInstance();
+            //declare reminder calendar variables
             int ryear = remindercalendar.get(Calendar.YEAR);
             int rmonth = remindercalendar.get(Calendar.MONTH);
             int rday = remindercalendar.get(Calendar.DAY_OF_MONTH);
 
-
+            //create reminder calendar pop-up
             DatePickerDialog reminderdatepickerdialog = new DatePickerDialog(getActivity(),
                     AlertDialog.THEME_DEVICE_DEFAULT_DARK, this, ryear, rmonth, rday);
 
-
+            //return reminder calendar pop-up
             return reminderdatepickerdialog;
 
 
         }
-
+        //function for selecting a date
         public void onDateSet(DatePicker view, int ryear, int rmonth, int rday) {
 
             TextView textview = (TextView) getActivity().findViewById(R.id.reminderdate);
-
+            //set the text for the selected date
             textview.setText(ryear + "-" + (rmonth + 1) + "-" + rday);
         }
     }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //add todo to the listview
     public void addButtonClicked (View v){
+        //declare variables you want to add to the database
         String messageText = ((EditText)findViewById(R.id.titleText)).getText().toString();
         String DescText = ((EditText)findViewById(R.id.descriptionText)).getText().toString();
         String dateText = ((TextView)findViewById(R.id.date)).getText().toString();
@@ -386,10 +355,11 @@ private TextView notificationsText;
         String notificationText = ((TextView)findViewById(R.id.notificationsTextView)).getText().toString();
 
         String Repeat_Interval;
-
+        //if Edit Repeat is false "NO INTERVAL" will be added to database instead of selecting a interval
         if (Repeat == false){
             Repeat_Interval = "NO INTERVAL";
         }
+        //the selected interval will be added
         else {
             Repeat_Interval = ((TextView)findViewById(R.id.repeatType)).getText().toString();
 
@@ -397,21 +367,21 @@ private TextView notificationsText;
 
 
         String locationT = ((TextView)findViewById(R.id.locationText)).getText().toString();
-
+        //set the standard status of the todo as false (undone)
         Boolean Status = false;
 
-
+        //check if all the edittexts are filled in
         if (messageText.equals("") || dateText.equals("") || timeText.equals("") || reminderdateText.equals("") || remindertimeText.equals("")){
             Toast.makeText(this, "PLEASE MAKE SURE ALL THE BLANKS ARE FILLED IN", Toast.LENGTH_SHORT).show();
         // When there is no location entered
         if (locationT.equals("")) {
             locationT = "No Location Given.";
         }
+        //set the location
         else {
             locationT = ((TextView)findViewById(R.id.locationText)).getText().toString();
         }
 
-        // When there is no repeat entered
 
 
 
@@ -419,6 +389,7 @@ private TextView notificationsText;
         if (DescText.equals("")) {
             DescText = "No Description Given.";
         }
+        //set the description
         else {
             DescText = ((EditText)findViewById(R.id.descriptionText)).getText().toString();
         }
@@ -444,10 +415,13 @@ private TextView notificationsText;
                     new Pair("Location", locationT)
 
             };
-
+            // set the web api task
             HttpTask task = new HttpTask(this.getApplicationContext(),
+                    //declare the task that will be used
                     HttpMethod.POST,
+                    //give the link for the task
                     "http://ashittyscheduler.azurewebsites.net/api/todo/create",
+                    //create a pop-up progressbar for the task
                     new AsyncHttpListener() {
                         private ProgressDialog progressDialog;
 
@@ -465,9 +439,11 @@ private TextView notificationsText;
                             int code = httpResponse.getCode();
 
                             if (code == HttpStatusCode.OK.getCode()){
+                                //give signal if the todo is added
                                 Toast.makeText(getApplicationContext(), "TODO CREATED", Toast.LENGTH_SHORT).show();
                             }
                             else{
+                                //give message if the task fails
                                 Toast.makeText(getApplicationContext(), "FAILED TO CREATE TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
 
@@ -476,6 +452,7 @@ private TextView notificationsText;
 
                         @Override
                         public void onError() {
+                            //give message if the task fails
                             Toast.makeText(getApplicationContext(), "TFAILED TO CREATE TODO", Toast.LENGTH_SHORT).show();
 
                         }
@@ -493,7 +470,7 @@ private TextView notificationsText;
 
             task.execute();
 
-
+            //end the activity
             finish();
         }
     }
