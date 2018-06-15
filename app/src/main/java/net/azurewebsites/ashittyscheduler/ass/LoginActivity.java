@@ -1,11 +1,17 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.StrictMode;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +27,7 @@ import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
+import net.azurewebsites.ashittyscheduler.ass.notifications.NotificationService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,12 +58,17 @@ public class LoginActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         //Set main thread policy to acces internet
         StrictMode.setThreadPolicy(policy);
         //Default starting activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        final Button signIn = (Button) findViewById(R.id.signIn);
+
+        // Start the notification service
+        startNotificationService();
+
+        final Button signIn = findViewById(R.id.signIn);
 
         final EditText usernameField = findViewById(R.id.Username);
         final EditText passwordField = findViewById(R.id.Password);
@@ -67,6 +79,15 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // Username and password must contain values
+                if (usernameField.getText().toString().length() < 1) {
+                    usernameField.setError("Please enter a username.");
+                    return;
+                }
+                if (passwordField.getText().toString().length() < 1) {
+                    passwordField.setError("Please enter a password.");
+                    return;
+                }
 
                 // Save remember me to shared preferences
                 CheckBox rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
@@ -102,6 +123,15 @@ public class LoginActivity extends AppCompatActivity {
                 automaticSignIn();
             }
         }
+    }
+
+    private void startNotificationService() {
+        // use this to start and trigger a service
+        Intent i= new Intent(this, NotificationService.class);
+        // potentially add data to the intent
+        //i.putExtra("KEY1", "Value to be used by the service");
+        Toast.makeText(this, "Starting notification service (i hope)", Toast.LENGTH_LONG);
+        this.startService(i);
     }
 
     private void automaticSignIn() {
