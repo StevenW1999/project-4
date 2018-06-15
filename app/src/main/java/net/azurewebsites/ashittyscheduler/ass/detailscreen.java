@@ -32,7 +32,7 @@ import java.io.IOException;
 
 public class detailscreen extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-
+    //declare variables
     private String todoId;
     private TextView tv_title;
     private TextView tv_description;
@@ -54,32 +54,36 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
         setContentView(R.layout.activity_detailscreen);
 
 
-
+        //declare variables
         tv_title = findViewById(R.id.DTitle);
         tv_description = findViewById(R.id.DDetails);
         tv_date = findViewById(R.id.DDate);
         tv_time = findViewById(R.id.DTime);
         tv_Rdate = findViewById(R.id.DreminderDate);
         tv_Rtime = findViewById(R.id.DreminderTime);
-
+        //declare buttons
         statusButton = findViewById(R.id.StatusButton);
-
+        //create a getIntent
         Intent intent = getIntent();
+        //gets todoId sent from overview
         this.todoId = intent.getStringExtra("todoId");
 
 
-
+        //specify to get todoId  from database
         Pair[] parameters = new Pair[]{
                 new Pair("todoId", todoId)
         };
-
+        // set the web api task
         final HttpTask httpTask = new HttpTask(this.getApplicationContext(),
+                //declare the task that will be used
                 HttpMethod.GET,
+                //give the link for the task
                 "http://ashittyscheduler.azurewebsites.net/api/todo/get",
 
                 new AsyncHttpListener()
 
                 {
+                    //create a pop-up progressbar for the task
                     private ProgressDialog progressDialog;
 
                     @Override
@@ -96,14 +100,18 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
                         if (code == HttpStatusCode.OK.getCode()) {
 
                             try {
+                                //get the todo from the database matching the todoId
                                 JSONObject todo = new JSONObject(httpResponse.getMessage());
 
+                                //give the title of the detailscreen the title of the todo
                                 tv_title.setText(todo.getString("Title"));
+                                //give the description of the detailscreen the description of the todo
                                 tv_description.setText(todo.getString("Description"));
-
+                                //split the time recieved from the todo (date and time are one in the database)
                                 String[] dateTime = todo.getString("Date").split("T");
 
                                 tv_date.setText(dateTime[0]);
+                                //checks the status of the todo
                                 if (todo.getString("Todo_Status") == "false" ){
                                     statusButton.setText("SET AS DONE");
                                     Status = false;
@@ -144,6 +152,7 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
 
                         }
                         else{
+                            //if an error occurs show the response message
                             Toast.makeText(getApplicationContext(), "FAILED TO GET TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
@@ -160,6 +169,7 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
                         progressDialog.dismiss();
                     }
                 });
+        //give URI parameter to the link to get the todo
         httpTask.setUriParameters(parameters);
         httpTask.execute();
 
@@ -167,28 +177,35 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
     }
 
     public void EditButtonClicked(View view) {
+        //create intent to give the todoId
         Intent intent = new Intent();
+        //specify to which class you want to give the intent
         intent.setClass(detailscreen.this, edittodo.class);
-
+        //give the todoId to the specified class
         intent.putExtra("todoId", this.todoId);
         startActivity(intent);
 
 }
 
 public void DeleteButtonClicked(View view){
+        //create pop-up
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(detailscreen.this);
         mBuilder.setTitle(R.string.dialog_title);
         mBuilder.setMessage(R.string.dialog_message);
+        //set a YES and NO button
+        //if the YES button is clicked
         mBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-
+            //specify what paramameter to get from the database
             Pair[] parameters = new Pair[]{
                     new Pair("todoId", todoId)};
 
             @Override
             public void onClick(DialogInterface dialog, int i) {
-
+                // set the web api task
                 HttpTask httpTask = new HttpTask(getApplicationContext(),
+                        //declare the task that will be used
                         HttpMethod.DELETE,
+                        //give the link for the task
                         "http://ashittyscheduler.azurewebsites.net/api/todo/delete",
 
                         new AsyncHttpListener() {
@@ -221,6 +238,7 @@ public void DeleteButtonClicked(View view){
 
                             @Override
                             public void onFinishExecuting() {
+                                //finish activity when todo is deleted
                                 finish();
 
                             }
@@ -236,9 +254,12 @@ public void DeleteButtonClicked(View view){
             }
 
         });
+
+        //if NO button is clicked
         mBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //dismiss the pop-up
                 dialog.dismiss();
             }
         });
@@ -260,15 +281,19 @@ public void DeleteButtonClicked(View view){
 
 
 
-
+        //specify which parameters you want to use
         Pair[] parameters = new Pair[]{
                 new Pair("Id", todoId),
+                //change the status to the opposite of the current status
+                //False becomes True/ True becomes False
                 new Pair("Todo_Status",!Status)
 
         };
-
+        // set the web api task
         HttpTask task = new HttpTask(this.getApplicationContext(),
+                //declare the task that will be used
                 HttpMethod.PUT,
+                //give the link for the task
                 "http://ashittyscheduler.azurewebsites.net/api/todo/updatestatus",
                 new AsyncHttpListener() {
                     private ProgressDialog progressDialog;
