@@ -11,8 +11,8 @@
         android:id="@+id/detailTime2"
         android:layout_width="358dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
         android:text="Reminder Time"
         android:textSize="20dp"
@@ -24,9 +24,9 @@
         android:id="@+id/DreminderTime"
         android:layout_width="358dp"
         android:layout_height="25dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
         android:text="00:00"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +76,7 @@
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DDetails" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
         android:id="@+id/detailDate2"
@@ -97,7 +97,7 @@
         android:layout_height="30dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Time"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +108,7 @@
         android:id="@+id/detailNotification"
         android:layout_width="263dp"
         android:layout_height="30dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="16dp"
         android:text="Notification"
         android:textSize="20dp"
@@ -154,9 +154,9 @@
         android:id="@+id/DreminderDate"
         android:layout_width="358dp"
         android:layout_height="25dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
         android:text="dd/mm/yy"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -169,7 +169,7 @@
         android:layout_height="25dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:text="dd/mm/yy"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -179,10 +179,10 @@
     <TextView
         android:id="@+id/DTime"
         android:layout_width="358dp"
-        android:layout_height="25dp"
+        android:layout_height="26dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:text="00:00"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -190,12 +190,12 @@
         app:layout_constraintTop_toBottomOf="@+id/detailTime" />
 
     <!--<TextView-->
-        <!--android:id="@+id/DNotification"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="TextView"-->
-        <!--tools:layout_editor_absoluteX="8dp"-->
-        <!--tools:layout_editor_absoluteY="364dp" />-->
+    <!--android:id="@+id/DNotification"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="TextView"-->
+    <!--tools:layout_editor_absoluteX="8dp"-->
+    <!--tools:layout_editor_absoluteY="364dp" />-->
 
 
     <Button
@@ -213,10 +213,23 @@
     <Switch
         android:id="@+id/detailNotificationSwitch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="17dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DTime" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="358dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Location"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DDetails" />
 
 </android.support.constraint.ConstraintLayout>
