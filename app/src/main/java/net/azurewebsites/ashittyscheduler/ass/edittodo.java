@@ -42,7 +42,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
-public class edittodo extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+public class edittodo extends AppCompatActivity{
     //declare Textviews etc
     private TimePickerDialog timePickerDialog;
     private Calendar Eremindercalendar;
@@ -110,8 +110,71 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
         EditNotificationSwitch = (Switch)findViewById(R.id.ENotificationsSwitch) ;
 
         //refer switches to this class
-        EditRepeatSwitch.setOnCheckedChangeListener(this);
-        EditNotificationSwitch.setOnCheckedChangeListener(this);
+        EditRepeatSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                //if repeat switch is checked
+                if (EditRepeatSwitch.isChecked()){
+                    EditRepeatText.setText("Repeat ON");
+                    //set the Repeat as true
+                    EditRepeat = true;
+                    // make the repeat text visible
+                    EditmRepeatText.setAlpha(1.0f);
+                    EditRepeatTypeText.setAlpha(1.0f);
+                    //make repeat text clickable
+                    EditRepeatTypeText.setEnabled(true);
+
+                }
+                else {
+                    //if repeat switch is unchecked
+                    //set the text as OFF
+                    EditRepeatText.setText("Repeat OFF");
+                    //set the repeat as false
+                    EditRepeat = false;
+                    //make repeattype empty
+                    EditRepeatType = "";
+                    //make text invisible
+                    EditmRepeatText.setAlpha(0.0f);
+                    EditRepeatTypeText.setAlpha(0.0f);
+
+                    EditRepeatTypeText.setEnabled(false);
+
+                }
+            }
+        });
+        EditNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (EditNotificationSwitch.isChecked()){
+                    //if notification switch is checked
+                    //set the text of the switch
+                    EditNotificationText.setText("Notifications ON");
+                    //make the textviews visible and clickable
+                    EReminderDate.setAlpha(1.0f);
+                    EreminderTime.setAlpha(1.0f);
+                    EReminderDate.setClickable(true);
+                    EreminderTime.setClickable(true);
+                    EReminderDate.setEnabled(true);
+                    EreminderTime.setEnabled(true);
+
+                }
+                else {
+                    //if notification switch is checked
+                    //set the text of the switch
+                    EditNotificationText.setText("Notifications OFF");
+                    //make the textviews invisible and unclickable
+                    EReminderDate.setAlpha(0.0f);
+                    EreminderTime.setAlpha(0.0f);
+                    EReminderDate.setClickable(false);
+                    EreminderTime.setClickable(false);
+                    EReminderDate.setEnabled(false);
+                    EreminderTime.setEnabled(false);
+
+                }
+            }
+        });
 
         // get todoId from detailscreen
         Intent intent = getIntent();
@@ -291,66 +354,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
     }
 
 
-    //switches
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-
-        //if repeat switch is checked
-        if (EditRepeatSwitch.isChecked()){
-            EditRepeatText.setText("Repeat ON");
-            //set the Repeat as true
-            EditRepeat = true;
-            // make the repeat text visible
-            EditmRepeatText.setAlpha(1.0f);
-            EditRepeatTypeText.setAlpha(1.0f);
-            //make repeat text clickable
-            EditRepeatTypeText.setEnabled(true);
-
-        }
-        else {
-            //if repeat switch is unchecked
-            //set the text as OFF
-            EditRepeatText.setText("Repeat OFF");
-            //set the repeat as false
-            EditRepeat = false;
-            //make repeattype empty
-            EditRepeatType = "";
-            //make text invisible
-            EditmRepeatText.setAlpha(0.0f);
-            EditRepeatTypeText.setAlpha(0.0f);
-
-            EditRepeatTypeText.setEnabled(false);
-
-        }
-        if (EditNotificationSwitch.isChecked()){
-            //if notification switch is checked
-            //set the text of the switch
-            EditNotificationText.setText("Notifications ON");
-            //make the textviews visible and clickable
-            EReminderDate.setAlpha(1.0f);
-            EreminderTime.setAlpha(1.0f);
-            EReminderDate.setClickable(true);
-            EreminderTime.setClickable(true);
-            EReminderDate.setEnabled(true);
-            EreminderTime.setEnabled(true);
-
-        }
-        else {
-            //if notification switch is checked
-            //set the text of the switch
-            EditNotificationText.setText("Notifications OFF");
-            //make the textviews invisible and unclickable
-            EReminderDate.setAlpha(0.0f);
-            EreminderTime.setAlpha(0.0f);
-            EReminderDate.setClickable(false);
-            EreminderTime.setClickable(false);
-            EReminderDate.setEnabled(false);
-            EreminderTime.setEnabled(false);
-
-        }
-
-    }
     public void selectRepeatType(View v){
         //create array for the intervals
         final String[] items = new String[3];

@@ -35,7 +35,7 @@ import java.util.Calendar;
 
 import static android.app.AlarmManager.ELAPSED_REALTIME_WAKEUP;
 
-public class addtodo extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+public class addtodo extends AppCompatActivity{
     //declare Textviews etc
 private TimePickerDialog timePickerDialog;
 private Calendar calendar;
@@ -100,8 +100,67 @@ private  int CalendarMinute;
         Repeat = false;
 
         //ref the switches to this class
-        repeatSwitch.setOnCheckedChangeListener(this);
-        notificationSwitch.setOnCheckedChangeListener(this);
+        repeatSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //if repeat switch is checked
+                if (repeatSwitch.isChecked()){
+                    repeattText.setText("Repeat ON");
+                    mRepeatText.setText(  "Select Repeat Type");
+                    //set the Repeat as true
+                    Repeat = true;
+
+                    //make repeat text clickable
+                    mRepeatTypeText.setClickable(true);
+                    // make the repeat text visible
+                    mRepeatTypeText.setAlpha(1.0f);
+
+                }
+                else {
+                    //if repeat switch is unchecked
+                    //set the text as OFF
+                    repeattText.setText("Repeat OFF");
+                    //set the repeat as false
+                    Repeat = false;
+                    //make repeat text unclickable
+                    mRepeatTypeText.setClickable(false);
+                    //make text invisible
+                    mRepeatTypeText.setAlpha(0.0f);
+
+                }
+            }
+        });
+        notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (notificationSwitch.isChecked()){
+                    //if notification switch is checked
+                    //set the text of the switch
+                    notificationsText.setText("Notifications ON");
+                    reminderDate.setText("Date dd/mm/yy");
+                    reminderTime.setText("Time 00:00");
+                    //make the textviews visible and clickable
+                    reminderTime.setAlpha(1.0f);
+                    reminderDate.setAlpha(1.0f);
+                    reminderDate.setClickable(true);
+                    reminderTime.setClickable(true);
+
+
+                }
+                else {
+                    //if notification switch is checked
+                    //set the text of the switch
+                    notificationsText.setText("Notifications OFF");
+                    //make the textviews invisible and unclickable
+                    reminderTime.setAlpha(0.0f);
+                    reminderDate.setAlpha(0.0f);
+                    reminderDate.setClickable(false);
+                    reminderTime.setClickable(false);
+
+
+                }
+            }
+        });
 
 //Clock
        reminderTime.setOnClickListener(new View.OnClickListener() {
@@ -187,61 +246,7 @@ private  int CalendarMinute;
 
     //Repeat Switch + notification switch
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        //if repeat switch is checked
-        if (repeatSwitch.isChecked()){
-            repeattText.setText("Repeat ON");
-            mRepeatText.setText(  "Select Repeat Type");
-            //set the Repeat as true
-            Repeat = true;
 
-            //make repeat text clickable
-            mRepeatTypeText.setClickable(false);
-            // make the repeat text visible
-            mRepeatTypeText.setAlpha(1.0f);
-
-        }
-        else {
-            //if repeat switch is unchecked
-            //set the text as OFF
-            repeattText.setText("Repeat OFF");
-            //set the repeat as false
-            Repeat = false;
-            //make repeat text unclickable
-            mRepeatTypeText.setClickable(true);
-            //make text invisible
-            mRepeatTypeText.setAlpha(0.0f);
-
-        }
-        if (notificationSwitch.isChecked()){
-            //if notification switch is checked
-            //set the text of the switch
-            notificationsText.setText("Notifications ON");
-            reminderDate.setText("Date dd/mm/yy");
-            reminderTime.setText("Time 00:00");
-            //make the textviews visible and clickable
-            reminderTime.setAlpha(1.0f);
-            reminderDate.setAlpha(1.0f);
-            reminderDate.setClickable(true);
-            reminderTime.setClickable(true);
-
-
-        }
-        else {
-            //if notification switch is checked
-            //set the text of the switch
-            notificationsText.setText("Notifications OFF");
-            //make the textviews invisible and unclickable
-            reminderTime.setAlpha(0.0f);
-            reminderDate.setAlpha(0.0f);
-            reminderDate.setClickable(false);
-            reminderTime.setClickable(false);
-
-
-        }
-
-    }
 
 
     //select repeat type
@@ -369,11 +374,6 @@ private  int CalendarMinute;
         String locationT = ((TextView)findViewById(R.id.locationText)).getText().toString();
         //set the standard status of the todo as false (undone)
         Boolean Status = false;
-
-        //check if all the edittexts are filled in
-        if (messageText.equals("") || dateText.equals("") || timeText.equals("") || reminderdateText.equals("") || remindertimeText.equals("")){
-            Toast.makeText(this, "PLEASE MAKE SURE ALL THE BLANKS ARE FILLED IN", Toast.LENGTH_SHORT).show();
-        // When there is no location entered
         if (locationT.equals("")) {
             locationT = "No Location Given.";
         }
@@ -381,24 +381,12 @@ private  int CalendarMinute;
         else {
             locationT = ((TextView)findViewById(R.id.locationText)).getText().toString();
         }
-
-
-
-
-        // When there is no description entered
-        if (DescText.equals("")) {
-            DescText = "No Description Given.";
-        }
-        //set the description
-        else {
-            DescText = ((EditText)findViewById(R.id.descriptionText)).getText().toString();
+        //check if all the edittexts are filled in
+        if (messageText.equals("") || dateText.equals("") || timeText.equals("") || reminderdateText.equals("") || remindertimeText.equals("")) {
+            Toast.makeText(this, "PLEASE MAKE SURE ALL THE BLANKS ARE FILLED IN", Toast.LENGTH_SHORT).show();
+            // When there is no location entered
         }
 
-        // When there is no title entered
-        if (messageText.equals("")){
-            Toast.makeText(this, "PLEASE GIVE THE TODO A TITLE", Toast.LENGTH_SHORT).show();
-
-        }
         else {
 
             // create body parameters
@@ -476,7 +464,7 @@ private  int CalendarMinute;
     }
 
 
-        }}
+        }
 
 
 
