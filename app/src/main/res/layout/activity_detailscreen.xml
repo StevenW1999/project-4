@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
+    android:scrollbars = "vertical"
+    android:scrollbarStyle="insideInset"
+    >
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,6 +16,7 @@
     android:layout_height="match_parent"
     tools:context=".detailscreen"
     tools:layout_editor_absoluteY="25dp">
+
 
     <TextView
         android:id="@+id/detailTime2"
@@ -23,22 +34,24 @@
     <TextView
         android:id="@+id/DreminderTime"
         android:layout_width="358dp"
-        android:layout_height="25dp"
+        android:layout_height="46dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="13dp"
         android:layout_marginStart="13dp"
-        android:layout_marginTop="8dp"
         android:text="00:00"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailTime2" />
+        app:layout_constraintTop_toBottomOf="@+id/detailTime2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/editButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="13dp"
         android:clickable="true"
         android:onClick="EditButtonClicked"
         android:text="Edit"
@@ -129,9 +142,9 @@
     <TextView
         android:id="@+id/DTitle"
         android:layout_width="256dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="24dp"
         android:text="Title"
         android:textSize="25sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -140,10 +153,9 @@
     <TextView
         android:id="@+id/DDetails"
         android:layout_width="358dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:text="Description"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -156,7 +168,6 @@
         android:layout_height="25dp"
         android:layout_marginEnd="13dp"
         android:layout_marginStart="13dp"
-        android:layout_marginTop="8dp"
         android:text="dd/mm/yy"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -169,7 +180,6 @@
         android:layout_height="25dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:text="dd/mm/yy"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -182,7 +192,6 @@
         android:layout_height="26dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:text="00:00"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -225,11 +234,15 @@
         android:layout_height="30dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:text="Location"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/DDetails" />
 
+
+
+
 </android.support.constraint.ConstraintLayout>
+
+</ScrollView>
