@@ -32,7 +32,6 @@ import java.io.IOException;
 
 public class detailscreen extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-
     private String todoId;
     private TextView tv_title;
     private TextView tv_description;
@@ -43,11 +42,6 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
     private TextView tv_location;
     private boolean Status;
     private Button statusButton;
-
-
-
-
-
 
 
     @Override
@@ -103,6 +97,7 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
 
                                 tv_title.setText(todo.getString("Title"));
                                 tv_description.setText(todo.getString("Description"));
+                                tv_location.setText(todo.getString("Location"));
 
                                 String[] dateTime = todo.getString("Date").split("T");
 
@@ -118,11 +113,6 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
                                     Status = true;
 
                                 }
-
-
-
-
-
 
                                 // if there is a time
                                 if (dateTime.length > 1) {
