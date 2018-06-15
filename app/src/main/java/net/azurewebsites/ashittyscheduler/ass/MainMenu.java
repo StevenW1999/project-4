@@ -1,9 +1,7 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,15 +20,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import net.azurewebsites.ashittyscheduler.ass.Overview.OverviewFragment;
 import net.azurewebsites.ashittyscheduler.ass.profile.ProfileActivity;
@@ -39,7 +31,6 @@ import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
-import net.azurewebsites.ashittyscheduler.ass.profile.ProfileFragment;
 import net.azurewebsites.ashittyscheduler.ass.settings.SettingsFragment;
 
 public class MainMenu extends AppCompatActivity

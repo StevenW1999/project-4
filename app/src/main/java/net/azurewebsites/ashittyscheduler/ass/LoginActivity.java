@@ -1,16 +1,24 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.StrictMode;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,6 +27,7 @@ import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
+import net.azurewebsites.ashittyscheduler.ass.notifications.NotificationService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,8 +45,8 @@ import java.io.IOException;
 public class LoginActivity extends AppCompatActivity {
 
     //Setting internet acces policy
-    // Test
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
     //Class variables. These are static cause they remain the same for all within objects being created.
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String URLString = "https://ashittyscheduler.azurewebsites.net/api/users/login";
@@ -49,25 +58,45 @@ public class LoginActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         //Set main thread policy to acces internet
         StrictMode.setThreadPolicy(policy);
         //Default starting activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        final Button signIn = (Button) findViewById(R.id.signIn);
+
+        // Start the notification service
+        startNotificationService();
+
+        final Button signIn = findViewById(R.id.signIn);
+
+        final EditText usernameField = findViewById(R.id.Username);
+        final EditText passwordField = findViewById(R.id.Password);
 
         // Sign in button
         signIn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                try {
-                    signIn();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.w("Failed connection", ""+ e.getMessage());
-                    ShowFail();
+
+                // Username and password must contain values
+                if (usernameField.getText().toString().length() < 1) {
+                    usernameField.setError("Please enter a username.");
+                    return;
                 }
+                if (passwordField.getText().toString().length() < 1) {
+                    passwordField.setError("Please enter a password.");
+                    return;
+                }
+
+                // Save remember me to shared preferences
+                CheckBox rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
+                SharedPreferences sharedPreferences = getSharedPreferences(ApplicationConstants.PREFERENCES ,Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("RememberMe", rememberMeCheckbox.isChecked());
+                editor.apply();
+
+                signIn(usernameField.getText().toString(), passwordField.getText().toString());
             }
         });
 
@@ -81,25 +110,33 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        SharedPreferences sp = getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE);
+
         // If there's an active token, attempt a login with the token
-        String token = getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE).getString("Token", null);
+        String token = sp.getString("Token", null);
 
         if (token != null) {
-            // token is available... try to sign in using the token
+            // token is available... try to sign in using the token if remember me is enabled
+            boolean rememberMe = sp.getBoolean("RememberMe", false);
 
-            //TODO: We should only do this if 'remember me' was checked!!! ok
-           automaticSignIn();
+            if (rememberMe) {
+                automaticSignIn();
+            }
         }
     }
 
-    /**
-     * Toast that shows a fail has occurred when this method has been called.
-     */
-    private void ShowFail() {
-        Toast.makeText(this,"Something went wrong...", Toast.LENGTH_SHORT).show();
+    private void startNotificationService() {
+        // use this to start and trigger a service
+        Intent i= new Intent(this, NotificationService.class);
+        // potentially add data to the intent
+        //i.putExtra("KEY1", "Value to be used by the service");
+        Toast.makeText(this, "Starting notification service (i hope)", Toast.LENGTH_LONG);
+        this.startService(i);
     }
 
     private void automaticSignIn() {
+
+        final ConstraintLayout layout = findViewById(R.id.Login_Layout);
 
         HttpTask task = new HttpTask(this, HttpMethod.PUT,
                 "https://ashittyscheduler.azurewebsites.net/api/users/autologin",
@@ -109,6 +146,10 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onBeforeExecute() {
+
+                        // make layout invisible
+                        layout.setVisibility(View.INVISIBLE);
+
                         // show a progress dialog (duh)
                         progressDialog = ProgressDialog.show(LoginActivity.this,
                                 "Logging in",
@@ -130,14 +171,23 @@ public class LoginActivity extends AppCompatActivity {
                             LoadNewPage(MainMenu.class);
                             finish();
 
-                        } else if (code == HttpStatusCode.UNAUTHORIZED.getCode()){
+                        }
+                        else {
+                            // make layout visible again
+                            layout.setVisibility(View.VISIBLE);
+                        }
+
+                        if (code == HttpStatusCode.UNAUTHORIZED.getCode()){
                             Toast.makeText(getApplicationContext(), "Please log in.", Toast.LENGTH_LONG).show();
                         }
                     }
 
                     @Override
                     public void onError() {
-                        Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "An error occurred. Please try again later ☹", Toast.LENGTH_SHORT).show();
+
+                        // make layout visible again
+                        layout.setVisibility(View.VISIBLE);
                     }
 
                     @Override
@@ -150,20 +200,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * @throws IOException when given wrong information.
      * Takes input from the fields from out layout.
      * When this method is called the login sequence is being started.
      * {@link HttpTask} for connection with the web api to login.
      */
-    private void signIn() throws IOException {
-
-        EditText usernameBox = (EditText)findViewById(R.id.Username);
-        EditText passwordBox = (EditText)findViewById(R.id.Password);
+    private void signIn(String username, String password) {
 
         // login parameters
         Pair[] parameters = new Pair[] {
-                new Pair<>("username", usernameBox.getText().toString()),
-                new Pair<>("password", passwordBox.getText().toString())
+                new Pair<>("username", username),
+                new Pair<>("password", password)
         };
 
         HttpTask task = new HttpTask(this, HttpMethod.POST,
@@ -195,7 +241,7 @@ public class LoginActivity extends AppCompatActivity {
                         String token = tokenObj.get("TokenId").toString();
                         String userId = tokenObj.get("UserId").toString();
 
-                        // Save token to sharedpreferences
+                        // Save token to shared preferences
                         SharedPreferences sharedPreferences = getSharedPreferences(ApplicationConstants.PREFERENCES ,Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("Token", token);
@@ -221,7 +267,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError() {
-                Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "An error occurred. Please try again later ☹", Toast.LENGTH_SHORT).show();
             }
 
             @Override
