@@ -109,6 +109,16 @@ public class edittodo extends AppCompatActivity{
         EditRepeatSwitch = (Switch) findViewById(R.id.EditRepeatSwitch);
         EditNotificationSwitch = (Switch)findViewById(R.id.ENotificationsSwitch) ;
 
+        EReminderDate.setClickable(false);
+        EreminderTime.setClickable(false);
+        EReminderDate.setEnabled(false);
+        EreminderTime.setEnabled(false);
+        EReminderDate.setAlpha(0.0f);
+        EreminderTime.setAlpha(0.0f);
+        EditRepeatTypeText.setEnabled(false);
+
+
+
         //refer switches to this class
         EditRepeatSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -159,6 +169,7 @@ public class edittodo extends AppCompatActivity{
                     EReminderDate.setEnabled(true);
                     EreminderTime.setEnabled(true);
 
+
                 }
                 else {
                     //if notification switch is checked
@@ -171,6 +182,7 @@ public class edittodo extends AppCompatActivity{
                     EreminderTime.setClickable(false);
                     EReminderDate.setEnabled(false);
                     EreminderTime.setEnabled(false);
+
 
                 }
             }
@@ -451,6 +463,7 @@ public class edittodo extends AppCompatActivity{
         String RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
         String RtimeText = ((TextView)findViewById(R.id.EditRTime)).getText().toString();
         String Repeat_Interval;
+
 
         //if Edit Repeat is false "NO INTERVAL" will be added to database instead of selecting a interval
         if (EditRepeat == false){
