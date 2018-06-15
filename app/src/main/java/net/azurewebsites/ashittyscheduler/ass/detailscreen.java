@@ -106,10 +106,15 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
                                 tv_title.setText(todo.getString("Title"));
                                 //give the description of the detailscreen the description of the todo
                                 tv_description.setText(todo.getString("Description"));
+
+                                //give the location of the detailscreen the location of the todo
                                 tv_location.setText(todo.getString("Location"));
+                                //if there is no location
                                 if (tv_location.getText().equals("")){
+                                    //set the location as No Location Given
                                     tv_location.setText("No Location Given.");
                                 }
+                                //give the location of the detailscreen the location of the todo
                                 else {
                                     tv_location.setText(todo.getString("Location"));
                                 }
