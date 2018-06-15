@@ -94,6 +94,9 @@ private  int CalendarMinute;
         mRepeatText = (TextView) findViewById(R.id.repeatType);
         mRepeatNoText = (TextView) findViewById(R.id.repeatType);
 
+        //set reminderdate standard as the normal date?
+        reminderDate = mDateText;
+        reminderDate = mTimeText;
         //set switches
         repeatSwitch = (Switch) findViewById(R.id.repeatSwitch);
         notificationSwitch = (Switch)findViewById(R.id.notificationsSwitch) ;
@@ -158,6 +161,10 @@ private  int CalendarMinute;
                     reminderDate.setAlpha(0.0f);
                     reminderDate.setClickable(false);
                     reminderTime.setClickable(false);
+                    //if notification is not checked
+                    //set the reminder date as the same as the noramle date?
+                    reminderDate = mDateText;
+                    reminderDate = mTimeText;
 
 
                 }
@@ -356,9 +363,6 @@ private  int CalendarMinute;
         String timeText = ((TextView)findViewById(R.id.timePlainText)).getText().toString();
         String reminderdateText = ((TextView)findViewById(R.id.reminderdate)).getText().toString();
         String remindertimeText = ((TextView)findViewById(R.id.remindertime)).getText().toString();
-
-        String repeatTxt = ((TextView)findViewById(R.id.repeatText)).getText().toString();
-        String notificationText = ((TextView)findViewById(R.id.notificationsTextView)).getText().toString();
 
         String Repeat_Interval;
         //if Edit Repeat is false "NO INTERVAL" will be added to database instead of selecting a interval
