@@ -478,8 +478,8 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
         String todoId = intent.getStringExtra("todoId");
         Log.d("TODOID", todoId);
 
-        if (messageText.equals("")){
-            Toast.makeText(this, "PLEASE GIVE THE TODO A TITLE", Toast.LENGTH_SHORT).show();
+        if (messageText.equals("") || dateText.equals("") || timeText.equals("") || RdateText.equals("") || RtimeText.equals("")){
+            Toast.makeText(this, "PLEASE FILL IN ALL THE BLANKS", Toast.LENGTH_SHORT).show();
 
         }
         else {
