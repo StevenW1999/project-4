@@ -224,33 +224,33 @@ public class edittodo extends AppCompatActivity{
                             try {
                                 JSONObject todo = new JSONObject(httpResponse.getMessage());
 
-                                //set the hints of the textviews
-                                ETitle.setHint(todo.getString("Title"));
-                                EDescription.setHint(todo.getString("Description"));
-                                ELocation.setHint(todo.getString("Location"));
+                                //set the text of the textviews
+                                ETitle.setText(todo.getString("Title"));
+                                EDescription.setText(todo.getString("Description"));
+                                ELocation.setText(todo.getString("Location"));
                                 EditRepeatType = todo.getString("Repeat_Interval");
-                                EditRepeatTypeText.setHint(todo.getString("Repeat_Interval"));
+                                EditRepeatTypeText.setText(todo.getString("Repeat_Interval"));
                                 Status = todo.getBoolean("Todo_Status");
 
 
                                 String[] dateTime = todo.getString("Date").split("T");
 
-                                EEditDate.setHint(dateTime[0]);
+                                EEditDate.setText(dateTime[0]);
 
                                 // if there is a time
                                 if (dateTime.length > 1) {
                                     // ignore last three characters
-                                    EDisplayTime.setHint(dateTime[1].substring(0, dateTime[1].length() - 3));
+                                    EDisplayTime.setText(dateTime[1].substring(0, dateTime[1].length() - 3));
                                 }
                                String[] RdateTime = todo.getString("DateReminder").split("T");
 
 
-                                EReminderDate.setHint(RdateTime[0]);
+                                EReminderDate.setText(RdateTime[0]);
 
                                 // if there is a time
                                 if (RdateTime.length > 1) {
                                     // ignore last three characters
-                                    EreminderDisplayTime.setHint(RdateTime[1].substring(0, RdateTime[1].length() - 3));
+                                    EreminderDisplayTime.setText(RdateTime[1].substring(0, RdateTime[1].length() - 3));
                                 }
 
 
