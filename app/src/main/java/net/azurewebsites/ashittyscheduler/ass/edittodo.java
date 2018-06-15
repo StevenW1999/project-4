@@ -28,6 +28,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 
+import net.azurewebsites.ashittyscheduler.ass.Overview.OverviewFragment;
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
@@ -41,7 +42,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
-public class edittodo extends AppCompatActivity {
+public class edittodo extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     TimePickerDialog timePickerDialog;
     Calendar Eremindercalendar;
     Calendar calendar;
@@ -50,35 +51,148 @@ public class edittodo extends AppCompatActivity {
     private  int CalendarMinute;
     private int EReminderCalendarHour;
     private  int EReminderCalendarMinute;
-    private String format;
-    TextView EDisplayTime;
-    TextView repeattText;
-    private String mRepeat;
-    private String mRepeatNo;
-    private String mRepeatType;
+    private TextView EDisplayTime;
     private TextView datepickerdialogbutton;
     private TextView Edatepickerdialogbutton;
     private TextView selecteddate;
-    private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText, mRepeatIntervalText;
-    private Switch repeatSwitch, notificationSwitch;
-    private TextView notificationText;
-    private AlarmManager alarmManager;
-    private PendingIntent alarmIntent;
     private TextView EreminderTime;
     private TextView EreminderDisplayTime;
+    private TextView ETitle;
+    private TextView EDescription;
+    private String todoId;
+    private TextView EEditDate;
+    private TextView EReminderDate;
+    private TextView EditRepeatText, EditRepeatTypeText,EditmRepeatText, EditNotificationText;
+    private Switch EditRepeatSwitch, EditNotificationSwitch;
+    private boolean EditRepeat;
+    private String EditRepeatType;
+    private boolean Status;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edittodo);
 
+        ETitle = (TextView)findViewById(R.id.EditTitle) ;
+        EDescription = (TextView)findViewById(R.id.EditDescription);
+
+        EEditDate = (TextView)findViewById(R.id.EditDate);
+        EReminderDate = (TextView) findViewById(R.id.EditRDate) ;
+
 
         //Set Time Picker
         EAccesTime = (TextView) findViewById(R.id.EditTime);
         EDisplayTime = (TextView) findViewById(R.id.EditTime);
 
+
         EreminderTime = (TextView) findViewById(R.id.EditRTime);
         EreminderDisplayTime = (TextView) findViewById(R.id.EditRTime);
+
+        EditRepeatText = (TextView) findViewById(R.id.ERepeatText) ;
+        EditRepeatTypeText = (TextView)findViewById(R.id.EditRepeatType);
+        EditmRepeatText = (TextView) findViewById(R.id.EditRepeatType);
+
+        EditNotificationText = (TextView)findViewById(R.id.ENotificationsTextView) ;
+
+        EditRepeatSwitch = (Switch) findViewById(R.id.EditRepeatSwitch);
+        EditNotificationSwitch = (Switch)findViewById(R.id.ENotificationsSwitch) ;
+
+        EditRepeatSwitch.setOnCheckedChangeListener(this);
+        EditNotificationSwitch.setOnCheckedChangeListener(this);
+
+
+        Intent intent = getIntent();
+        this.todoId = intent.getStringExtra("todoId");
+
+
+
+        Pair[] parameters = new Pair[]{
+                new Pair("todoId", todoId)
+        };
+
+        final HttpTask httpTask = new HttpTask(this.getApplicationContext(),
+                HttpMethod.GET,
+                "http://ashittyscheduler.azurewebsites.net/api/todo/get",
+
+                new AsyncHttpListener()
+
+                {
+                    private ProgressDialog progressDialog;
+
+                    @Override
+                    public void onBeforeExecute() {
+                        // show a progress dialog (duh)
+                        progressDialog = ProgressDialog.show(edittodo.this,
+                                "Getting todo",
+                                "Please wait");
+                    }
+
+                    @Override
+                    public void onResponse(HttpResponse httpResponse) {
+                        int code = httpResponse.getCode();
+                        if (code == HttpStatusCode.OK.getCode()) {
+
+                            try {
+                                JSONObject todo = new JSONObject(httpResponse.getMessage());
+
+                                ETitle.setHint(todo.getString("Title"));
+                                EDescription.setHint(todo.getString("Description"));
+                                EditRepeatType = todo.getString("Repeat_Interval");
+                                EditRepeatTypeText.setHint(todo.getString("Repeat_Interval"));
+                                Status = todo.getBoolean("Todo_Status");
+
+                                String[] dateTime = todo.getString("Date").split("T");
+
+                                EEditDate.setHint(dateTime[0]);
+
+                                // if there is a time
+                                if (dateTime.length > 1) {
+                                    // ignore last three characters
+                                    EDisplayTime.setHint(dateTime[1].substring(0, dateTime[1].length() - 3));
+                                }
+                               String[] RdateTime = todo.getString("DateReminder").split("T");
+
+
+                                EReminderDate.setHint(RdateTime[0]);
+
+                                // if there is a time
+                                if (RdateTime.length > 1) {
+                                    // ignore last three characters
+                                    EreminderDisplayTime.setHint(RdateTime[1].substring(0, RdateTime[1].length() - 3));
+                                }
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "FAILED TO GET TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        //TODO: Handle error
+
+                    }
+
+                    @Override
+                    public void onFinishExecuting() {
+                        progressDialog.dismiss();
+                    }
+                });
+        httpTask.setUriParameters(parameters);
+        httpTask.execute();
+
+
+
+
 
 //        mRepeatIntervalText = (TextView) findViewById(R.id.repeatInterval);
 
@@ -174,6 +288,98 @@ public class edittodo extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+
+        if (EditRepeatSwitch.isChecked()){
+            EditRepeatText.setText("Repeat ON");
+
+            EditRepeat = true;
+            EditmRepeatText.setAlpha(1.0f);
+            EditRepeatTypeText.setAlpha(1.0f);
+
+            EditRepeatTypeText.setEnabled(true);
+
+
+
+        }
+        else {
+            EditRepeatText.setText("Repeat OFF");
+            EditRepeat = false;
+            EditRepeatType = "";
+            EditmRepeatText.setAlpha(0.0f);
+            EditRepeatTypeText.setAlpha(0.0f);
+
+
+
+
+            EditRepeatTypeText.setEnabled(false);
+
+
+
+
+        }
+        if (EditNotificationSwitch.isChecked()){
+            EditNotificationText.setText("Notifications ON");
+            EReminderDate.setAlpha(1.0f);
+            EreminderTime.setAlpha(1.0f);
+            EReminderDate.setClickable(true);
+            EreminderTime.setClickable(true);
+            EReminderDate.setEnabled(true);
+            EreminderTime.setEnabled(true);
+
+
+
+
+        }
+        else {
+            EReminderDate.setAlpha(0.0f);
+            EreminderTime.setAlpha(0.0f);
+            EReminderDate.setClickable(false);
+            EreminderTime.setClickable(false);
+            EditNotificationText.setText("Notifications OFF");
+            EReminderDate.setEnabled(false);
+            EreminderTime.setEnabled(false);
+
+
+
+
+        }
+
+    }
+    public void selectRepeatType(View v){
+
+        final String[] items = new String[3];
+        items[0] = "Daily";
+        items[1] = "Weekly";
+        items[2] = "Monthly";
+
+
+
+
+
+        // Create List Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Select Type");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int item) {
+
+                EditRepeatType = items[item];
+                EditRepeatTypeText.setText(EditRepeatType);
+                EditmRepeatText.setText(EditRepeatType);
+
+            }
+
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
 
 
 
@@ -253,6 +459,19 @@ public class edittodo extends AppCompatActivity {
         String timeText = ((TextView)findViewById(R.id.EditTime)).getText().toString();
         String RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
         String RtimeText = ((TextView)findViewById(R.id.EditRTime)).getText().toString();
+        String Repeat_Interval;
+        Intent intent2 = new Intent();
+        intent2.setClass(edittodo.this, OverviewFragment.class);
+
+
+        if (EditRepeat == false){
+            Repeat_Interval = "NO INTERVAL";
+        }
+        else {
+            Repeat_Interval = ((TextView)findViewById(R.id.EditRepeatType)).getText().toString();
+
+        }
+
 
 
         Intent intent = getIntent();
@@ -273,6 +492,9 @@ public class edittodo extends AppCompatActivity {
                     new Pair("Description", DescText),
                     new Pair("Date", dateText+ "T" + timeText),
                     new Pair("DateReminder", RdateText+ "T" + RtimeText),
+                    new Pair("Todo_Status", Status),
+                    new Pair("Repeat", EditRepeat),
+                    new Pair("Repeat_Interval", Repeat_Interval)
 
             };
 
@@ -322,9 +544,10 @@ public class edittodo extends AppCompatActivity {
             // set body parameters
             task.setBodyParameters(parameters);
             task.execute();
-
-
             finish();
+
+
+            startActivity(intent2);
         }
     }
 
