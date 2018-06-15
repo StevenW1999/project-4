@@ -57,6 +57,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
     private TextView ETitle;
     private TextView EDescription;
     private TextView EEditDate;
+    private TextView ELocation;
     private TextView EReminderDate;
     private TextView EditRepeatText, EditRepeatTypeText,EditmRepeatText, EditNotificationText;
     private Switch EditRepeatSwitch, EditNotificationSwitch;
@@ -79,9 +80,10 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edittodo);
 
-        //set title and description
+        //set title and description and location
         ETitle = (TextView)findViewById(R.id.EditTitle) ;
         EDescription = (TextView)findViewById(R.id.EditDescription);
+        ELocation = (TextView) findViewById(R.id.EditlocationText);
 
         //set date and reminder date
         EEditDate = (TextView)findViewById(R.id.EditDate);
@@ -150,9 +152,11 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
                                 //set the hints of the textviews
                                 ETitle.setHint(todo.getString("Title"));
                                 EDescription.setHint(todo.getString("Description"));
+                                ELocation.setHint(todo.getString("Location"));
                                 EditRepeatType = todo.getString("Repeat_Interval");
                                 EditRepeatTypeText.setHint(todo.getString("Repeat_Interval"));
                                 Status = todo.getBoolean("Todo_Status");
+
 
                                 String[] dateTime = todo.getString("Date").split("T");
 
