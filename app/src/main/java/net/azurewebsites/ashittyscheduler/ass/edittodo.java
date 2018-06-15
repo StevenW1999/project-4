@@ -446,6 +446,7 @@ public class edittodo extends AppCompatActivity{
         //declare variables you want to update in the database
         String messageText = ((EditText)findViewById(R.id.EditTitle)).getText().toString();
         String DescText = ((EditText)findViewById(R.id.EditDescription)).getText().toString();
+        String Loc = ((EditText)findViewById(R.id.EditlocationText)).getText().toString();
         String dateText = ((TextView)findViewById(R.id.EditDate)).getText().toString();
         String timeText = ((TextView)findViewById(R.id.EditTime)).getText().toString();
         String RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
@@ -481,6 +482,7 @@ public class edittodo extends AppCompatActivity{
                     new Pair("Id", todoId),
                     new Pair("Title", messageText),
                     new Pair("Description", DescText),
+                    new Pair("Location", Loc),
                     new Pair("Date", dateText+ "T" + timeText),
                     new Pair("DateReminder", RdateText+ "T" + RtimeText),
                     new Pair("Todo_Status", Status),
