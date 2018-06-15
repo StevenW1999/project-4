@@ -144,8 +144,8 @@ public class NotificationService extends Service {
         Thread t = new Thread() {
             @Override
             public void run() {
-                createNotificationChannel();
-                checkForNotifications();
+                //createNotificationChannel();
+                //checkForNotifications();
             }
         };
         t.start();
