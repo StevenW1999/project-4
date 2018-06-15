@@ -28,6 +28,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 
+import net.azurewebsites.ashittyscheduler.ass.Overview.OverviewFragment;
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
@@ -65,6 +66,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
     private Switch EditRepeatSwitch, EditNotificationSwitch;
     private boolean EditRepeat;
     private String EditRepeatType;
+    private boolean Status;
 
 
 
@@ -137,6 +139,9 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
 
                                 ETitle.setHint(todo.getString("Title"));
                                 EDescription.setHint(todo.getString("Description"));
+                                EditRepeatType = todo.getString("Repeat_Interval");
+                                EditRepeatTypeText.setHint(todo.getString("Repeat_Interval"));
+                                Status = todo.getBoolean("Todo_Status");
 
                                 String[] dateTime = todo.getString("Date").split("T");
 
@@ -290,9 +295,10 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
 
         if (EditRepeatSwitch.isChecked()){
             EditRepeatText.setText("Repeat ON");
-            EditmRepeatText.setText(  "Select Repeat Type");
+
             EditRepeat = true;
             EditmRepeatText.setAlpha(1.0f);
+            EditRepeatTypeText.setAlpha(1.0f);
 
             EditRepeatTypeText.setEnabled(true);
 
@@ -301,10 +307,10 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
         }
         else {
             EditRepeatText.setText("Repeat OFF");
-            EditmRepeatText.setText(" ");
             EditRepeat = false;
             EditRepeatType = "";
             EditmRepeatText.setAlpha(0.0f);
+            EditRepeatTypeText.setAlpha(0.0f);
 
 
 
@@ -319,7 +325,8 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
             EditNotificationText.setText("Notifications ON");
             EReminderDate.setAlpha(1.0f);
             EreminderTime.setAlpha(1.0f);
-
+            EReminderDate.setClickable(true);
+            EreminderTime.setClickable(true);
             EReminderDate.setEnabled(true);
             EreminderTime.setEnabled(true);
 
@@ -340,6 +347,36 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
 
 
         }
+
+    }
+    public void selectRepeatType(View v){
+
+        final String[] items = new String[3];
+        items[0] = "Daily";
+        items[1] = "Weekly";
+        items[2] = "Monthly";
+
+
+
+
+
+        // Create List Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Select Type");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int item) {
+
+                EditRepeatType = items[item];
+                EditRepeatTypeText.setText(EditRepeatType);
+                EditmRepeatText.setText(EditRepeatType);
+
+            }
+
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
 
     }
 
@@ -422,6 +459,18 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
         String timeText = ((TextView)findViewById(R.id.EditTime)).getText().toString();
         String RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
         String RtimeText = ((TextView)findViewById(R.id.EditRTime)).getText().toString();
+        String Repeat_Interval;
+        Intent intent2 = new Intent();
+        intent2.setClass(edittodo.this, OverviewFragment.class);
+
+
+        if (EditRepeat == false){
+            Repeat_Interval = "NO INTERVAL";
+        }
+        else {
+            Repeat_Interval = ((TextView)findViewById(R.id.EditRepeatType)).getText().toString();
+
+        }
 
 
 
@@ -443,6 +492,9 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
                     new Pair("Description", DescText),
                     new Pair("Date", dateText+ "T" + timeText),
                     new Pair("DateReminder", RdateText+ "T" + RtimeText),
+                    new Pair("Todo_Status", Status),
+                    new Pair("Repeat", EditRepeat),
+                    new Pair("Repeat_Interval", Repeat_Interval)
 
             };
 
@@ -492,9 +544,10 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
             // set body parameters
             task.setBodyParameters(parameters);
             task.execute();
-
-
             finish();
+
+
+            startActivity(intent2);
         }
     }
 
