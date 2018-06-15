@@ -40,8 +40,10 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
     private TextView tv_time;
     private TextView tv_Rdate;
     private TextView tv_Rtime;
+    private TextView tv_location;
     private boolean Status;
     private Button statusButton;
+
 
 
 
@@ -61,6 +63,8 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
         tv_time = findViewById(R.id.DTime);
         tv_Rdate = findViewById(R.id.DreminderDate);
         tv_Rtime = findViewById(R.id.DreminderTime);
+        tv_location = findViewById(R.id.DLocation);
+
         //declare buttons
         statusButton = findViewById(R.id.StatusButton);
         //create a getIntent
