@@ -68,7 +68,7 @@
         android:layout_width="235dp"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:clickable="true"
         android:ems="10"
         android:hint="Share"
@@ -131,7 +131,7 @@
         android:id="@+id/repeatText"
         android:layout_width="303dp"
         android:layout_height="35dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:hint="Repeat OFF"
         android:textSize="18sp"
@@ -167,6 +167,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatText" />
 
+    <!--<Button-->
+        <!--android:id="@+id/button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="CancelButtonClicked"-->
+        <!--android:text="Cancel"-->
+        <!--tools:layout_editor_absoluteX="16dp"-->
+        <!--tools:layout_editor_absoluteY="503dp" />-->
 
     <TextView
         android:id="@+id/reminderdate"
