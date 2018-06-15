@@ -8,6 +8,7 @@ import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -43,25 +44,24 @@ private  int CalendarMinute;
 Calendar remindercalendar;
 private int ReminderCalendarHour;
 private  int ReminderCalendarMinute;
-private String format;
 TextView DisplayTime;
 TextView repeattText;
-private String mRepeat;
-private String mRepeatNo;
 private String mRepeatType;
 private TextView reminderdatepickerdialogbutton;
 private TextView datepickerdialogbutton;
 private TextView selecteddate;
 private TextView reminderselecteddate;
-private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText, mRepeatIntervalText;
-private Switch repeatSwitch, notificationSwitch;
-private TextView notificationText;
-private AlarmManager alarmManager;
-private PendingIntent alarmIntent;
+private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText;
+private Switch repeatSwitch;
+private Switch notificationSwitch;
 private TextView reminderTime;
 private TextView reminderDisplayTime;
 private TextView reminderDate;
+
 private Boolean Repeat;
+
+private TextView notificationsText;
+
 
 
 
@@ -77,20 +77,31 @@ private Boolean Repeat;
         AccesTime = (TextView) findViewById(R.id.timePlainText);
         DisplayTime = (TextView) findViewById(R.id.timePlainText);
 
+        notificationsText = (TextView)findViewById(R.id.notificationsTextView);
+
         reminderTime = (TextView) findViewById(R.id.remindertime);
         reminderDisplayTime = (TextView) findViewById(R.id.remindertime);
-
-
+        reminderDate = (TextView)findViewById(R.id.reminderdate);
 
         repeattText = (TextView) findViewById(R.id.repeatText) ;
         mRepeatTypeText = (TextView)findViewById(R.id.repeatType);
         mRepeatText = (TextView) findViewById(R.id.repeatType);
         mRepeatNoText = (TextView) findViewById(R.id.repeatType);
+
         repeatSwitch = (Switch) findViewById(R.id.repeatSwitch);
+        notificationSwitch = (Switch)findViewById(R.id.notificationsSwitch) ;
+
+
+        Repeat = false;
+
+
+
+
 
 
 
         repeatSwitch.setOnCheckedChangeListener(this);
+        notificationSwitch.setOnCheckedChangeListener(this);
 
 //Clock
        reminderTime.setOnClickListener(new View.OnClickListener() {
@@ -177,13 +188,13 @@ private Boolean Repeat;
 
     }
 
-    //Repeat Switch
+    //Repeat Switch + notification switch
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (repeatSwitch.isChecked()){
             repeattText.setText("Repeat ON");
-            mRepeatText.setText(  "SELECT REPEAT TYPE");
+            mRepeatText.setText(  "Select Repeat Type");
             Repeat = true;
 
             mRepeatTypeText.setEnabled(true);
@@ -193,22 +204,78 @@ private Boolean Repeat;
         }
         else {
             repeattText.setText("Repeat OFF");
-            mRepeatText.setText("Repeat OFF");
+            mRepeatText.setText(" ");
             Repeat = false;
+            mRepeatType = "";
+
+
 
             mRepeatTypeText.setEnabled(false);
 
 
 
 
+        }
+        if (notificationSwitch.isChecked()){
+            notificationsText.setText("Notifications ON");
+            reminderDate.setText("Date dd/mm/yy");
+            reminderTime.setText("Time 00:00");
+
+
+
+
+
+        }
+        else {
+            reminderDate.setText(" ");
+            reminderTime.setText(" ");
+            reminderDate.setClickable(false);
+            reminderTime.setClickable(false);
+            notificationsText.setText("Notifications OFF");
+
+
 
         }
 
     }
-    public void setInexactRepeating (int type, long triggerAtMillis, long intervalMillis, PendingIntent operation){
-        
+
+
+
+
+    //select repeat type
+    public void selectRepeatType(View v){
+
+        final String[] items = new String[3];
+        items[0] = "Daily";
+        items[1] = "Weekly";
+        items[2] = "Monthly";
+
+
+
+
+
+        // Create List Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Select Type");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int item) {
+
+                mRepeatType = items[item];
+                mRepeatTypeText.setText(mRepeatType);
+                mRepeatText.setText(mRepeatType);
+
+            }
+
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
 
     }
+
+
+
 
 
 
@@ -291,28 +358,7 @@ private Boolean Repeat;
 
 
 
-//select repeat type
-    public void selectRepeatType(View v){
-        final String[] items = new String[3];
-        items[0] = "Daily";
-        items[1] = "Weekly";
-        items[2] = "Monthly";
 
-        // Create List Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select Type");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int item) {
-
-                mRepeatType = items[item];
-                mRepeatTypeText.setText(mRepeatType);
-                mRepeatText.setText(mRepeatType);
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
 
 
 
@@ -332,13 +378,26 @@ private Boolean Repeat;
         String timeText = ((TextView)findViewById(R.id.timePlainText)).getText().toString();
         String reminderdateText = ((TextView)findViewById(R.id.reminderdate)).getText().toString();
         String remindertimeText = ((TextView)findViewById(R.id.remindertime)).getText().toString();
+
         String repeatTxt = ((TextView)findViewById(R.id.repeatText)).getText().toString();
         String notificationText = ((TextView)findViewById(R.id.notificationsTextView)).getText().toString();
+
+        String Repeat_Interval;
+
+        if (Repeat == false){
+            Repeat_Interval = "NO INTERVAL";
+        }
+        else {
+            Repeat_Interval = ((TextView)findViewById(R.id.repeatType)).getText().toString();
+
+        }
+
+
         Boolean Status = false;
 
 
-        if (messageText.equals("")){
-            Toast.makeText(this, "PLEASE GIVE THE TODO A TITLE", Toast.LENGTH_SHORT).show();
+        if (messageText.equals("") || dateText.equals("") || timeText.equals("") || reminderdateText.equals("") || remindertimeText.equals("")){
+            Toast.makeText(this, "PLEASE MAKE SURE ALL THE BLANKS ARE FILLED IN", Toast.LENGTH_SHORT).show();
 
         }
         else {
@@ -351,7 +410,8 @@ private Boolean Repeat;
                     new Pair("DateReminder", reminderdateText+ "T" + remindertimeText),
                     new Pair("Todo_Status", Status),
                     new Pair("Repeat", Repeat),
-                    new Pair("Repeat_Interval", mRepeatType)
+                    new Pair("Repeat_Interval", mRepeatType),
+                    new Pair("Repeat_Interval", Repeat_Interval)
 
             };
 
