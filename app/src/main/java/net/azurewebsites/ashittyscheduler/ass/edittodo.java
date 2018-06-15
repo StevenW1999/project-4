@@ -41,7 +41,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
-public class edittodo extends AppCompatActivity {
+public class edittodo extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     TimePickerDialog timePickerDialog;
     Calendar Eremindercalendar;
     Calendar calendar;
@@ -61,6 +61,11 @@ public class edittodo extends AppCompatActivity {
     private String todoId;
     private TextView EEditDate;
     private TextView EReminderDate;
+    private TextView EditRepeatText, EditRepeatTypeText,EditmRepeatText, EditNotificationText;
+    private Switch EditRepeatSwitch, EditNotificationSwitch;
+    private boolean EditRepeat;
+    private String EditRepeatType;
+
 
 
     @Override
@@ -82,6 +87,20 @@ public class edittodo extends AppCompatActivity {
 
         EreminderTime = (TextView) findViewById(R.id.EditRTime);
         EreminderDisplayTime = (TextView) findViewById(R.id.EditRTime);
+
+        EditRepeatText = (TextView) findViewById(R.id.ERepeatText) ;
+        EditRepeatTypeText = (TextView)findViewById(R.id.EditRepeatType);
+        EditmRepeatText = (TextView) findViewById(R.id.EditRepeatType);
+
+        EditNotificationText = (TextView)findViewById(R.id.ENotificationsTextView) ;
+
+        EditRepeatSwitch = (Switch) findViewById(R.id.EditRepeatSwitch);
+        EditNotificationSwitch = (Switch)findViewById(R.id.ENotificationsSwitch) ;
+
+        EditRepeatSwitch.setOnCheckedChangeListener(this);
+        EditNotificationSwitch.setOnCheckedChangeListener(this);
+
+
         Intent intent = getIntent();
         this.todoId = intent.getStringExtra("todoId");
 
@@ -128,7 +147,8 @@ public class edittodo extends AppCompatActivity {
                                     // ignore last three characters
                                     EDisplayTime.setHint(dateTime[1].substring(0, dateTime[1].length() - 3));
                                 }
-                                String[] RdateTime = todo.getString("DateReminder").split("T");
+                               String[] RdateTime = todo.getString("DateReminder").split("T");
+
 
                                 EReminderDate.setHint(RdateTime[0]);
 
@@ -166,7 +186,7 @@ public class edittodo extends AppCompatActivity {
         httpTask.execute();
 
 
-    
+
 
 
 //        mRepeatIntervalText = (TextView) findViewById(R.id.repeatInterval);
@@ -261,6 +281,65 @@ public class edittodo extends AppCompatActivity {
 //        intent.setClass(addtodo.this, MainMenu.class);
 //        startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+
+        if (EditRepeatSwitch.isChecked()){
+            EditRepeatText.setText("Repeat ON");
+            EditmRepeatText.setText(  "Select Repeat Type");
+            EditRepeat = true;
+
+
+            EditRepeatTypeText.setEnabled(true);
+
+
+
+        }
+        else {
+            EditRepeatText.setText("Repeat OFF");
+            EditmRepeatText.setText(" ");
+            EditRepeat = false;
+            EditRepeatType = "";
+
+
+
+
+            EditRepeatTypeText.setEnabled(false);
+
+
+
+
+        }
+        if (EditNotificationSwitch.isChecked()){
+            EditNotificationText.setText("Notifications ON");
+            EReminderDate.setAlpha(1.0f);
+            EreminderTime.setAlpha(1.0f);
+
+            EReminderDate.setEnabled(true);
+            EreminderTime.setEnabled(true);
+
+
+
+
+        }
+        else {
+            EReminderDate.setAlpha(0.0f);
+            EreminderTime.setAlpha(0.0f);
+            EReminderDate.setClickable(false);
+            EreminderTime.setClickable(false);
+            EditNotificationText.setText("Notifications OFF");
+            EReminderDate.setEnabled(false);
+            EreminderTime.setEnabled(false);
+
+
+
+
+        }
+
     }
 
 

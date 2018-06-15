@@ -52,8 +52,8 @@ private TextView datepickerdialogbutton;
 private TextView selecteddate;
 private TextView reminderselecteddate;
 private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText;
-private Switch repeatSwitch, notificationSwitch;
-private TextView notificationText;
+private Switch repeatSwitch;
+private Switch notificationSwitch;
 private TextView reminderTime;
 private TextView reminderDisplayTime;
 private TextView reminderDate;
@@ -72,16 +72,19 @@ private TextView notificationsText;
         AccesTime = (TextView) findViewById(R.id.timePlainText);
         DisplayTime = (TextView) findViewById(R.id.timePlainText);
 
+        notificationsText = (TextView)findViewById(R.id.notificationsTextView);
+
         reminderTime = (TextView) findViewById(R.id.remindertime);
         reminderDisplayTime = (TextView) findViewById(R.id.remindertime);
-
-
+        reminderDate = (TextView)findViewById(R.id.reminderdate);
 
         repeattText = (TextView) findViewById(R.id.repeatText) ;
         mRepeatTypeText = (TextView)findViewById(R.id.repeatType);
         mRepeatText = (TextView) findViewById(R.id.repeatType);
         mRepeatNoText = (TextView) findViewById(R.id.repeatType);
+
         repeatSwitch = (Switch) findViewById(R.id.repeatSwitch);
+        notificationSwitch = (Switch)findViewById(R.id.notificationsSwitch) ;
 
 
         Repeat = false;
@@ -93,6 +96,7 @@ private TextView notificationsText;
 
 
         repeatSwitch.setOnCheckedChangeListener(this);
+        notificationSwitch.setOnCheckedChangeListener(this);
 
 //Clock
        reminderTime.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +183,7 @@ private TextView notificationsText;
 
     }
 
-    //Repeat Switch
+    //Repeat Switch + notification switch
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -200,13 +204,36 @@ private TextView notificationsText;
             mRepeatType = "";
 
 
+
             mRepeatTypeText.setEnabled(false);
 
 
 
 
         }
+        if (notificationSwitch.isChecked()){
+            notificationsText.setText("Notifications ON");
+            reminderDate.setText("Date dd/mm/yy");
+            reminderTime.setText("Time 00:00");
+
+
+
+
+
+        }
+        else {
+            reminderDate.setText(" ");
+            reminderTime.setText(" ");
+            reminderDate.setClickable(false);
+            reminderTime.setClickable(false);
+            notificationsText.setText("Notifications OFF");
+
+
+
+        }
+
     }
+
 
 
 
@@ -242,28 +269,8 @@ private TextView notificationsText;
 
     }
 
-    //    // Notifications switch
-//    @Override
-//    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//        if (notificationSwitch.isChecked()){
-//            notificationsText.setText("Notifications ON");
-//            reminderDate.setText("Date dd/mm/yy");
-//            reminderTime.setText("Time 00:00");
-//            Repeat = true;
-//
-//            mRepeatTypeText.setEnabled(true);
-//
-//        }
-//        else {
-//            reminderDate.setText(" ");
-//            reminderTime.setText(" ");
-//            Repeat = false;
-//
-//            mRepeatTypeText.setEnabled(false);
-//
-//        }
-//
-//    }
+
+
 
 
 

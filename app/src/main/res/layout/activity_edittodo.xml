@@ -67,18 +67,18 @@
 
     <TextView
         android:id="@+id/EShareText"
-        android:layout_width="358dp"
+        android:layout_width="253dp"
         android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:clickable="true"
         android:ems="10"
         android:hint="Share"
         android:inputType="date"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.615"
+        app:layout_constraintEnd_toStartOf="@+id/EditButton"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditRepeatType" />
 
@@ -112,7 +112,7 @@
 
     <TextView
         android:id="@+id/ENotificationsTextView"
-        android:layout_width="358dp"
+        android:layout_width="240dp"
         android:layout_height="35dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
@@ -126,20 +126,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ENotificationsTextView" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/ENotificationsTextView"
+        app:layout_constraintTop_toBottomOf="@+id/EditTime" />
 
     <TextView
         android:id="@+id/ERepeatText"
-        android:layout_width="358dp"
-        android:layout_height="35dp"
+        android:layout_width="227dp"
+        android:layout_height="31dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:hint="Repeat OFF"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/EditRepeatSwitch"
+        app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditRTime" />
 
@@ -149,7 +153,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="16dp"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditRTime" />
@@ -180,14 +184,12 @@
 
     <TextView
         android:id="@+id/EditRDate"
-        android:layout_width="358dp"
+        android:layout_width="239dp"
         android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:hint="Date dd/mm/yy"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ENotificationsTextView" />
 

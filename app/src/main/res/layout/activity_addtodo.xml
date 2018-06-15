@@ -65,9 +65,8 @@
 
     <TextView
         android:id="@+id/shareText"
-        android:layout_width="358dp"
+        android:layout_width="235dp"
         android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
@@ -75,8 +74,6 @@
         android:hint="Share"
         android:inputType="date"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.615"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatType" />
 
@@ -110,7 +107,7 @@
 
     <TextView
         android:id="@+id/notificationsTextView"
-        android:layout_width="358dp"
+        android:layout_width="299dp"
         android:layout_height="35dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
@@ -123,21 +120,21 @@
         android:id="@+id/notificationsSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notificationsTextView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/repeatText"
-        android:layout_width="358dp"
+        android:layout_width="303dp"
         android:layout_height="35dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:hint="Repeat OFF"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/remindertime" />
 
@@ -146,11 +143,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="8dp"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/remindertime" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.757" />
 
     <TextView
         android:id="@+id/repeatType"
@@ -167,14 +167,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatText" />
 
-    <!--<Button-->
-        <!--android:id="@+id/button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:onClick="CancelButtonClicked"-->
-        <!--android:text="Cancel"-->
-        <!--tools:layout_editor_absoluteX="16dp"-->
-        <!--tools:layout_editor_absoluteY="503dp" />-->
 
     <TextView
         android:id="@+id/reminderdate"
