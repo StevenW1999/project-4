@@ -1,26 +1,25 @@
 package net.azurewebsites.ashittyscheduler.ass.Overview;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import net.azurewebsites.ashittyscheduler.ass.Adapters.MyAdapter;
 import net.azurewebsites.ashittyscheduler.ass.Intent_Constants;
-import net.azurewebsites.ashittyscheduler.ass.MainMenu;
 import net.azurewebsites.ashittyscheduler.ass.R;
 import net.azurewebsites.ashittyscheduler.ass.ToDo;
 import net.azurewebsites.ashittyscheduler.ass.addtodo;
@@ -36,17 +35,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-<<<<<<<<< Temporary merge branch 1
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-=========
-import java.util.Date;
->>>>>>>>> Temporary merge branch 2
 
 public class OverviewFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -253,9 +245,4 @@ public class OverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_overview, container, false);
     }
-
-//    public void onResume() {
-//        super.onResume();
-//
-//    }
 }
