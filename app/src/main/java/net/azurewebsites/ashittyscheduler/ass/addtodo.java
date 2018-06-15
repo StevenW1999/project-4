@@ -228,7 +228,7 @@ private TextView notificationsText;
             reminderTime.setClickable(false);
             notificationsText.setText("Notifications OFF");
 
-
+            
 
         }
 
