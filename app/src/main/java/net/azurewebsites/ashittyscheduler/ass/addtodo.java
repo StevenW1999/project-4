@@ -278,7 +278,6 @@ private  int CalendarMinute;
         });
         AlertDialog alert = builder.create();
         alert.show();
-
     }
 
 

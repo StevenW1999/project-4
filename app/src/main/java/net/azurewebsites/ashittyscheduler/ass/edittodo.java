@@ -451,10 +451,6 @@ public class edittodo extends AppCompatActivity{
         String RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
         String RtimeText = ((TextView)findViewById(R.id.EditRTime)).getText().toString();
         String Repeat_Interval;
-        //create itent for going straight to the overview when edit button is clicked
-        Intent intent2 = new Intent();
-        //set the class of the intent
-        intent2.setClass(edittodo.this, OverviewFragment.class);
 
         //if Edit Repeat is false "NO INTERVAL" will be added to database instead of selecting a interval
         if (EditRepeat == false){
@@ -544,10 +540,7 @@ public class edittodo extends AppCompatActivity{
             // set body parameters
             task.setBodyParameters(parameters);
             task.execute();
-            finish();
-
-            //start the activity delcared in the intents
-            startActivity(intent2);
+           finish();
         }
     }
 
