@@ -292,7 +292,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
             EditRepeatText.setText("Repeat ON");
             EditmRepeatText.setText(  "Select Repeat Type");
             EditRepeat = true;
-
+            EditmRepeatText.setAlpha(1.0f);
 
             EditRepeatTypeText.setEnabled(true);
 
@@ -304,6 +304,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
             EditmRepeatText.setText(" ");
             EditRepeat = false;
             EditRepeatType = "";
+            EditmRepeatText.setAlpha(0.0f);
 
 
 
