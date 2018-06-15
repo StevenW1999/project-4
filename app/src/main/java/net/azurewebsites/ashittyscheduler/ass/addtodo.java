@@ -85,6 +85,8 @@ private  int CalendarMinute;
         reminderTime = (TextView) findViewById(R.id.remindertime);
         reminderDisplayTime = (TextView) findViewById(R.id.remindertime);
         reminderDate = (TextView)findViewById(R.id.reminderdate);
+        reminderDate.setAlpha(0.0f);
+        reminderTime.setAlpha(0.0f);
 
         //set repeat text
         repeattText = (TextView) findViewById(R.id.repeatText) ;
@@ -276,7 +278,6 @@ private  int CalendarMinute;
         });
         AlertDialog alert = builder.create();
         alert.show();
-
     }
 
 
