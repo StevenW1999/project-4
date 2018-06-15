@@ -44,16 +44,21 @@ private  int CalendarMinute;
 Calendar remindercalendar;
 private int ReminderCalendarHour;
 private  int ReminderCalendarMinute;
+private String format;
 TextView DisplayTime;
 TextView repeattText;
+private String mRepeat;
+private String mRepeatNo;
 private String mRepeatType;
 private TextView reminderdatepickerdialogbutton;
 private TextView datepickerdialogbutton;
 private TextView selecteddate;
 private TextView reminderselecteddate;
-private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText;
-private Switch repeatSwitch;
-private Switch notificationSwitch;
+private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText, mRepeatIntervalText;
+private Switch repeatSwitch, notificationSwitch;
+private TextView notificationText;
+private AlarmManager alarmManager;
+private PendingIntent alarmIntent;
 private TextView reminderTime;
 private TextView reminderDisplayTime;
 private TextView reminderDate;
@@ -61,6 +66,7 @@ private TextView reminderDate;
 private Boolean Repeat;
 
 private TextView notificationsText;
+
 
 
 
@@ -276,9 +282,6 @@ private TextView notificationsText;
 
 
 
-
-
-
     public void CancelButtonClicked(View view) {
         finish();
     }
@@ -393,11 +396,36 @@ private TextView notificationsText;
         }
 
 
+        String locationT = ((TextView)findViewById(R.id.locationText)).getText().toString();
+
         Boolean Status = false;
 
 
         if (messageText.equals("") || dateText.equals("") || timeText.equals("") || reminderdateText.equals("") || remindertimeText.equals("")){
             Toast.makeText(this, "PLEASE MAKE SURE ALL THE BLANKS ARE FILLED IN", Toast.LENGTH_SHORT).show();
+        // When there is no location entered
+        if (locationT.equals("")) {
+            locationT = "No Location Given.";
+        }
+        else {
+            locationT = ((TextView)findViewById(R.id.locationText)).getText().toString();
+        }
+
+        // When there is no repeat entered
+
+
+
+        // When there is no description entered
+        if (DescText.equals("")) {
+            DescText = "No Description Given.";
+        }
+        else {
+            DescText = ((EditText)findViewById(R.id.descriptionText)).getText().toString();
+        }
+
+        // When there is no title entered
+        if (messageText.equals("")){
+            Toast.makeText(this, "PLEASE GIVE THE TODO A TITLE", Toast.LENGTH_SHORT).show();
 
         }
         else {
@@ -411,7 +439,9 @@ private TextView notificationsText;
                     new Pair("Todo_Status", Status),
                     new Pair("Repeat", Repeat),
                     new Pair("Repeat_Interval", mRepeatType),
-                    new Pair("Repeat_Interval", Repeat_Interval)
+                    new Pair("Repeat_Interval", Repeat_Interval),
+                    new Pair("Repeat_Interval", mRepeatType),
+                    new Pair("Location", locationT)
 
             };
 
@@ -469,7 +499,10 @@ private TextView notificationsText;
     }
 
 
-        }
+        }}
+
+
+
 
 
 
