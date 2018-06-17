@@ -1,16 +1,22 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,15 +28,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import net.azurewebsites.ashittyscheduler.ass.Overview.OverviewFragment;
 import net.azurewebsites.ashittyscheduler.ass.profile.ProfileActivity;
@@ -39,15 +39,26 @@ import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
-import net.azurewebsites.ashittyscheduler.ass.profile.ProfileFragment;
 import net.azurewebsites.ashittyscheduler.ass.settings.SettingsFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , AdapterView.OnItemClickListener {
 
     private Fragment fragmentToSet = null;
-
+    //Our notification manager,
+    private NotificationManager mNotificationManager;
+    private Thread notificationThread;
+    private Handler notificationThreadHandler;
     private DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener(){
+
 
         @Override
         public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -79,6 +90,7 @@ public class MainMenu extends AppCompatActivity
 
         }
     };
+    private ArrayList<String> messageIdNotificationsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,14 +111,206 @@ public class MainMenu extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        SetUpNotificationManager();
+        SetUpNotificationThread();
+        UnreadMessageNotification();
+    }
+
+    /**
+     * This method sets up our notification thread.
+     * If u want notifications to be gathered , supply them in the runnable here!
+     */
+    private void SetUpNotificationThread() {
+        if(this.messageIdNotificationsList == null){
+            this.messageIdNotificationsList = new ArrayList<>();
+        }
+        if(this.notificationThreadHandler == null){
+            this.notificationThreadHandler = new Handler();
+        }
+        if(this.notificationThread == null){
+            this.notificationThread = new Thread(){
+                public void run(){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            RunTimeMessageChecker();
+                            //Our loop time
+                            Log.d("Current thread", "run: "+Thread.currentThread().getId() );
+                            notificationThreadHandler.postDelayed(this, 5000);
+                        }
+
+                        private void RunTimeMessageChecker() {
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                                String date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now().minusSeconds(5));
+                                Pair[] parameters = new Pair[] {
+                                        new Pair<>("date", date)
+                                };
+                                Log.d("DATE", "RunTimeMessageChecker: " + date);
+                                HttpTask task = new HttpTask(MainMenu.this, HttpMethod.POST, "http://ashittyscheduler.azurewebsites.net/api/chat/getChatNotifications", new AsyncHttpListener() {
+                                    @Override
+                                    public void onBeforeExecute() {
+                                        //Log.d("TESTES", "onBeforeExecute: EXECUTING");
+                                    }
+
+                                    @Override
+                                    public void onResponse(HttpResponse httpResponse) {
+                                        int code = httpResponse.getCode();
+                                        if(code == HttpStatusCode.OK.getCode()){
+                                            try {
+                                                JSONArray messageList = new JSONArray(httpResponse.getMessage());
+                                                Log.d("", "onResponse: " + messageList.length());
+                                                for(int i =0; i<messageList.length(); ++i) {
+                                                    JSONObject message = messageList.getJSONObject(i);
+                                                    final String userId = message.getString("SenderId");
+                                                    final String text = message.getString("Message");
+                                                    String messageId = message.getString("MessageId");
+
+                                                    if(!MainMenu.this.messageIdNotificationsList.contains(messageId)) {
+                                                        Pair[] parameters = new Pair[] {
+                                                                new Pair<>("userId", userId)
+                                                        };
+                                                        HttpTask task = new HttpTask(MainMenu.this, HttpMethod.GET, "http://ashittyscheduler.azurewebsites.net/api/users", new AsyncHttpListener() {
+                                                            String responseString;
+                                                            @Override
+                                                            public void onBeforeExecute() {
+
+                                                            }
+
+                                                            @Override
+                                                            public void onResponse(HttpResponse httpResponse) {
+                                                                try {
+                                                                    JSONObject user = new JSONObject(httpResponse.getMessage());
+                                                                    responseString = user.getString("Username");
+                                                                } catch (JSONException e) {
+                                                                    e.printStackTrace();
+                                                                }
+
+                                                            }
+
+                                                            @Override
+                                                            public void onError() {
+
+                                                            }
+
+                                                            @Override
+                                                            public void onFinishExecuting() {
+                                                                Log.i("NOTIFICATION", "onFinishExecuting: CREATED A NOTIFICATION FROM" + responseString);
+                                                                CreateMessageNotification(responseString,text);
+                                                            }
+                                                        });
+                                                        task.setUriParameters(parameters);
+                                                        task.execute();
+                                                        MainMenu.this.messageIdNotificationsList.add(messageId);
+                                                    }
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError() {
+
+                                    }
+
+                                    @Override
+                                    public void onFinishExecuting() {
+
+                                    }
+                                });
+                                task.setBodyParameters(parameters);
+                                task.execute();
+                            }
+                        }
+                    });
+                }
+            };
+            this.notificationThread.start();
+        }
+    }
+
+    private void CreateMessageNotification(String from, String text) {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "High")
+                .setSmallIcon(R.drawable.transparentbutt) // notification icon
+                .setContentTitle("You received a message from : " + from) // title for notification
+                .setContentText(text)// message for notification
+                .setAutoCancel(true); // clear notification after click
+        Intent intent = new Intent(getApplicationContext(), FriendsActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+
+        mBuilder.setContentIntent(pi);
+        //mNotificationManager.cancelAll();
+        mNotificationManager.notify( ApplicationConstants.RUNTIMEMESSAGENOTIFICATIONID, mBuilder.build());
+    }
+
+    private void UnreadMessageNotification() {
+        HttpTask task = new HttpTask(this, HttpMethod.GET, "http://ashittyscheduler.azurewebsites.net/api/chat/AmountNotReadMessages", new AsyncHttpListener() {
+            @Override
+            public void onBeforeExecute() {
+
+            }
+
+            @Override
+            public void onResponse(HttpResponse httpResponse) {
+                int code = httpResponse.getCode();
+
+                if(code == HttpStatusCode.OK.getCode()){
+                    int value = Integer.parseInt(httpResponse.getMessage());
+                    if(value > 0){
+
+                        String message = "You have " + Integer.toString(value) + " unread messages.";
+                        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "High")
+                                .setSmallIcon(R.drawable.transparentbutt) // notification icon
+                                .setContentTitle("Unread messages") // title for notification
+                                .setContentText(message)// message for notification
+                                .setAutoCancel(true); // clear notification after click
+                        Intent intent = new Intent(getApplicationContext(), FriendsActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+
+                        mBuilder.setContentIntent(pi);
+                        mNotificationManager.cancelAll();
+                        mNotificationManager.notify( ApplicationConstants.UNREADMESSAGENOTIFICATIONID, mBuilder.build());
+                    }
+                }
+            }
+
+            @Override
+            public void onError() {
+
+            }
+
+            @Override
+            public void onFinishExecuting() {
+                //mNotificationManager.cancel(0);
+            }
+        });
+        task.execute();
+    }
+
+    private void SetUpNotificationManager() {
+        mNotificationManager =(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationChannel channel;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            channel = new NotificationChannel("High",
+                    "YOUR_CHANNEL_NAME",
+                    NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("YOUR_NOTIFICATION_CHANNEL_DESCRIPTION");
+            mNotificationManager.createNotificationChannel(channel);
+        }
+
     }
 
     @Override
     public void onBackPressed() {
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            this.notificationThreadHandler.removeCallbacksAndMessages(null);
             super.onBackPressed();
         }
     }
@@ -231,6 +435,7 @@ public class MainMenu extends AppCompatActivity
                                             Intent i = new Intent();
                                             i.setClass(MainMenu.this, LoginActivity.class);
                                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            MainMenu.this.notificationThreadHandler.removeCallbacksAndMessages(null);
                                             startActivity(i);
                                         }
                                     });
