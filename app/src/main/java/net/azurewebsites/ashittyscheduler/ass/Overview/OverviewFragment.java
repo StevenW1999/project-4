@@ -89,7 +89,7 @@ public class OverviewFragment extends Fragment {
                     ToDo todo = (ToDo) listView.getItemAtPosition(i);
 
                     if (todo.isStatus()) {
-                        vi.setBackgroundColor(Color.DKGRAY);
+                        vi.setBackgroundColor(Color.rgb(255,182,193));
 
                     }
 
