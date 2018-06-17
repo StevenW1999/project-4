@@ -71,6 +71,7 @@ public class edittodo extends AppCompatActivity{
     private  int CalendarMinute;
     private int EReminderCalendarHour;
     private  int EReminderCalendarMinute;
+    private boolean ENotification;
 
 
 
@@ -116,6 +117,7 @@ public class edittodo extends AppCompatActivity{
         EReminderDate.setAlpha(0.0f);
         EreminderTime.setAlpha(0.0f);
         EditRepeatTypeText.setEnabled(false);
+        ENotification = false;
 
 
 
@@ -168,7 +170,7 @@ public class edittodo extends AppCompatActivity{
                     EreminderTime.setClickable(true);
                     EReminderDate.setEnabled(true);
                     EreminderTime.setEnabled(true);
-
+                    ENotification = true;
 
                 }
                 else {
@@ -182,6 +184,7 @@ public class edittodo extends AppCompatActivity{
                     EreminderTime.setClickable(false);
                     EReminderDate.setEnabled(false);
                     EreminderTime.setEnabled(false);
+                    ENotification = false;
 
 
                 }
@@ -461,8 +464,8 @@ public class edittodo extends AppCompatActivity{
         String Loc = ((EditText)findViewById(R.id.EditlocationText)).getText().toString();
         String dateText = ((TextView)findViewById(R.id.EditDate)).getText().toString();
         String timeText = ((TextView)findViewById(R.id.EditTime)).getText().toString();
-        String RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
-        String RtimeText = ((TextView)findViewById(R.id.EditRTime)).getText().toString();
+        String RdateText;
+        String RtimeText;
         String Repeat_Interval;
 
 
@@ -474,6 +477,30 @@ public class edittodo extends AppCompatActivity{
         else {
             Repeat_Interval = ((TextView)findViewById(R.id.EditRepeatType)).getText().toString();
 
+        }
+        if (ENotification == true){
+
+            RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
+            RtimeText = ((TextView)findViewById(R.id.EditRTime)).getText().toString();
+        }
+        else {
+            RdateText = dateText;
+            RtimeText = timeText;
+        }
+
+
+
+
+
+        String locationT = ((TextView)findViewById(R.id.EditlocationText)).getText().toString();
+        //set the standard status of the todo as false (undone)
+        Boolean Status = false;
+        if (locationT.equals("")) {
+            locationT = "No Location Given.";
+        }
+        //set the location
+        else {
+            locationT = ((TextView)findViewById(R.id.EditlocationText)).getText().toString();
         }
 
         //create geti]Intent for the todoId

@@ -68,6 +68,7 @@ private  int ReminderCalendarMinute;
 private String format;
 private int CalendarHour;
 private  int CalendarMinute;
+private boolean Notificcation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,7 @@ private  int CalendarMinute;
 
         //set repeat as false when you started creating a todo
         Repeat = false;
+        Notificcation = false;
 
         //ref the switches to this class
         repeatSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -156,6 +158,7 @@ private  int CalendarMinute;
                     reminderTime.setClickable(true);
                     reminderDate.setEnabled(true);
                     reminderTime.setEnabled(true);
+                    Notificcation = true;
 
 
                 }
@@ -172,6 +175,7 @@ private  int CalendarMinute;
                     reminderTime.setEnabled(false);
                     //if notification is not checked
                     //set the reminder date as the same as the noramle date?
+                    Notificcation = false;
 
 
 
@@ -369,8 +373,8 @@ private  int CalendarMinute;
         String DescText = ((EditText)findViewById(R.id.descriptionText)).getText().toString();
         String dateText = ((TextView)findViewById(R.id.date)).getText().toString();
         String timeText = ((TextView)findViewById(R.id.timePlainText)).getText().toString();
-        String reminderdateText = ((TextView)findViewById(R.id.reminderdate)).getText().toString();
-        String remindertimeText = ((TextView)findViewById(R.id.remindertime)).getText().toString();
+        String reminderdateText;
+        String remindertimeText;
 
         String Repeat_Interval;
         //if Edit Repeat is false "NO INTERVAL" will be added to database instead of selecting a interval
@@ -383,14 +387,16 @@ private  int CalendarMinute;
 
         }
 
-        if (reminderdateText.equals("")){
+        if (Notificcation == true){
+
+            reminderdateText = ((TextView)findViewById(R.id.reminderdate)).getText().toString();
+            remindertimeText = ((TextView)findViewById(R.id.remindertime)).getText().toString();
+        }
+        else {
             reminderdateText = dateText;
             remindertimeText = timeText;
         }
-        else {
-             reminderdateText = ((TextView)findViewById(R.id.reminderdate)).getText().toString();
-            remindertimeText = ((TextView)findViewById(R.id.remindertime)).getText().toString();
-        }
+
 
 
 
@@ -424,7 +430,7 @@ private  int CalendarMinute;
                     new Pair("Repeat_Interval", mRepeatType),
                     new Pair("Repeat_Interval", Repeat_Interval),
                     new Pair("Repeat_Interval", mRepeatType),
-                    new Pair("Location", locationT)
+                    new Pair("Location", locationT),
 
             };
             // set the web api task

@@ -162,12 +162,7 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
                                     tv_Rtime.setText(RdateTime[1].substring(0, RdateTime[1].length() - 3));
                                 }
 
-                                if (dateTime != RdateTime){
-                                    NotificationSwitch.setChecked(true);
-                                }
-                                else {
-                                    NotificationSwitch.setChecked(false);
-                                }
+                             
 
 
                             } catch (JSONException e) {
