@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +29,9 @@ import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.awt.font.TextAttribute;
 import java.io.IOException;
+import java.util.Map;
 
 public class detailscreen extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
@@ -285,8 +288,6 @@ public void DeleteButtonClicked(View view){
     }
 
     public void StatusButtonClicked(View view) {
-
-
 
         //specify which parameters you want to use
         Pair[] parameters = new Pair[]{
