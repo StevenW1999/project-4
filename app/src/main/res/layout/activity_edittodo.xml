@@ -2,6 +2,7 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true"
@@ -17,18 +18,18 @@
     tools:layout_editor_absoluteY="25dp">
 
 
-
     <Button
-    android:id="@+id/EditButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginEnd="8dp"
-    android:text="Button"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:onClick="EditButtonClicked"
-    android:clickable="true"/>
+        android:id="@+id/EditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:onClick="EditButtonClicked"
+        android:text="Save"
+        android:textColorHint="?android:attr/navigationBarColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/EditlocationText"
@@ -40,6 +41,8 @@
         android:ems="10"
         android:hint="Location"
         android:inputType="textPersonName"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditDescription" />
@@ -54,6 +57,8 @@
         android:ems="10"
         android:hint="Description"
         android:inputType="textPersonName"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditTitle" />
@@ -70,6 +75,8 @@
         android:hint="Time 00:00"
         android:inputType="time"
         android:onClick="TimeClicked"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,6 +92,8 @@
         android:clickable="true"
         android:ems="10"
         android:hint="Share"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/EditButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,6 +110,8 @@
         android:ems="10"
         android:hint="Date dd/mm/yy"
         android:inputType="date"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,6 +127,8 @@
         android:ems="10"
         android:hint="@string/title"
         android:inputType="textPersonName"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -124,9 +137,11 @@
         android:id="@+id/ENotificationsTextView"
         android:layout_width="281dp"
         android:layout_height="35dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="16dp"
         android:hint="Notifications"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditTime" />
@@ -136,6 +151,7 @@
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginEnd="16dp"
+        android:textColorHint="?android:attr/navigationBarColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -144,9 +160,11 @@
         android:id="@+id/ERepeatText"
         android:layout_width="300dp"
         android:layout_height="35dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="16dp"
         android:hint="Repeat OFF"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditRTime" />
@@ -159,6 +177,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
+        android:textColorHint="?android:attr/navigationBarColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -169,25 +188,19 @@
         android:id="@+id/EditRepeatType"
         android:layout_width="358dp"
         android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:onClick="selectRepeatType"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.615"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ERepeatText" />
 
-    <!--<Button-->
-    <!--android:id="@+id/button"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:onClick="CancelButtonClicked"-->
-    <!--android:text="Cancel"-->
-    <!--tools:layout_editor_absoluteX="16dp"-->
-    <!--tools:layout_editor_absoluteY="503dp" />-->
 
     <TextView
         android:id="@+id/EditRDate"
@@ -197,6 +210,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:hint="Date dd/mm/yy"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -206,10 +221,12 @@
         android:id="@+id/EditRTime"
         android:layout_width="358dp"
         android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
         android:hint="Time 00:00"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.615"
@@ -223,72 +240,3 @@
 
 
 
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--tools:context=".edittodo">-->
-
-    <!--<EditText-->
-        <!--android:id="@+id/EditTitle"-->
-        <!--android:layout_width="361dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:hint="Title"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
-
-
-
-    <!--<TextView-->
-        <!--android:id="@+id/EditDate"-->
-        <!--android:layout_width="77dp"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginTop="48dp"-->
-        <!--android:clickable="true"-->
-        <!--android:hint="Date dd/mm/yy"-->
-        <!--app:layout_constraintEnd_toEndOf="@+id/EditDescription"-->
-        <!--app:layout_constraintHorizontal_bias="0.0"-->
-        <!--app:layout_constraintStart_toStartOf="@+id/EditDescription"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/EditDescription" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/EditTime"-->
-        <!--android:layout_width="87dp"-->
-        <!--android:layout_height="49dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginTop="36dp"-->
-        <!--android:clickable="true"-->
-        <!--android:hint="Time 00:00"-->
-        <!--android:inputType="time"-->
-        <!--app:layout_constraintEnd_toEndOf="@+id/EditDate"-->
-        <!--app:layout_constraintHorizontal_bias="0.0"-->
-        <!--app:layout_constraintStart_toStartOf="@+id/EditDate"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/EditDate" />-->
-
-
-    <!--<TextView-->
-        <!--android:id="@+id/EditRDate"-->
-        <!--android:layout_width="160dp"-->
-        <!--android:layout_height="45dp"-->
-        <!--android:layout_marginEnd="16dp"-->
-        <!--android:layout_marginTop="48dp"-->
-        <!--android:hint="reminderdate dd/mm/yy"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/EditDescription" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/EditRTime"-->
-        <!--android:layout_width="137dp"-->
-        <!--android:layout_height="23dp"-->
-        <!--android:layout_marginStart="136dp"-->
-        <!--android:layout_marginTop="36dp"-->
-        <!--android:inputType="time"-->
-        <!--android:hint="reminder time 00:00"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/EditTime"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/EditRDate" />-->
-<!--</android.support.constraint.ConstraintLayout>-->

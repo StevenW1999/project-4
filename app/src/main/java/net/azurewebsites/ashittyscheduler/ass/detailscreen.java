@@ -162,7 +162,9 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
                                     tv_Rtime.setText(RdateTime[1].substring(0, RdateTime[1].length() - 3));
                                 }
 
-                             
+
+
+
 
 
                             } catch (JSONException e) {

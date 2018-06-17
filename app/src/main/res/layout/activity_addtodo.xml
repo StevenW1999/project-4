@@ -16,7 +16,8 @@
         android:onClick="addButtonClicked"
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+    />
 
     <EditText
         android:id="@+id/locationText"
@@ -28,6 +29,8 @@
         android:ems="10"
         android:hint="Location"
         android:inputType="textPersonName"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionText" />
@@ -42,6 +45,8 @@
         android:ems="10"
         android:hint="Description"
         android:inputType="textPersonName"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
@@ -58,6 +63,8 @@
         android:hint="Time 00:00"
         android:inputType="time"
         android:onClick="TimeClicked"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,6 +80,8 @@
         android:ems="10"
         android:hint="Share"
         android:inputType="date"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatType" />
@@ -86,6 +95,8 @@
         android:ems="10"
         android:hint="Date dd/mm/yy"
         android:inputType="date"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,6 +112,8 @@
         android:ems="10"
         android:hint="@string/title"
         android:inputType="textPersonName"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -112,6 +125,8 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         android:hint="Notifications"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePlainText" />
@@ -134,6 +149,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:hint="Repeat OFF"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/remindertime" />
@@ -161,21 +178,15 @@
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:onClick="selectRepeatType"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.615"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatText" />
 
-    <!--<Button-->
-        <!--android:id="@+id/button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:onClick="CancelButtonClicked"-->
-        <!--android:text="Cancel"-->
-        <!--tools:layout_editor_absoluteX="16dp"-->
-        <!--tools:layout_editor_absoluteY="503dp" />-->
-
+ 
     <TextView
         android:id="@+id/reminderdate"
         android:layout_width="358dp"
@@ -184,6 +195,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:hint="Date dd/mm/yy"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -197,6 +210,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:hint="Time 00:00"
+        android:textColor="@color/colorBlack"
+        android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.615"
