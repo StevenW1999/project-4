@@ -97,6 +97,8 @@ private  int CalendarMinute;
         //set reminderdate standard as the normal date?
         reminderDate = mDateText;
         reminderDate = mTimeText;
+
+        
         //set switches
         repeatSwitch = (Switch) findViewById(R.id.repeatSwitch);
         notificationSwitch = (Switch)findViewById(R.id.notificationsSwitch) ;
