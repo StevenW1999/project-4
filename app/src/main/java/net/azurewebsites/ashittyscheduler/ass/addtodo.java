@@ -87,6 +87,10 @@ private  int CalendarMinute;
         reminderDate = (TextView)findViewById(R.id.reminderdate);
         reminderDate.setAlpha(0.0f);
         reminderTime.setAlpha(0.0f);
+        reminderDate.setClickable(false);
+        reminderTime.setClickable(false);
+        reminderDate.setEnabled(false);
+        reminderTime.setEnabled(false);
 
         //set repeat text
         repeattText = (TextView) findViewById(R.id.repeatText) ;
@@ -94,14 +98,12 @@ private  int CalendarMinute;
         mRepeatText = (TextView) findViewById(R.id.repeatType);
         mRepeatNoText = (TextView) findViewById(R.id.repeatType);
 
-        //set reminderdate standard as the normal date?
-        reminderDate = mDateText;
-        reminderDate = mTimeText;
 
-        
+
         //set switches
         repeatSwitch = (Switch) findViewById(R.id.repeatSwitch);
         notificationSwitch = (Switch)findViewById(R.id.notificationsSwitch) ;
+        mRepeatTypeText.setEnabled(false);
 
         //set repeat as false when you started creating a todo
         Repeat = false;
@@ -119,6 +121,7 @@ private  int CalendarMinute;
 
                     //make repeat text clickable
                     mRepeatTypeText.setClickable(true);
+                    mRepeatTypeText.setEnabled(true);
                     // make the repeat text visible
                     mRepeatTypeText.setAlpha(1.0f);
 
@@ -131,6 +134,7 @@ private  int CalendarMinute;
                     Repeat = false;
                     //make repeat text unclickable
                     mRepeatTypeText.setClickable(false);
+                    mRepeatTypeText.setEnabled(false);
                     //make text invisible
                     mRepeatTypeText.setAlpha(0.0f);
 
@@ -144,13 +148,14 @@ private  int CalendarMinute;
                     //if notification switch is checked
                     //set the text of the switch
                     notificationsText.setText("Notifications ON");
-                    reminderDate.setText("Date dd/mm/yy");
-                    reminderTime.setText("Time 00:00");
+
                     //make the textviews visible and clickable
                     reminderTime.setAlpha(1.0f);
                     reminderDate.setAlpha(1.0f);
                     reminderDate.setClickable(true);
                     reminderTime.setClickable(true);
+                    reminderDate.setEnabled(true);
+                    reminderTime.setEnabled(true);
 
 
                 }
@@ -163,10 +168,11 @@ private  int CalendarMinute;
                     reminderDate.setAlpha(0.0f);
                     reminderDate.setClickable(false);
                     reminderTime.setClickable(false);
+                    reminderDate.setEnabled(false);
+                    reminderTime.setEnabled(false);
                     //if notification is not checked
                     //set the reminder date as the same as the noramle date?
-                    reminderDate = mDateText;
-                    reminderDate = mTimeText;
+
 
 
                 }
@@ -376,6 +382,17 @@ private  int CalendarMinute;
             Repeat_Interval = ((TextView)findViewById(R.id.repeatType)).getText().toString();
 
         }
+
+        if (reminderdateText.equals("")){
+            reminderdateText = dateText;
+            remindertimeText = timeText;
+        }
+        else {
+             reminderdateText = ((TextView)findViewById(R.id.reminderdate)).getText().toString();
+            remindertimeText = ((TextView)findViewById(R.id.remindertime)).getText().toString();
+        }
+
+
 
 
         String locationT = ((TextView)findViewById(R.id.locationText)).getText().toString();

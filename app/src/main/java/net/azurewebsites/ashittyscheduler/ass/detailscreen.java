@@ -46,6 +46,7 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
     private TextView tv_location;
     private boolean Status;
     private Button statusButton;
+    private Switch NotificationSwitch;
 
 
     @Override
@@ -54,7 +55,10 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
         setContentView(R.layout.activity_detailscreen);
 
 
+
+
         //declare variables
+        NotificationSwitch = findViewById(R.id.detailNotificationSwitch);
         tv_title = findViewById(R.id.DTitle);
         tv_description = findViewById(R.id.DDetails);
         tv_date = findViewById(R.id.DDate);
@@ -62,6 +66,10 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
         tv_Rdate = findViewById(R.id.DreminderDate);
         tv_Rtime = findViewById(R.id.DreminderTime);
         tv_location = findViewById(R.id.DLocation);
+
+
+
+
 
         //declare buttons
         statusButton = findViewById(R.id.StatusButton);
@@ -152,6 +160,13 @@ public class detailscreen extends AppCompatActivity implements CompoundButton.On
                                 if (RdateTime.length > 1) {
                                     // ignore last three characters
                                     tv_Rtime.setText(RdateTime[1].substring(0, RdateTime[1].length() - 3));
+                                }
+
+                                if (dateTime != RdateTime){
+                                    NotificationSwitch.setChecked(true);
+                                }
+                                else {
+                                    NotificationSwitch.setChecked(false);
                                 }
 
 
