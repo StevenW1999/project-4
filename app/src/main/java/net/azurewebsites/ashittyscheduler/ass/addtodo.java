@@ -479,6 +479,9 @@ private boolean Notificcation;
                         public void onFinishExecuting() {
                             // dismiss the progress dialog (duh)
                             progressDialog.dismiss();
+
+                            //end the activity
+                            finish();
                         }
                     }
             );
@@ -487,9 +490,6 @@ private boolean Notificcation;
             task.setBodyParameters(parameters);
 
             task.execute();
-
-            //end the activity
-            finish();
         }
     }
 
