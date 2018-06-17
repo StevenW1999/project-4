@@ -2,6 +2,7 @@ package net.azurewebsites.ashittyscheduler.ass;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,6 +48,8 @@ public class FriendChatActivity extends AppCompatActivity {
     private Thread getChatData;
     private Handler aHandler = new Handler();
 
+    public static boolean SENDING_MESSAGE = false;
+
     /**
      * @param savedInstanceState takes a bundle from the intent that called this class.
      * Sets up the base for our chat UI.
@@ -72,7 +75,13 @@ public class FriendChatActivity extends AppCompatActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if((keyCode == KeyEvent.KEYCODE_ENTER) &&(event.getAction() == KeyEvent.ACTION_DOWN)){
-                    SendMessage(new Texts(editText.getText().toString(),true));
+                    String msg = editText.getText().toString();
+
+                    if (msg.equals("")) {
+                        return false;
+                    }
+
+                    SendMessage(new Texts(msg,true));
                     editText.getText().clear();
                     return true;
                 }
@@ -81,6 +90,9 @@ public class FriendChatActivity extends AppCompatActivity {
         });
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        adapter.getData(user, true);
+
         startDataThread();
     }
 
@@ -91,7 +103,7 @@ public class FriendChatActivity extends AppCompatActivity {
      * Sends a texts object to the web api.
      * After executing the {@link HttpTask} the message will be send to the user through our web api.
      */
-    private void SendMessage(Texts texts){
+    private void SendMessage(final Texts texts){
         final Context context = FriendChatActivity.this;
         final ListAdapter1 listAdapter1 = this.adapter;
         final User user = this.user;
@@ -102,21 +114,24 @@ public class FriendChatActivity extends AppCompatActivity {
         };
         HttpTask task = new HttpTask(context, HttpMethod.POST, "http://ashittyscheduler.azurewebsites.net/api/chat/sendMessage", new AsyncHttpListener() {
             private ProgressDialog progressDialog;
+            private Texts t = new Texts(texts.message, true);
+
             @Override
             public void onBeforeExecute() {
-                progressDialog = ProgressDialog.show(context,
-                        "Sending message",
-                        "Please wait");
+                //progressDialog = ProgressDialog.show(context,"Sending message","Please wait");
+                adapter.add(t);
+
+                FriendChatActivity.SENDING_MESSAGE = true;
             }
 
             @Override
             public void onResponse(HttpResponse httpResponse) {
                 int code = httpResponse.getCode();
-                httpResponse.getMessage();
                 if(code == HttpStatusCode.OK.getCode()){
-                    Toast.makeText(context,"Message send", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,"Message sent.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(context,"Could not submit message", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Could not submit message.", Toast.LENGTH_SHORT).show();
+                    adapter.remove(t);
                 }
             }
 
@@ -127,8 +142,9 @@ public class FriendChatActivity extends AppCompatActivity {
 
             @Override
             public void onFinishExecuting() {
-                progressDialog.dismiss();
-                adapter.getData(user);
+                //progressDialog.dismiss();
+                //adapter.getData(user);
+                FriendChatActivity.SENDING_MESSAGE = false;
             }
         });
         task.setBodyParameters(parameters);
@@ -144,13 +160,15 @@ public class FriendChatActivity extends AppCompatActivity {
     private void startDataThread(){
         this.getChatData = new Thread(){
             public void run(){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.getData(user);
-                        aHandler.postDelayed(this, 1000);
-                    }
-                });
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                if (!FriendChatActivity.SENDING_MESSAGE) {
+                    adapter.getData(user, false);
+                }
+                aHandler.postDelayed(this, 2000);
+                }
+            });
             }
         };
         this.getChatData.start();
@@ -228,9 +246,12 @@ class ListAdapter1 extends ArrayAdapter<Texts> {
      */
     public void setData(ArrayList<Texts> texts){
         this.texts.clear();
-        for(Texts item : texts){
-            this.texts.add(item);
-        }
+        this.texts.addAll(texts);
+        notifyDataSetChanged();
+    }
+
+    public void add(Texts text) {
+        this.texts.add(text);
         notifyDataSetChanged();
     }
 
@@ -240,7 +261,7 @@ class ListAdapter1 extends ArrayAdapter<Texts> {
      * It uses the {@link HttpTask} to connect to the web api and getting the data.
      * After getting the data it will call the setData to set the data of the listview.
      */
-    public void getData(User user){
+    public void getData(User user, final boolean showDialog){
         final Context context = this.context;
         final ArrayList<Texts> textsArrayList = new ArrayList<>();
         final String friendId = user.getId();
@@ -248,16 +269,19 @@ class ListAdapter1 extends ArrayAdapter<Texts> {
                 new Pair<>("receiverId", user.getId()),
         };
         HttpTask task = new HttpTask(context, HttpMethod.GET, "http://ashittyscheduler.azurewebsites.net/api/chat/getmessages", new AsyncHttpListener() {
-            //private ProgressDialog progressDialog;
+            private ProgressDialog progressDialog;
             @Override
             public void onBeforeExecute() {
-                //progressDialog = ProgressDialog.show(context,
-                //        "Getting messages",
-                //        "Please wait");
+                if (showDialog) {
+                    progressDialog = ProgressDialog.show(context,
+                            "Loading chat",
+                            "Please wait");
+                }
             }
 
             @Override
             public void onResponse(HttpResponse httpResponse) {
+
                 try {
                     JSONArray textsList = new JSONArray(httpResponse.getMessage());
 
@@ -283,12 +307,21 @@ class ListAdapter1 extends ArrayAdapter<Texts> {
 
             @Override
             public void onFinishExecuting() {
-                //progressDialog.dismiss();
+                if (showDialog) {
+                    progressDialog.dismiss();
+                }
+
+                if (FriendChatActivity.SENDING_MESSAGE) {
+                    return;
+                }
                 setData(textsArrayList);
             }
         });
         task.setUriParameters(parameters);
-        task.execute();
+
+        if (!FriendChatActivity.SENDING_MESSAGE) {
+            task.execute();
+        }
     }
 
 }

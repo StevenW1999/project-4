@@ -2,6 +2,7 @@ package net.azurewebsites.ashittyscheduler.ass.Overview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -75,6 +76,27 @@ public class OverviewFragment extends Fragment {
         refreshTodos();
 
         listView = (ListView) getActivity().findViewById(R.id.textView);
+
+        listView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                for(int i=0; i<listView.getCount(); ++i) {
+
+                    // Get view item
+                    View vi = listView.getChildAt(i);
+
+                    // Get todo
+                    ToDo todo = (ToDo) listView.getItemAtPosition(i);
+
+                    if (todo.isStatus()) {
+                        vi.setBackgroundColor(Color.rgb(255,182,193));
+
+                    }
+
+                }
+            }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -156,6 +178,7 @@ public class OverviewFragment extends Fragment {
                             jsonValues.add(sortedTodosGet);
                             todo.setId(sortedTodosGet.getString("Id"));
                             todo.setTitle(sortedTodosGet.getString("Title"));
+                            todo.setStatus(sortedTodosGet.getBoolean("Todo_Status"));
                             todoItems.add(todo);
                             refreshTodos.setRefreshing(false);
                             //JSONObject todoJSON = todos.getJSONObject(i);
@@ -172,6 +195,8 @@ public class OverviewFragment extends Fragment {
 //                            Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT);
 
                         }
+
+
                     }
                     catch (JSONException e) {
                         e.printStackTrace();

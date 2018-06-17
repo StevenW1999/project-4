@@ -2,7 +2,9 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorGrey">#7e7f7f</color>
+    <!--<color name="colorGrey">#7e7f7f</color>-->
+    <color name="colorGrey">#b4b4b4</color>
+
     <color name="colorDarkerGrey">#6a6a6a</color>
     <color name="transparentButton">#CC7e7e7e</color>
     <color name="colorBlack">#4f4f4f</color>

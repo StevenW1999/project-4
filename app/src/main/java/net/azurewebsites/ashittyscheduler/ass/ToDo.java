@@ -8,6 +8,9 @@ public class ToDo {
     private String title;
     private String description;
     private Calendar date;
+    private boolean status;
+    private boolean repeat;
+    private String interval;
 
 
     // TODO: Add getters and setters for these
@@ -25,6 +28,8 @@ public class ToDo {
     public String getDescription() {
         return description;
     }
+
+
 
     public Calendar getDate() {
         return date;
@@ -62,12 +67,37 @@ public class ToDo {
         this.reminderDate = reminderDate;
     }
 
+
+
+
     @Override
     public String toString() {
         return getTitle();
     }
-    
 
 
+    public String getInterval() {
+        return interval;
+    }
+
+    public void setInterval(String interval) {
+        this.interval = interval;
+    }
+
+    public boolean isRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(boolean repeat) {
+        this.repeat = repeat;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 }
 
