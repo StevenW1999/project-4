@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -107,6 +108,13 @@ public class NotificationService extends Service {
                     // Obtain and convert the notification
                     JSONObject obj = new JSONObject(httpResponse.getMessage());
                     CustomNotification notification = CustomNotification.fromJson(obj);
+
+                    SharedPreferences sp = getApplicationContext().getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE);
+                    boolean todo = sp.getBoolean("notifications_todo", true);
+                    boolean friends = sp.getBoolean("notifications_friends", true);
+                    boolean chat = sp.getBoolean("notifications_chat", true);
+
+                    // TODO: Do stuff
 
                     // Show the notification!
                     showNotification(NotificationService.this, LoginActivity.class, notification);
