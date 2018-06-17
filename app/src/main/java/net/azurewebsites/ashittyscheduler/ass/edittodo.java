@@ -42,15 +42,12 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
-public class edittodo extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
-    TimePickerDialog timePickerDialog;
-    Calendar Eremindercalendar;
-    Calendar calendar;
+public class edittodo extends AppCompatActivity{
+    //declare Textviews etc
+    private TimePickerDialog timePickerDialog;
+    private Calendar Eremindercalendar;
+    private Calendar calendar;
     private TextView EAccesTime;
-    private int CalendarHour;
-    private  int CalendarMinute;
-    private int EReminderCalendarHour;
-    private  int EReminderCalendarMinute;
     private TextView EDisplayTime;
     private TextView datepickerdialogbutton;
     private TextView Edatepickerdialogbutton;
@@ -59,14 +56,23 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
     private TextView EreminderDisplayTime;
     private TextView ETitle;
     private TextView EDescription;
-    private String todoId;
     private TextView EEditDate;
+    private TextView ELocation;
     private TextView EReminderDate;
     private TextView EditRepeatText, EditRepeatTypeText,EditmRepeatText, EditNotificationText;
     private Switch EditRepeatSwitch, EditNotificationSwitch;
+
+    // declare variables
     private boolean EditRepeat;
     private String EditRepeatType;
     private boolean Status;
+    private String todoId;
+    private int CalendarHour;
+    private  int CalendarMinute;
+    private int EReminderCalendarHour;
+    private  int EReminderCalendarMinute;
+    private boolean ENotification;
+
 
 
 
@@ -75,43 +81,126 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edittodo);
 
+        //set title and description and location
         ETitle = (TextView)findViewById(R.id.EditTitle) ;
         EDescription = (TextView)findViewById(R.id.EditDescription);
+        ELocation = (TextView) findViewById(R.id.EditlocationText);
 
+        //set date and reminder date
         EEditDate = (TextView)findViewById(R.id.EditDate);
         EReminderDate = (TextView) findViewById(R.id.EditRDate) ;
-
 
         //Set Time Picker
         EAccesTime = (TextView) findViewById(R.id.EditTime);
         EDisplayTime = (TextView) findViewById(R.id.EditTime);
 
-
+        //Set reminder Time picker
         EreminderTime = (TextView) findViewById(R.id.EditRTime);
         EreminderDisplayTime = (TextView) findViewById(R.id.EditRTime);
 
+        //set repeat text and repeat types
         EditRepeatText = (TextView) findViewById(R.id.ERepeatText) ;
         EditRepeatTypeText = (TextView)findViewById(R.id.EditRepeatType);
         EditmRepeatText = (TextView) findViewById(R.id.EditRepeatType);
 
+        //set notification text
         EditNotificationText = (TextView)findViewById(R.id.ENotificationsTextView) ;
 
+        //set switches
         EditRepeatSwitch = (Switch) findViewById(R.id.EditRepeatSwitch);
         EditNotificationSwitch = (Switch)findViewById(R.id.ENotificationsSwitch) ;
 
-        EditRepeatSwitch.setOnCheckedChangeListener(this);
-        EditNotificationSwitch.setOnCheckedChangeListener(this);
+        EReminderDate.setClickable(false);
+        EreminderTime.setClickable(false);
+        EReminderDate.setEnabled(false);
+        EreminderTime.setEnabled(false);
+        EReminderDate.setAlpha(0.0f);
+        EreminderTime.setAlpha(0.0f);
+        EditRepeatTypeText.setEnabled(false);
+        ENotification = false;
 
 
+
+        //refer switches to this class
+        EditRepeatSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                //if repeat switch is checked
+                if (EditRepeatSwitch.isChecked()){
+                    EditRepeatText.setText("Repeat ON");
+                    //set the Repeat as true
+                    EditRepeat = true;
+                    // make the repeat text visible
+                    EditmRepeatText.setAlpha(1.0f);
+                    EditRepeatTypeText.setAlpha(1.0f);
+                    //make repeat text clickable
+                    EditRepeatTypeText.setEnabled(true);
+
+                }
+                else {
+                    //if repeat switch is unchecked
+                    //set the text as OFF
+                    EditRepeatText.setText("Repeat OFF");
+                    //set the repeat as false
+                    EditRepeat = false;
+                    //make repeattype empty
+                    EditRepeatType = "";
+                    //make text invisible
+                    EditmRepeatText.setAlpha(0.0f);
+                    EditRepeatTypeText.setAlpha(0.0f);
+
+                    EditRepeatTypeText.setEnabled(false);
+
+                }
+            }
+        });
+        EditNotificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (EditNotificationSwitch.isChecked()){
+                    //if notification switch is checked
+                    //set the text of the switch
+                    EditNotificationText.setText("Notifications ON");
+                    //make the textviews visible and clickable
+                    EReminderDate.setAlpha(1.0f);
+                    EreminderTime.setAlpha(1.0f);
+                    EReminderDate.setClickable(true);
+                    EreminderTime.setClickable(true);
+                    EReminderDate.setEnabled(true);
+                    EreminderTime.setEnabled(true);
+                    ENotification = true;
+
+                }
+                else {
+                    //if notification switch is checked
+                    //set the text of the switch
+                    EditNotificationText.setText("Notifications OFF");
+                    //make the textviews invisible and unclickable
+                    EReminderDate.setAlpha(0.0f);
+                    EreminderTime.setAlpha(0.0f);
+                    EReminderDate.setClickable(false);
+                    EreminderTime.setClickable(false);
+                    EReminderDate.setEnabled(false);
+                    EreminderTime.setEnabled(false);
+                    ENotification = false;
+
+
+                }
+            }
+        });
+
+        // get todoId from detailscreen
         Intent intent = getIntent();
         this.todoId = intent.getStringExtra("todoId");
 
 
-
+        //get todoId from database
         Pair[] parameters = new Pair[]{
                 new Pair("todoId", todoId)
         };
-
+        //web api task
         final HttpTask httpTask = new HttpTask(this.getApplicationContext(),
                 HttpMethod.GET,
                 "http://ashittyscheduler.azurewebsites.net/api/todo/get",
@@ -121,6 +210,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
                 {
                     private ProgressDialog progressDialog;
 
+                    // perform this action right before doing the api task
                     @Override
                     public void onBeforeExecute() {
                         // show a progress dialog (duh)
@@ -128,7 +218,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
                                 "Getting todo",
                                 "Please wait");
                     }
-
+                    // perform this action right before if the api task is completed
                     @Override
                     public void onResponse(HttpResponse httpResponse) {
                         int code = httpResponse.getCode();
@@ -137,30 +227,33 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
                             try {
                                 JSONObject todo = new JSONObject(httpResponse.getMessage());
 
-                                ETitle.setHint(todo.getString("Title"));
-                                EDescription.setHint(todo.getString("Description"));
+                                //set the text of the textviews
+                                ETitle.setText(todo.getString("Title"));
+                                EDescription.setText(todo.getString("Description"));
+                                ELocation.setText(todo.getString("Location"));
                                 EditRepeatType = todo.getString("Repeat_Interval");
-                                EditRepeatTypeText.setHint(todo.getString("Repeat_Interval"));
+                                EditRepeatTypeText.setText(todo.getString("Repeat_Interval"));
                                 Status = todo.getBoolean("Todo_Status");
+
 
                                 String[] dateTime = todo.getString("Date").split("T");
 
-                                EEditDate.setHint(dateTime[0]);
+                                EEditDate.setText(dateTime[0]);
 
                                 // if there is a time
                                 if (dateTime.length > 1) {
                                     // ignore last three characters
-                                    EDisplayTime.setHint(dateTime[1].substring(0, dateTime[1].length() - 3));
+                                    EDisplayTime.setText(dateTime[1].substring(0, dateTime[1].length() - 3));
                                 }
                                String[] RdateTime = todo.getString("DateReminder").split("T");
 
 
-                                EReminderDate.setHint(RdateTime[0]);
+                                EReminderDate.setText(RdateTime[0]);
 
                                 // if there is a time
                                 if (RdateTime.length > 1) {
                                     // ignore last three characters
-                                    EreminderDisplayTime.setHint(RdateTime[1].substring(0, RdateTime[1].length() - 3));
+                                    EreminderDisplayTime.setText(RdateTime[1].substring(0, RdateTime[1].length() - 3));
                                 }
 
 
@@ -191,20 +284,17 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
         httpTask.execute();
 
 
-
-
-
-//        mRepeatIntervalText = (TextView) findViewById(R.id.repeatInterval);
-
-
-//Clock
+        //Clock
         EAccesTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //delclare clock
                 calendar = Calendar.getInstance();
+                //declare clock variables
                 CalendarHour= calendar.get(Calendar.HOUR_OF_DAY);
                 CalendarMinute = calendar.get(Calendar.MINUTE);
 
+                //create clock pop-up
                 timePickerDialog = new TimePickerDialog(edittodo.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -212,6 +302,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
                         EDisplayTime.setText(timeStamp);
                     }
                 },
+                        //show pop-up
                         CalendarHour,CalendarMinute, false);
                 timePickerDialog.show();
 
@@ -220,10 +311,12 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
         EreminderTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //delclare clock
                 Eremindercalendar = Calendar.getInstance();
+                //declare clock variables
                 EReminderCalendarHour= Eremindercalendar.get(Calendar.HOUR_OF_DAY);
                 EReminderCalendarMinute = Eremindercalendar.get(Calendar.MINUTE);
-
+                //create clock pop-up
                 timePickerDialog = new TimePickerDialog(edittodo.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDayr, int minuter) {
@@ -231,6 +324,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
                         EreminderDisplayTime.setText(timeStamp);
                     }
                 },
+                        //show pop-up
                         EReminderCalendarHour,EReminderCalendarMinute, false);
                 timePickerDialog.show();
 
@@ -250,16 +344,11 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+
 
                 DialogFragment dialogfragment = new EditDatePickerDialogClass();
 
                 dialogfragment.show(getFragmentManager(), "Date Picker Dialog");
-
-
-
-
-
 
             }
         });
@@ -271,103 +360,32 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
                 dialogfragment.show(getFragmentManager(), "Date Picker Dialog");
             }
         });
-
     }
 
-
-    //Repeat Switch
-
-
-
-
-
+    //finish activity when cancelbutton is clicked
     public void CancelButtonClicked(View view) {
-//        Intent intent = new Intent();
-//        intent.setClass(addtodo.this, MainMenu.class);
-//        startActivity(intent);
+
         finish();
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 
-
-        if (EditRepeatSwitch.isChecked()){
-            EditRepeatText.setText("Repeat ON");
-
-            EditRepeat = true;
-            EditmRepeatText.setAlpha(1.0f);
-            EditRepeatTypeText.setAlpha(1.0f);
-
-            EditRepeatTypeText.setEnabled(true);
-
-
-
-        }
-        else {
-            EditRepeatText.setText("Repeat OFF");
-            EditRepeat = false;
-            EditRepeatType = "";
-            EditmRepeatText.setAlpha(0.0f);
-            EditRepeatTypeText.setAlpha(0.0f);
-
-
-
-
-            EditRepeatTypeText.setEnabled(false);
-
-
-
-
-        }
-        if (EditNotificationSwitch.isChecked()){
-            EditNotificationText.setText("Notifications ON");
-            EReminderDate.setAlpha(1.0f);
-            EreminderTime.setAlpha(1.0f);
-            EReminderDate.setClickable(true);
-            EreminderTime.setClickable(true);
-            EReminderDate.setEnabled(true);
-            EreminderTime.setEnabled(true);
-
-
-
-
-        }
-        else {
-            EReminderDate.setAlpha(0.0f);
-            EreminderTime.setAlpha(0.0f);
-            EReminderDate.setClickable(false);
-            EreminderTime.setClickable(false);
-            EditNotificationText.setText("Notifications OFF");
-            EReminderDate.setEnabled(false);
-            EreminderTime.setEnabled(false);
-
-
-
-
-        }
-
-    }
     public void selectRepeatType(View v){
-
+        //create array for the intervals
         final String[] items = new String[3];
         items[0] = "Daily";
         items[1] = "Weekly";
         items[2] = "Monthly";
 
-
-
-
-
         // Create List Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
+        //create pop-up
         builder.setTitle("Select Type");
         builder.setItems(items, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int item) {
-
+                //set the array items in the pop-up
+                //set the repeat type on the clicked item
                 EditRepeatType = items[item];
                 EditRepeatTypeText.setText(EditRepeatType);
                 EditmRepeatText.setText(EditRepeatType);
@@ -381,105 +399,119 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
     }
 
 
-
-
     //Calendar
     public static class EditDatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState){
-
+            //create calendar
             final Calendar Editcalendar = Calendar.getInstance();
+            //declare calendar variables
             int Eyear = Editcalendar.get(Calendar.YEAR);
             int Emonth = Editcalendar.get(Calendar.MONTH);
             int Eday = Editcalendar.get(Calendar.DAY_OF_MONTH);
-
+            //create calendar pop-up
             DatePickerDialog Editdatepickerdialog = new DatePickerDialog(getActivity(),
                     AlertDialog.THEME_DEVICE_DEFAULT_DARK,this,Eyear,Emonth,Eday);
-
+            //return calendar pop-up
             return Editdatepickerdialog;
 
-
-
-
-
         }
-
+        //function for selecting a date
         public void onDateSet(DatePicker view, int Eyear, int Emonth, int Eday){
 
             TextView textview = (TextView)getActivity().findViewById(R.id.EditDate);
-
+            //set the text for the selected date
             textview.setText(Eyear + "-" +(Emonth+1)  + "-" +Eday );
         }
     }
+
+
+    //Reminder Calendar
     public static class EditReminderDatePickerDialogClass extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-
+            //create reminder calendar
             final Calendar Eremindercalendar = Calendar.getInstance();
+            //declare reminder calendar variables
             int Eryear = Eremindercalendar.get(Calendar.YEAR);
             int Ermonth = Eremindercalendar.get(Calendar.MONTH);
             int Erday = Eremindercalendar.get(Calendar.DAY_OF_MONTH);
-
-
+            //create reminder calendar pop-up
             DatePickerDialog Editreminderdatepickerdialog = new DatePickerDialog(getActivity(),
                     AlertDialog.THEME_DEVICE_DEFAULT_DARK, this, Eryear, Ermonth, Erday);
-
-
+            //return reminder calendar pop-up
             return Editreminderdatepickerdialog;
 
-
         }
-
+        //function for selecting a date
         public void onDateSet(DatePicker view, int Eryear, int Ermonth, int Erday) {
 
             TextView textview = (TextView) getActivity().findViewById(R.id.EditRDate);
-
+            //set the text for the selected date
             textview.setText(Eryear + "-" + (Ermonth + 1) + "-" + Erday);
         }
     }
 
 
 
-
-
-
-
-
-
-
-
-
     //add todo to the listview
     public void EditButtonClicked (View v){
+        //declare variables you want to update in the database
         String messageText = ((EditText)findViewById(R.id.EditTitle)).getText().toString();
         String DescText = ((EditText)findViewById(R.id.EditDescription)).getText().toString();
+        String Loc = ((EditText)findViewById(R.id.EditlocationText)).getText().toString();
         String dateText = ((TextView)findViewById(R.id.EditDate)).getText().toString();
         String timeText = ((TextView)findViewById(R.id.EditTime)).getText().toString();
-        String RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
-        String RtimeText = ((TextView)findViewById(R.id.EditRTime)).getText().toString();
+        String RdateText;
+        String RtimeText;
         String Repeat_Interval;
-        Intent intent2 = new Intent();
-        intent2.setClass(edittodo.this, OverviewFragment.class);
 
 
+        //if Edit Repeat is false "NO INTERVAL" will be added to database instead of selecting a interval
         if (EditRepeat == false){
             Repeat_Interval = "NO INTERVAL";
         }
+        //the selected interval will be added
         else {
             Repeat_Interval = ((TextView)findViewById(R.id.EditRepeatType)).getText().toString();
 
         }
+        if (ENotification == true){
+
+            RdateText = ((TextView)findViewById(R.id.EditRDate)).getText().toString();
+            RtimeText = ((TextView)findViewById(R.id.EditRTime)).getText().toString();
+        }
+        else {
+            RdateText = dateText;
+            RtimeText = timeText;
+        }
 
 
 
+
+
+        String locationT = ((TextView)findViewById(R.id.EditlocationText)).getText().toString();
+        //set the standard status of the todo as false (undone)
+        Boolean Status = false;
+        if (locationT.equals("")) {
+            locationT = "No Location Given.";
+        }
+        //set the location
+        else {
+            locationT = ((TextView)findViewById(R.id.EditlocationText)).getText().toString();
+        }
+
+        //create geti]Intent for the todoId
         Intent intent = getIntent();
+        //get the todoId from the detailscreen
         String todoId = intent.getStringExtra("todoId");
         Log.d("TODOID", todoId);
 
-        if (messageText.equals("")){
-            Toast.makeText(this, "PLEASE GIVE THE TODO A TITLE", Toast.LENGTH_SHORT).show();
+        //if one of the textviews isn't filled in, an toast with an error will be given instead of an app crash
+        if (messageText.equals("") || dateText.equals("") || timeText.equals("") || RdateText.equals("") || RtimeText.equals("")){
+            Toast.makeText(this, "PLEASE FILL IN ALL THE BLANKS", Toast.LENGTH_SHORT).show();
 
         }
         else {
@@ -490,6 +522,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
                     new Pair("Id", todoId),
                     new Pair("Title", messageText),
                     new Pair("Description", DescText),
+                    new Pair("Location", Loc),
                     new Pair("Date", dateText+ "T" + timeText),
                     new Pair("DateReminder", RdateText+ "T" + RtimeText),
                     new Pair("Todo_Status", Status),
@@ -497,13 +530,16 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
                     new Pair("Repeat_Interval", Repeat_Interval)
 
             };
-
+            // set the web api task
             HttpTask task = new HttpTask(this.getApplicationContext(),
+                    //declare the task that will be used
                     HttpMethod.PUT,
+                    //give the link for the task
                     "http://ashittyscheduler.azurewebsites.net/api/todo/update",
                     new AsyncHttpListener() {
                         private ProgressDialog progressDialog;
 
+                        //create a pop-up progressbar for the task
                         @Override
                         public void onBeforeExecute() {
                             // show a progress dialog (duh)
@@ -512,14 +548,16 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
                                     "Please wait");
                         }
 
+
                         @Override
                         public void onResponse(HttpResponse httpResponse) {
 
                             int code = httpResponse.getCode();
-
+                            //give signal if the task is completed
                             if (code == HttpStatusCode.OK.getCode()){
                                 Toast.makeText(getApplicationContext(), "TODO UPDATED", Toast.LENGTH_SHORT).show();
                             }
+                            //give message if the task fails
                             else{
                                 Toast.makeText(getApplicationContext(), "FAILED TO update TODO" + httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -532,7 +570,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
 
 
                         }
-
+                        //remove progress pop-up when the task is finished
                         @Override
                         public void onFinishExecuting() {
                             // dismiss the progress dialog (duh)
@@ -544,10 +582,7 @@ public class edittodo extends AppCompatActivity implements CompoundButton.OnChec
             // set body parameters
             task.setBodyParameters(parameters);
             task.execute();
-            finish();
-
-
-            startActivity(intent2);
+           finish();
         }
     }
 
