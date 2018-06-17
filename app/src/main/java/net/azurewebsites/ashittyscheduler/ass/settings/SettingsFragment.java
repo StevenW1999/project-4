@@ -293,9 +293,9 @@ public class SettingsFragment extends Fragment {
                                     boolean todo = sp.getBoolean("notifications_todo", true);
                                     boolean friends = sp.getBoolean("notifications_friends", true);
                                     boolean chat = sp.getBoolean("notifications_chat", true);
-                                    notificationPreference_todo.setEnabled(todo);
-                                    notificationPreference_friends.setEnabled(friends);
-                                    notificationPreference_chat.setEnabled(chat);
+                                    notificationPreference_todo.setChecked(todo);
+                                    notificationPreference_friends.setChecked(friends);
+                                    notificationPreference_chat.setChecked(chat);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();

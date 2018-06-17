@@ -114,8 +114,6 @@ public class NotificationService extends Service {
                     boolean friends = sp.getBoolean("notifications_friends", true);
                     boolean chat = sp.getBoolean("notifications_chat", true);
 
-                    // TODO: Do stuff
-
                     // Show the notification!
                     showNotification(NotificationService.this, LoginActivity.class, notification);
 
