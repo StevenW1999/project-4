@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -47,12 +48,18 @@ public class ProfileActivity extends Activity {
             btn_friend,
             btn_chat;
 
+    private ConstraintLayout cs_layout;
+
     private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        // Layout
+        cs_layout = findViewById(R.id.profile_layout);
+        cs_layout.setVisibility(View.INVISIBLE);
 
         // Image views
         iv_avatar = findViewById(R.id.avatar);
@@ -94,6 +101,7 @@ public class ProfileActivity extends Activity {
 
                     @Override
                     public void onBeforeExecute() {
+                        cs_layout.setVisibility(View.INVISIBLE);
                         progressDialog = ProgressDialog.show(ProfileActivity.this,"Loading profile","Please wait");
                     }
 
@@ -105,14 +113,7 @@ public class ProfileActivity extends Activity {
                             try {
                                 JSONObject userObj = new JSONObject(httpResponse.getMessage());
 
-                                final User user = new User();
-                                user.setId(userObj.getString("Id"));
-                                user.setUsername(userObj.getString("Username"));
-                                user.setName(userObj.getString("DisplayName"));
-                                user.setDescription(userObj.getString("Description"));
-                                user.setEmail(userObj.getString("Email"));
-                                user.setOnline(userObj.getBoolean("IsOnline"));
-                                user.setFriend(userObj.getBoolean("IsFriend"));
+                                final User user = User.fromJson(userObj);
 
                                 tv_displayname.setText(user.getName());
                                 tv_username.setText("@" + user.getUsername());
@@ -145,30 +146,11 @@ public class ProfileActivity extends Activity {
                                 else {
                                     if (user.isFriend()) {
                                         // User is already my friend, change to remove button
-                                        btn_friend.setText("Remove friend");
-                                        btn_friend.setBackgroundColor(Color.RED);
-
-                                        btn_friend.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                // TODO: STATE: FRIENDED,
-                                                // TODO: REMOVE FRIEND FUNCTION (with confirmation dialog of course)
-                                                RemoveFriendAction(user);
-                                            }
-                                        });
+                                        SetFriendButton(FriendButtonState.REMOVE);
                                     }
                                     else {
-                                        // User is not a friend yet, friend request button
-                                        btn_friend.setText("Send friend request");
-                                        btn_friend.setBackgroundColor(Color.GREEN);
-                                        //TODO: Check if friend request pending... ??
-                                        btn_friend.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                // TODO: SEND FRIEND REQUEST FUNCTION
-                                                // TODO: STATES : (ADD, PENDING, REMOVE)
-                                            }
-                                        });
+                                        // User is not a friend yet, 'send friend request' button
+                                        SetFriendButton(FriendButtonState.ADD);
                                     }
 
                                     // Chat button action
@@ -191,11 +173,13 @@ public class ProfileActivity extends Activity {
 
                     @Override
                     public void onError() {
-                        Toast.makeText(ProfileActivity.this, "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, "Could not load profile. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     @Override
                     public void onFinishExecuting() {
+                        cs_layout.setVisibility(View.VISIBLE);
                         progressDialog.dismiss();
                     }
                 });
@@ -204,14 +188,53 @@ public class ProfileActivity extends Activity {
         task.execute();
     }
 
+    private void SetFriendButton(FriendButtonState state) {
+        switch(state) {
+            case ADD:
+                btn_friend.setText("Send friend request");
+                btn_friend.setBackgroundColor(Color.GREEN);
+                btn_friend.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_input_add,0, 0, 0);
+                btn_friend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AddFriendAction(userId);
+                    }
+                });
+                break;
+            case PENDING:
+                btn_friend.setText("Cancel friend request");
+                btn_friend.setBackgroundColor(Color.rgb(255, 102, 0));
+                btn_friend.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_input_delete,0, 0, 0);
+                btn_friend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO: Cancel friend request
+                    }
+                });
+                break;
+            case REMOVE:
+                btn_friend.setText("Remove friend");
+                btn_friend.setBackgroundColor(Color.RED);
+                btn_friend.setCompoundDrawablesWithIntrinsicBounds(android.R.drawable.ic_menu_delete,0, 0, 0);
+                btn_friend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        RemoveFriendAction(userId);
+                    }
+                });
+                break;
+        }
+    }
+
+
     /**
      * This function removes a friend who is specified as input parameter.
-     * @param user is the peron u're trying to delete.
+     * @param userId is the ID of the friend to delete.
      */
-    private void RemoveFriendAction(User user) {
+    private void RemoveFriendAction(String userId) {
         // parameters
         Pair[] parameters = new Pair[] {
-                new Pair<>("friendId", user.getId()),
+                new Pair<>("friendId", userId),
         };
 
         HttpTask task = new HttpTask(this, HttpMethod.POST, "http://ashittyscheduler.azurewebsites.net/api/friend/RemoveFriend", new AsyncHttpListener() {
@@ -224,26 +247,66 @@ public class ProfileActivity extends Activity {
             @Override
             public void onResponse(HttpResponse httpResponse) {
                 int code = httpResponse.getCode();
-                httpResponse.getMessage();
+
                 if(code == HttpStatusCode.OK.getCode()){
-                    Toast.makeText(ProfileActivity.this,"Removed friend", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this,"Removed friend.", Toast.LENGTH_SHORT).show();
+                    SetFriendButton(FriendButtonState.ADD);
                 } else {
-                    Toast.makeText(ProfileActivity.this,"Could not remove friend", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this,"Could not remove friend.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onError() {
-                Toast.makeText(ProfileActivity.this, "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "An error occurred. Please try again later ☹", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFinishExecuting() {
                 progressDialog.dismiss();
-                finish();
             }
         });
         task.setBodyParameters(parameters);
         task.execute();
     }
+
+    private void AddFriendAction(String userId) {
+        // parameters
+        Pair[] parameters = new Pair[] {
+                new Pair<>("friendId", userId),
+        };
+
+        HttpTask task = new HttpTask(this, HttpMethod.POST, "http://ashittyscheduler.azurewebsites.net/api/friend/friendRequestById", new AsyncHttpListener() {
+            private ProgressDialog progressDialog;
+            @Override
+            public void onBeforeExecute() {
+                progressDialog = ProgressDialog.show(ProfileActivity.this,"Sending friend request","Please wait");
+            }
+
+            @Override
+            public void onResponse(HttpResponse httpResponse) {
+                int code = httpResponse.getCode();
+
+                if(code == HttpStatusCode.OK.getCode()){
+                    Toast.makeText(ProfileActivity.this,"Sent friend request.", Toast.LENGTH_SHORT).show();
+                    SetFriendButton(FriendButtonState.PENDING);
+                } else {
+                    Toast.makeText(ProfileActivity.this,"Could not submit friend request.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError() {
+                Toast.makeText(ProfileActivity.this, "An error occurred. Please try again later ☹", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinishExecuting() {
+                progressDialog.dismiss();
+            }
+        });
+        task.setBodyParameters(parameters);
+        task.execute();
+    }
+
 }

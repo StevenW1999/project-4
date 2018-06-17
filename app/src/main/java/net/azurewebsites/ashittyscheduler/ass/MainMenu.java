@@ -59,7 +59,6 @@ public class MainMenu extends AppCompatActivity
     private Handler notificationThreadHandler;
     private DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener(){
 
-
         @Override
         public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
 
@@ -305,7 +304,6 @@ public class MainMenu extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
