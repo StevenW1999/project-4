@@ -34,6 +34,7 @@
         <activity android:name=".FriendChatActivity" />
         <activity android:name=".detailscreen" />
         <activity android:name=".edittodo" />
+        <activity android:name=".RecyclerViewTest"></activity>
         <activity android:name=".profile.ProfileActivity"></activity>
     </application>
 

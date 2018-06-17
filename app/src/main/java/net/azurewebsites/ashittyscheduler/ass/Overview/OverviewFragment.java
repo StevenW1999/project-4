@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import net.azurewebsites.ashittyscheduler.ass.Adapters.recyclerViewAdapter;
 import net.azurewebsites.ashittyscheduler.ass.Intent_Constants;
 import net.azurewebsites.ashittyscheduler.ass.MainMenu;
 import net.azurewebsites.ashittyscheduler.ass.R;
@@ -50,10 +53,10 @@ public class OverviewFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
 
-    ListView listView;
-    ArrayAdapter<String> arrayAdapter;
     SwipeRefreshLayout refreshTodos;
-    private static ArrayList<String> objects = new ArrayList<>();
+    private RecyclerView recyclerViewTest;
+    private RecyclerView.LayoutManager layoutManager;
+    final ArrayList<ToDo> allTodos = new ArrayList<>();
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -64,11 +67,6 @@ public class OverviewFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Refresh
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -80,7 +78,14 @@ public class OverviewFragment extends Fragment {
         //Update todos after refresh
         refreshTodos();
 
-        listView = (ListView) getActivity().findViewById(R.id.textView);
+        recyclerViewTest = (RecyclerView) view.findViewById(R.id.recyclerViewTest);
+
+        recyclerViewTest.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerViewTest.setLayoutManager(layoutManager);
+
+        /*listView = (ListView) getActivity().findViewById(R.id.textView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -99,20 +104,13 @@ public class OverviewFragment extends Fragment {
 
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
     //Fills data with all the user's todos
     private void fillDataToDo() {
-        final ArrayList<String> toDoItems = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(),
-                android.R.layout.simple_list_item_1,toDoItems);
-        listView.setAdapter(arrayAdapter);
-        final ArrayAdapter<ToDo> todoItems = new ArrayAdapter<>(getActivity().getApplicationContext(),
-                android.R.layout.simple_list_item_1);
-        ArrayList<ToDo> toDoItems2 = new ArrayList<ToDo>();
-        listView.setAdapter(todoItems);
-        todoItems.clear();
+
+        allTodos.clear();
 
         AsyncHttpListener listener = new AsyncHttpListener() {
             @Override
@@ -162,7 +160,7 @@ public class OverviewFragment extends Fragment {
                             jsonValues.add(sortedTodosGet);
                             todo.setId(sortedTodosGet.getString("Id"));
                             todo.setTitle(sortedTodosGet.getString("Title"));
-                            todoItems.add(todo);
+                            allTodos.add(todo);
                             refreshTodos.setRefreshing(false);
                             //JSONObject todoJSON = todos.getJSONObject(i);
 
@@ -178,6 +176,9 @@ public class OverviewFragment extends Fragment {
 //                            Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT);
 
                         }
+
+                        recyclerViewAdapter newAdapter = new recyclerViewAdapter(allTodos);
+                        recyclerViewTest.setAdapter(newAdapter);
                     }
                     catch (JSONException e) {
                         e.printStackTrace();
