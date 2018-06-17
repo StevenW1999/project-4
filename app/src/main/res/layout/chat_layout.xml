@@ -14,6 +14,7 @@
         android:background = "@drawable/textviewshape_chat_username"
         android:gravity="center"
         android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
     <ListView
         android:id="@+id/chatList"
         android:layout_width="match_parent"
@@ -25,16 +26,16 @@
         android:windowSoftInputMode="adjustResize">
 
     </ListView>
+
     <EditText
         android:id="@+id/chatMessageBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginBottom="8dp"
+        android:layout_weight="1"
         android:gravity="center"
         android:hint="Message"
-        android:layout_weight="1"
-        android:inputType="text"
-        />
+        android:inputType="text" />
 
 </LinearLayout>
