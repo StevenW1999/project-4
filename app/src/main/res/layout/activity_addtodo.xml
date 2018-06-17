@@ -185,7 +185,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/repeatText" />
 
- 
+
     <TextView
         android:id="@+id/reminderdate"
         android:layout_width="358dp"
