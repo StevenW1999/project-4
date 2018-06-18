@@ -156,8 +156,6 @@ public class MainMenu extends AppCompatActivity
 
             fragmentToSet = new OverviewFragment();
 
-        } else if (id == R.id.nav_Notes) {
-            getSupportActionBar().setTitle("Notes");
         } else if (id == R.id.nav_Friends) {
             //getSupportActionBar().setTitle("Friends");
             LoadNewPage(FriendsActivity.class);
@@ -168,8 +166,6 @@ public class MainMenu extends AppCompatActivity
             // set the settings fragment after closing the drawer
             fragmentToSet = new SettingsFragment();
 
-        } else if (id == R.id.nav_Rateus) {
-            getSupportActionBar().setTitle("Rate us");
         }
         else if (id == R.id.nav_Logout) {
             new AlertDialog.Builder(this)
