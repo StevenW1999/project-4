@@ -78,7 +78,7 @@ public class OverviewFragment extends Fragment {
         //Update todos after refresh
         refreshTodos();
 
-        recyclerViewTest = (RecyclerView) view.findViewById(R.id.recyclerViewTest);
+        recyclerViewTest = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         recyclerViewTest.setHasFixedSize(true);
 
