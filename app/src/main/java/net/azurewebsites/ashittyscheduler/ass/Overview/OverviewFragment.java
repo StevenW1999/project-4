@@ -81,27 +81,6 @@ public class OverviewFragment extends Fragment {
         //Update todos after refresh
         refreshTodos();
 
-        listView = (ListView) getActivity().findViewById(R.id.textView);
-
-        listView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                for(int i=0; i<listView.getCount(); ++i) {
-
-                    // Get view item
-                    View vi = listView.getChildAt(i);
-
-                    // Get todo
-                    ToDo todo = (ToDo) listView.getItemAtPosition(i);
-
-                    if (todo.isStatus()) {
-                        vi.setBackgroundColor(Color.rgb(255,182,193));
-                    }
-
-                }
-            }
-        });
-
         recyclerViewTest = (RecyclerView) view.findViewById(R.id.recyclerViewTest);
 
         recyclerViewTest.setHasFixedSize(true);

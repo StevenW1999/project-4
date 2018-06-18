@@ -90,6 +90,10 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
 
         holder.txtFooter.setText(s);
 
+        if (todo.isStatus()) {
+            holder.itemView.setBackgroundColor(Color.rgb(109, 181, 106));
+        }
+
         final String todoId = todo.getId();
 
         holder.itemView.setOnClickListener(new OnClickListener() {

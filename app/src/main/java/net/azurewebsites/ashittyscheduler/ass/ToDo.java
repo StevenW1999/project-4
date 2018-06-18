@@ -96,6 +96,7 @@ public class ToDo {
             t.setTitle(obj.getString("Title"));
             t.setDescription(obj.getString("Description"));
             t.setDate(calendar);
+            t.setStatus(obj.getBoolean("Todo_Status"));
 
             return t;
 

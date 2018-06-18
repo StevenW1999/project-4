@@ -575,6 +575,7 @@ public class edittodo extends AppCompatActivity{
                         public void onFinishExecuting() {
                             // dismiss the progress dialog (duh)
                             progressDialog.dismiss();
+                            finish();
                         }
                     }
             );
@@ -582,7 +583,6 @@ public class edittodo extends AppCompatActivity{
             // set body parameters
             task.setBodyParameters(parameters);
             task.execute();
-           finish();
         }
     }
 

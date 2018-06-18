@@ -351,6 +351,7 @@ public void DeleteButtonClicked(View view){
                     public void onFinishExecuting() {
                         // dismiss the progress dialog (duh)
                         progressDialog.dismiss();
+                        finish();
                     }
                 }
         );
@@ -358,8 +359,6 @@ public void DeleteButtonClicked(View view){
         // set body parameters
         task.setBodyParameters(parameters);
         task.execute();
-        finish();
-
 
     }
     }
