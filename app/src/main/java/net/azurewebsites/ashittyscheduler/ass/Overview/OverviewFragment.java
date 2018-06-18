@@ -155,27 +155,18 @@ public class OverviewFragment extends Fragment {
                         }
 
                         for (int i = 0; i < sortedTodos.length(); i++) {
-                            ToDo todo = new ToDo();
+
                             JSONObject sortedTodosGet = sortedTodos.getJSONObject(i);
                             jsonValues.add(sortedTodosGet);
-                            todo.setId(sortedTodosGet.getString("Id"));
-                            todo.setTitle(sortedTodosGet.getString("Title"));
+
+                            // Construct TODO
+                            ToDo todo = ToDo.fromJson(sortedTodosGet);
+
+                            // add to the list of all todos
                             allTodos.add(todo);
-                            refreshTodos.setRefreshing(false);
-                            //JSONObject todoJSON = todos.getJSONObject(i);
-
-//                            ToDo todo = new ToDo();
-//                            todo.setId(todoJSON.getString("Id"));
-//                            todo.setTitle(todoJSON.getString("Title"));
-//                            todo.setDescription(todoJSON.getString("Description"));
-
-                            //TODO: Add Date, DateReminder etc...
-
-//                            todoItems.add(todo);
-//                            refreshTodos.setRefreshing(false);
-//                            Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT);
-
                         }
+
+                        refreshTodos.setRefreshing(false);
 
                         recyclerViewAdapter newAdapter = new recyclerViewAdapter(allTodos);
                         recyclerViewTest.setAdapter(newAdapter);
@@ -206,6 +197,14 @@ public class OverviewFragment extends Fragment {
     //Spinner used for filtering of todos by year
     private void setSpinner() {
         Spinner spinner =(Spinner) getActivity().findViewById(R.id.dropDownFilter);
+
+        // TODO: REMOVE
+
+        // TEST!!!
+        // Hide the spinner
+        spinner.setVisibility(View.INVISIBLE);
+
+
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 getActivity().getApplicationContext(), R.array.dropdownYear,
                 android.R.layout.simple_spinner_dropdown_item);

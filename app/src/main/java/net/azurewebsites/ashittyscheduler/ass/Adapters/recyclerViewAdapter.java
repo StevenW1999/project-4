@@ -1,19 +1,29 @@
 package net.azurewebsites.ashittyscheduler.ass.Adapters;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import net.azurewebsites.ashittyscheduler.ass.Overview.OverviewFragment;
 import net.azurewebsites.ashittyscheduler.ass.R;
 import net.azurewebsites.ashittyscheduler.ass.ToDo;
+import net.azurewebsites.ashittyscheduler.ass.detailscreen;
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
@@ -65,7 +75,36 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
 
         //holder.txtHeader.setText((CharSequence) todo);
         holder.txtHeader.setText(todo.getTitle());
-        //holder.txtFooter.setText(todo.getDate().toString());
+
+        String s = "?";
+        Date d = todo.getDate().getTime();
+        DateFormat df = new SimpleDateFormat("E, dd-MM-yyyy HH:mm aaa");
+
+        try {
+            s = df.format(d);
+        }
+        catch(Exception e) {
+
+        }
+
+
+        holder.txtFooter.setText(s);
+
+        final String todoId = todo.getId();
+
+        holder.itemView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                view.setSelected(true);
+                view.setBackgroundColor(Color.DKGRAY);
+
+                Intent intent = new Intent(view.getContext(), detailscreen.class);
+                intent.putExtra("todoId", todoId);
+                view.getContext().startActivity(intent);
+            }
+        });
+
     }
 
     public int getItemCount() {
