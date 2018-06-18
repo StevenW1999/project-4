@@ -1,7 +1,15 @@
 package net.azurewebsites.ashittyscheduler.ass;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import static java.util.Calendar.getInstance;
 
 public class ToDo {
     private String id;
@@ -75,6 +83,28 @@ public class ToDo {
         return getTitle();
     }
 
+    public static ToDo fromJson(JSONObject obj) {
+        ToDo t = new ToDo();
+
+        try {
+            // format date
+            Calendar calendar = getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+            calendar.setTime(sdf.parse(obj.getString("Date")));
+
+            t.setId(obj.getString("Id"));
+            t.setTitle(obj.getString("Title"));
+            t.setDescription(obj.getString("Description"));
+            t.setDate(calendar);
+
+            return t;
+
+        } catch (ParseException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public String getInterval() {
         return interval;
