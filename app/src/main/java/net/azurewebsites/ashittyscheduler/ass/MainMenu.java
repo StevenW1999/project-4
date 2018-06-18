@@ -225,7 +225,8 @@ public class MainMenu extends AppCompatActivity
                     });
                 }
             };
-            this.notificationThread.start();
+            //Set thread to not start
+            //this.notificationThread.start();
         }
     }
 
@@ -308,8 +309,19 @@ public class MainMenu extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            this.notificationThreadHandler.removeCallbacksAndMessages(null);
-            super.onBackPressed();
+            new AlertDialog.Builder(this)
+                    .setTitle("Log out")
+                    .setMessage("Are you sure you want to leave us?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            LogoutTask();
+                            MainMenu.this.notificationThreadHandler.removeCallbacksAndMessages(null);
+                            MainMenu.super.onBackPressed();
+                        }
+                    })
+                    .setNegativeButton("No!", null)
+                    .show();
         }
     }
 
@@ -389,57 +401,7 @@ public class MainMenu extends AppCompatActivity
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            String url = "http://ashittyscheduler.azurewebsites.net/api/users/logout";
-
-                            HttpTask logoutTask = new HttpTask(
-                                    MainMenu.this,
-                                    HttpMethod.PUT,
-                                    url,
-                                    new AsyncHttpListener() {
-
-                                        private ProgressDialog progressDialog;
-
-                                        @Override
-                                        public void onBeforeExecute() {
-                                            progressDialog = ProgressDialog.show(MainMenu.this,
-                                                    "Logging out",
-                                                    "Please wait");
-                                        }
-
-                                        @Override
-                                        public void onResponse(HttpResponse httpResponse) {
-                                            if (httpResponse.getCode() == HttpStatusCode.OK.getCode()) {
-                                                //200, we've successfully logged out
-                                                Toast.makeText(getApplicationContext(), "You have been logged out.", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onError() {
-                                            Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
-                                        }
-
-                                        @Override
-                                        public void onFinishExecuting() {
-                                            progressDialog.dismiss();
-
-                                            // delete local token and user id
-                                            SharedPreferences.Editor editor = getSharedPreferences(ApplicationConstants.PREFERENCES, Context.MODE_PRIVATE).edit();
-                                            editor.remove("Token");
-                                            editor.remove("UserId");
-                                            editor.commit();
-
-                                            // return to the login screen
-                                            Intent i = new Intent();
-                                            i.setClass(MainMenu.this, LoginActivity.class);
-                                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            MainMenu.this.notificationThreadHandler.removeCallbacksAndMessages(null);
-                                            startActivity(i);
-                                        }
-                                    });
-
-                            logoutTask.execute();
-
+                            LogoutTask();
                         }
                     })
                     .setNegativeButton("No!", null)
@@ -449,6 +411,60 @@ public class MainMenu extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void LogoutTask(){
+        String url = "http://ashittyscheduler.azurewebsites.net/api/users/logout";
+
+        HttpTask logoutTask = new HttpTask(
+                MainMenu.this,
+                HttpMethod.PUT,
+                url,
+                new AsyncHttpListener() {
+
+                    private ProgressDialog progressDialog;
+
+                    @Override
+                    public void onBeforeExecute() {
+                        progressDialog = ProgressDialog.show(MainMenu.this,
+                                "Logging out",
+                                "Please wait");
+                    }
+
+                    @Override
+                    public void onResponse(HttpResponse httpResponse) {
+                        if (httpResponse.getCode() == HttpStatusCode.OK.getCode()) {
+                            //200, we've successfully logged out
+                            Toast.makeText(getApplicationContext(), "You have been logged out.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError() {
+                        Toast.makeText(getApplicationContext(), "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFinishExecuting() {
+                        progressDialog.dismiss();
+
+                        // delete local token and user id
+                        SharedPreferences.Editor editor = getSharedPreferences(ApplicationConstants.PREFERENCES, Context.MODE_PRIVATE).edit();
+                        editor.remove("Token");
+                        editor.remove("UserId");
+                        editor.commit();
+
+                        // return to the login screen
+                        Intent i = new Intent();
+                        i.setClass(MainMenu.this, LoginActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        MainMenu.this.notificationThreadHandler.removeCallbacksAndMessages(null);
+                        startActivity(i);
+                    }
+                });
+
+        logoutTask.execute();
+
     }
 
     /**
