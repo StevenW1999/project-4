@@ -53,9 +53,6 @@ public class OverviewFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     // TODO: Rename and change types of parameters
-
-    ListView listView;
-    ArrayAdapter<String> arrayAdapter;
     SwipeRefreshLayout refreshTodos;
     private RecyclerView recyclerViewTest;
     private RecyclerView.LayoutManager layoutManager;

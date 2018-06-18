@@ -3,6 +3,7 @@ package net.azurewebsites.ashittyscheduler.ass;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -68,6 +69,23 @@ public class FriendsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.friendsToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Friends");
+        String token = getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE).getString("Token", null);
+
+        if(token == null || token.equals("")){
+            Log.d("EXCEPTION: ",  "NO TOKEN FOUND");
+
+            final AlertDialog.Builder messageBox = new AlertDialog.Builder(this);
+            messageBox.setTitle("CRASH");
+            messageBox.setMessage("No token found : " + token + " This crash has been caused cause you weren't logged in while clicking the notification");
+            messageBox.setCancelable(false);
+            messageBox.setNeutralButton("Ok" ,new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    finish();
+                    System.exit(0);
+                }
+            });
+            messageBox.show();
+        }
         AddFriend();
         FriendRequestPage();
         final ArrayList<User> users = new ArrayList<>();
@@ -199,7 +217,7 @@ public class FriendsActivity extends AppCompatActivity {
                         userObject.setUsername(user.getString("Username"));
                         userObject.setName(user.getString("DisplayName"));
                         String username = user.getString("Username");
-                        Log.d("USERS TO FRIEND", username);
+                        //Log.d("USERS TO FRIEND", username);
                         users.add(userObject);
 
                     }
@@ -651,10 +669,13 @@ class CustomAdapter extends ArrayAdapter<User>{
         TextView textView = (TextView) rowView.findViewById(R.id.FriendsUsername);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.FriendsUserImage);
         ImageView hasMessage = (ImageView)rowView.findViewById(R.id.MessageNotificatie);
+
         if(this.messagesFrom != null && this.messagesFrom.size() != 0){
             for(User item : this.messagesFrom){
                 if(item.getId().equals( this.users.get(position).getId())){
+                    Log.i("WTF", "getView: " + this.users.get(position).getUsername());
                     hasMessage.setVisibility(View.VISIBLE);
+                    break;
                 }
                 else {
                     hasMessage.setVisibility(View.INVISIBLE);
@@ -665,7 +686,7 @@ class CustomAdapter extends ArrayAdapter<User>{
         }
         textView.setText(this.users.get(position).getUsername());
         // Change the icon for Windows and iPhone
-        String s = this.users.get(position).getUsername();
+        //String s = this.users.get(position).getUsername();
         /*if (s.startsWith("Windows7") || s.startsWith("iPhone")
                 || s.startsWith("Solaris")) {
             imageView.setImageResource(R.drawable.no);
@@ -702,9 +723,7 @@ class CustomAdapter extends ArrayAdapter<User>{
      */
     public void updateMessageChecker(ArrayList<User>users){
         this.messagesFrom.clear();
-        for(User item : users){
-            this.messagesFrom.add(item);
-        }
+        this.messagesFrom.addAll(users);
         updateView();
     }
 

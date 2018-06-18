@@ -13,11 +13,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -30,7 +33,12 @@ import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpStatusCode;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import static android.app.AlarmManager.ELAPSED_REALTIME_WAKEUP;
@@ -55,7 +63,7 @@ private PendingIntent alarmIntent;
 private TextView reminderTime;
 private TextView reminderDisplayTime;
 private TextView reminderDate;
-
+private ShareTodoAdapter shareTodoAdapter;
 
 // declare variables
 private Boolean Repeat;
@@ -262,6 +270,14 @@ private boolean Notificcation;
 
 
             }});
+        this.shareTodoAdapter = new ShareTodoAdapter(this , new ArrayList<User>() , null);
+        Button sharebutton = (Button)findViewById(R.id.ShareButtonTodoAdd);
+        sharebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShareButtonClicked();
+            }
+        });
 
     }
 
@@ -299,6 +315,17 @@ private boolean Notificcation;
         alert.show();
     }
 
+    private void ShareButtonClicked(){
+
+        this.shareTodoAdapter.loadData();
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(addtodo.this);
+        View DialogView = getLayoutInflater().inflate(R.layout.friend_requests,null);
+        builder.setView(DialogView);
+        ListView ls = (ListView)DialogView.findViewById(R.id.requests_list);
+        ls.setAdapter(shareTodoAdapter);
+        final android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
 
     public void CancelButtonClicked(View view) {
@@ -418,7 +445,9 @@ private boolean Notificcation;
         }
 
         else {
-
+            Log.d("NORMALARRAY", "addButtonClicked: " + this.shareTodoAdapter.getSharedWith().toString());
+            JSONArray shared = new JSONArray(this.shareTodoAdapter.getSharedWith());
+            Log.d("JSONARRAY", "addButtonClicked: " + shared.toString());
             // create body parameters
             Pair[] parameters = new Pair[]{
                     new Pair("Title", messageText),
@@ -431,7 +460,7 @@ private boolean Notificcation;
                     new Pair("Repeat_Interval", Repeat_Interval),
                     new Pair("Repeat_Interval", mRepeatType),
                     new Pair("Location", locationT),
-
+                    new Pair("SharedUserIds",shared)
             };
             // set the web api task
             HttpTask task = new HttpTask(this.getApplicationContext(),
@@ -479,8 +508,6 @@ private boolean Notificcation;
                         public void onFinishExecuting() {
                             // dismiss the progress dialog (duh)
                             progressDialog.dismiss();
-
-                            //end the activity
                             finish();
                         }
                     }
@@ -490,6 +517,8 @@ private boolean Notificcation;
             task.setBodyParameters(parameters);
 
             task.execute();
+
+            //end the activity
         }
     }
 

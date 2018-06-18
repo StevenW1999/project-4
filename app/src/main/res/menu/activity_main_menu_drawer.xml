@@ -13,10 +13,6 @@
             android:icon="@drawable/ic_agenda"
             android:title="Agenda" />
         <item
-            android:id="@+id/nav_Notes"
-            android:icon="@drawable/ic_notes"
-            android:title="Notes" />
-        <item
             android:id="@+id/nav_Friends"
             android:icon="@drawable/ic_friends"
             android:title="Friends" />
@@ -24,10 +20,6 @@
             android:id="@+id/nav_Settings"
             android:icon="@drawable/ic_menu_manage"
             android:title="Settings" />
-        <item
-            android:id="@+id/nav_Rateus"
-            android:icon="@drawable/ic_menu_send"
-            android:title="Rate us" />
         <item
             android:id="@+id/nav_Logout"
             android:icon="@drawable/ic_logout"
