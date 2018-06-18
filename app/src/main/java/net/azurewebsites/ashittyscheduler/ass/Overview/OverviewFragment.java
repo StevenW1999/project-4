@@ -1,25 +1,30 @@
 package net.azurewebsites.ashittyscheduler.ass.Overview;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import net.azurewebsites.ashittyscheduler.ass.Adapters.MyAdapter;
+import net.azurewebsites.ashittyscheduler.ass.Adapters.recyclerViewAdapter;
 import net.azurewebsites.ashittyscheduler.ass.Intent_Constants;
+import net.azurewebsites.ashittyscheduler.ass.MainMenu;
 import net.azurewebsites.ashittyscheduler.ass.R;
 import net.azurewebsites.ashittyscheduler.ass.ToDo;
 import net.azurewebsites.ashittyscheduler.ass.addtodo;
@@ -35,9 +40,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 public class OverviewFragment extends Fragment {
@@ -49,7 +57,9 @@ public class OverviewFragment extends Fragment {
     ListView listView;
     ArrayAdapter<String> arrayAdapter;
     SwipeRefreshLayout refreshTodos;
-    private static ArrayList<String> objects = new ArrayList<>();
+    private RecyclerView recyclerViewTest;
+    private RecyclerView.LayoutManager layoutManager;
+    final ArrayList<ToDo> allTodos = new ArrayList<>();
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -59,6 +69,7 @@ public class OverviewFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -70,7 +81,14 @@ public class OverviewFragment extends Fragment {
         //Update todos after refresh
         refreshTodos();
 
-        listView = (ListView) getActivity().findViewById(R.id.textView);
+        recyclerViewTest = (RecyclerView) view.findViewById(R.id.recyclerViewTest);
+
+        recyclerViewTest.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerViewTest.setLayoutManager(layoutManager);
+
+        /*
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,20 +107,13 @@ public class OverviewFragment extends Fragment {
 
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
     //Fills data with all the user's todos
     private void fillDataToDo() {
-        final ArrayList<String> toDoItems = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(getActivity().getApplicationContext(),
-                android.R.layout.simple_list_item_1,toDoItems);
-        listView.setAdapter(arrayAdapter);
-        final ArrayAdapter<ToDo> todoItems = new ArrayAdapter<>(getActivity().getApplicationContext(),
-                android.R.layout.simple_list_item_1);
-        ArrayList<ToDo> toDoItems2 = new ArrayList<ToDo>();
-        listView.setAdapter(todoItems);
-        todoItems.clear();
+
+        allTodos.clear();
 
         AsyncHttpListener listener = new AsyncHttpListener() {
             @Override
@@ -147,27 +158,22 @@ public class OverviewFragment extends Fragment {
                         }
 
                         for (int i = 0; i < sortedTodos.length(); i++) {
-                            ToDo todo = new ToDo();
+
+
                             JSONObject sortedTodosGet = sortedTodos.getJSONObject(i);
                             jsonValues.add(sortedTodosGet);
-                            todo.setId(sortedTodosGet.getString("Id"));
-                            todo.setTitle(sortedTodosGet.getString("Title"));
-                            todoItems.add(todo);
-                            refreshTodos.setRefreshing(false);
-                            //JSONObject todoJSON = todos.getJSONObject(i);
 
-//                            ToDo todo = new ToDo();
-//                            todo.setId(todoJSON.getString("Id"));
-//                            todo.setTitle(todoJSON.getString("Title"));
-//                            todo.setDescription(todoJSON.getString("Description"));
+                            // Construct TODO
+                            ToDo todo = ToDo.fromJson(sortedTodosGet);
 
-                            //TODO: Add Date, DateReminder etc...
-
-//                            todoItems.add(todo);
-//                            refreshTodos.setRefreshing(false);
-//                            Toast.makeText(getContext(), "Updated", Toast.LENGTH_SHORT);
-
+                            // add to the list of all todos
+                            allTodos.add(todo);
                         }
+
+                        refreshTodos.setRefreshing(false);
+
+                        recyclerViewAdapter newAdapter = new recyclerViewAdapter(allTodos);
+                        recyclerViewTest.setAdapter(newAdapter);
                     }
                     catch (JSONException e) {
                         e.printStackTrace();
@@ -195,6 +201,14 @@ public class OverviewFragment extends Fragment {
     //Spinner used for filtering of todos by year
     private void setSpinner() {
         Spinner spinner =(Spinner) getActivity().findViewById(R.id.dropDownFilter);
+
+        // TODO: REMOVE
+
+        // TEST!!!
+        // Hide the spinner
+        spinner.setVisibility(View.INVISIBLE);
+
+
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 getActivity().getApplicationContext(), R.array.dropdownYear,
                 android.R.layout.simple_spinner_dropdown_item);

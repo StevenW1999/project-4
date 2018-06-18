@@ -113,14 +113,7 @@ public class ProfileActivity extends Activity {
                             try {
                                 JSONObject userObj = new JSONObject(httpResponse.getMessage());
 
-                                final User user = new User();
-                                user.setId(userObj.getString("Id"));
-                                user.setUsername(userObj.getString("Username"));
-                                user.setName(userObj.getString("DisplayName"));
-                                user.setDescription(userObj.getString("Description"));
-                                user.setEmail(userObj.getString("Email"));
-                                user.setOnline(userObj.getBoolean("IsOnline"));
-                                user.setFriend(userObj.getBoolean("IsFriend"));
+                                final User user = User.fromJson(userObj);
 
                                 tv_displayname.setText(user.getName());
                                 tv_username.setText("@" + user.getUsername());
@@ -204,7 +197,7 @@ public class ProfileActivity extends Activity {
                 btn_friend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // TODO: Send friend request
+                        AddFriendAction(userId);
                     }
                 });
                 break;
@@ -226,7 +219,7 @@ public class ProfileActivity extends Activity {
                 btn_friend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // TODO: RemoveFriendAction();
+                        RemoveFriendAction(userId);
                     }
                 });
                 break;
@@ -236,12 +229,12 @@ public class ProfileActivity extends Activity {
 
     /**
      * This function removes a friend who is specified as input parameter.
-     * @param user is the peron u're trying to delete.
+     * @param userId is the ID of the friend to delete.
      */
-    private void RemoveFriendAction(User user) {
+    private void RemoveFriendAction(String userId) {
         // parameters
         Pair[] parameters = new Pair[] {
-                new Pair<>("friendId", user.getId()),
+                new Pair<>("friendId", userId),
         };
 
         HttpTask task = new HttpTask(this, HttpMethod.POST, "http://ashittyscheduler.azurewebsites.net/api/friend/RemoveFriend", new AsyncHttpListener() {
@@ -254,26 +247,66 @@ public class ProfileActivity extends Activity {
             @Override
             public void onResponse(HttpResponse httpResponse) {
                 int code = httpResponse.getCode();
-                httpResponse.getMessage();
+
                 if(code == HttpStatusCode.OK.getCode()){
-                    Toast.makeText(ProfileActivity.this,"Removed friend", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this,"Removed friend.", Toast.LENGTH_SHORT).show();
+                    SetFriendButton(FriendButtonState.ADD);
                 } else {
-                    Toast.makeText(ProfileActivity.this,"Could not remove friend", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileActivity.this,"Could not remove friend.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onError() {
-                Toast.makeText(ProfileActivity.this, "An error occured. Please try again later ☹", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileActivity.this, "An error occurred. Please try again later ☹", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFinishExecuting() {
                 progressDialog.dismiss();
-                finish();
             }
         });
         task.setBodyParameters(parameters);
         task.execute();
     }
+
+    private void AddFriendAction(String userId) {
+        // parameters
+        Pair[] parameters = new Pair[] {
+                new Pair<>("friendId", userId),
+        };
+
+        HttpTask task = new HttpTask(this, HttpMethod.POST, "http://ashittyscheduler.azurewebsites.net/api/friend/friendRequestById", new AsyncHttpListener() {
+            private ProgressDialog progressDialog;
+            @Override
+            public void onBeforeExecute() {
+                progressDialog = ProgressDialog.show(ProfileActivity.this,"Sending friend request","Please wait");
+            }
+
+            @Override
+            public void onResponse(HttpResponse httpResponse) {
+                int code = httpResponse.getCode();
+
+                if(code == HttpStatusCode.OK.getCode()){
+                    Toast.makeText(ProfileActivity.this,"Sent friend request.", Toast.LENGTH_SHORT).show();
+                    SetFriendButton(FriendButtonState.PENDING);
+                } else {
+                    Toast.makeText(ProfileActivity.this,"Could not submit friend request.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError() {
+                Toast.makeText(ProfileActivity.this, "An error occurred. Please try again later ☹", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinishExecuting() {
+                progressDialog.dismiss();
+            }
+        });
+        task.setBodyParameters(parameters);
+        task.execute();
+    }
+
 }

@@ -3,13 +3,13 @@ package net.azurewebsites.ashittyscheduler.ass.notifications;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Notification {
+public class CustomNotification {
 
     public String Title;
     public String Message;
 
-    public static Notification fromJson(JSONObject obj) {
-        Notification n = new Notification();
+    public static CustomNotification fromJson(JSONObject obj) {
+        CustomNotification n = new CustomNotification();
 
         try {
             n.Title = obj.getString("Title");

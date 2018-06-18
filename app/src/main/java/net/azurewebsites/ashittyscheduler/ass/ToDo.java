@@ -1,13 +1,24 @@
 package net.azurewebsites.ashittyscheduler.ass;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import static java.util.Calendar.getInstance;
 
 public class ToDo {
     private String id;
     private String title;
     private String description;
     private Calendar date;
+    private boolean status;
+    private boolean repeat;
+    private String interval;
 
 
     // TODO: Add getters and setters for these
@@ -25,6 +36,8 @@ public class ToDo {
     public String getDescription() {
         return description;
     }
+
+
 
     public Calendar getDate() {
         return date;
@@ -62,12 +75,60 @@ public class ToDo {
         this.reminderDate = reminderDate;
     }
 
+
+
+
     @Override
     public String toString() {
         return getTitle();
     }
-    
 
+    public static ToDo fromJson(JSONObject obj) {
+        ToDo t = new ToDo();
 
+        try {
+            // format date
+            Calendar calendar = getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+            calendar.setTime(sdf.parse(obj.getString("Date")));
+
+            t.setId(obj.getString("Id"));
+            t.setTitle(obj.getString("Title"));
+            t.setDescription(obj.getString("Description"));
+            t.setDate(calendar);
+            t.setStatus(obj.getBoolean("Todo_Status"));
+
+            return t;
+
+        } catch (ParseException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public String getInterval() {
+        return interval;
+    }
+
+    public void setInterval(String interval) {
+        this.interval = interval;
+    }
+
+    public boolean isRepeat() {
+        return repeat;
+    }
+
+    public void setRepeat(boolean repeat) {
+        this.repeat = repeat;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 }
 

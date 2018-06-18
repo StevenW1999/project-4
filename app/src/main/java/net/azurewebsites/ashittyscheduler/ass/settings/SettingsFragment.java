@@ -16,6 +16,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -212,7 +214,39 @@ public class SettingsFragment extends Fragment {
                 }
             });
 
-            // TODO: Add onPreferenceChangeListeners for the switch (toggle) preferences !!!!!!!!!!!!!!!!!!!!!!!!!!1
+            // Switch notification toggles
+            notificationPreference_todo.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(ApplicationConstants.PREFERENCES ,Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("notifications_todo", (boolean) o);
+                    editor.apply();
+                    return true;
+                }
+            });
+
+            notificationPreference_friends.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(ApplicationConstants.PREFERENCES ,Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("notifications_friends", (boolean) o);
+                    editor.apply();
+                    return true;
+                }
+            });
+
+            notificationPreference_chat.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(ApplicationConstants.PREFERENCES ,Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("notifications_chat", (boolean) o);
+                    editor.apply();
+                    return true;
+                }
+            });
 
             // load the user settings
             loadSettings();
@@ -243,23 +277,25 @@ public class SettingsFragment extends Fragment {
 
                                     User user = User.fromJson(userObj);
 
-                                    // TODO: Remove default value?
-
                                     editDisplayName.setText(user.getName());
                                     editDisplayName.setSummary(user.getName());
-                                    //editDisplayName.setDefaultValue(user.getName());
 
                                     editUsername.setText(user.getUsername());
                                     editUsername.setSummary(user.getUsername());
-                                    //editUsername.setDefaultValue(user.getUsername());
 
                                     editEmail.setText(user.getEmail());
                                     editEmail.setSummary(user.getEmail());
-                                    //editEmail.setDefaultValue(user.getEmail());
 
                                     editDescription.setText(userObj.getString("Description"));
                                     editDescription.setSummary(userObj.getString("Description"));
-                                    //editDescription.setDefaultValue(userObj.getString("Description"));
+
+                                    SharedPreferences sp = getContext().getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE);
+                                    boolean todo = sp.getBoolean("notifications_todo", true);
+                                    boolean friends = sp.getBoolean("notifications_friends", true);
+                                    boolean chat = sp.getBoolean("notifications_chat", true);
+                                    notificationPreference_todo.setChecked(todo);
+                                    notificationPreference_friends.setChecked(friends);
+                                    notificationPreference_chat.setChecked(chat);
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
