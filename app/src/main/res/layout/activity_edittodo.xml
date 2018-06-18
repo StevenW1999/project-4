@@ -33,43 +33,39 @@
 
     <EditText
         android:id="@+id/EditlocationText"
-        android:layout_width="358dp"
+        android:layout_width="348dp"
         android:layout_height="43dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Location"
         android:inputType="textPersonName"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditDescription" />
 
     <EditText
         android:id="@+id/EditDescription"
-        android:layout_width="358dp"
+        android:layout_width="348dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Description"
         android:inputType="textPersonName"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditTitle" />
 
     <TextView
         android:id="@+id/EditTime"
-        android:layout_width="358dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="13dp"
+
         android:clickable="true"
         android:ems="10"
         android:hint="Time 00:00"
@@ -78,16 +74,13 @@
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/EditlocationText"
         app:layout_constraintTop_toBottomOf="@+id/EditDate" />
 
     <TextView
         android:id="@+id/EShareText"
-        android:layout_width="260dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:ems="10"
@@ -95,17 +88,16 @@
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/EditButton"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/ERepeatText"
         app:layout_constraintTop_toBottomOf="@+id/EditRepeatType" />
 
     <TextView
         android:id="@+id/EditDate"
-        android:layout_width="358dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="13dp"
+
         android:clickable="true"
         android:ems="10"
         android:hint="Date dd/mm/yy"
@@ -113,37 +105,33 @@
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/EditlocationText"
         app:layout_constraintTop_toBottomOf="@+id/EditlocationText" />
 
     <EditText
         android:id="@+id/EditTitle"
-        android:layout_width="358dp"
+        android:layout_width="344dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="@string/title"
         android:inputType="textPersonName"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/ENotificationsTextView"
-        android:layout_width="281dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginStart="13dp"
         android:layout_marginTop="16dp"
         android:hint="Notifications"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/EditTime"
         app:layout_constraintTop_toBottomOf="@+id/EditTime" />
 
     <Switch
@@ -158,15 +146,14 @@
 
     <TextView
         android:id="@+id/ERepeatText"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginStart="13dp"
         android:layout_marginTop="16dp"
         android:hint="Repeat OFF"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/EditRTime"
         app:layout_constraintTop_toBottomOf="@+id/EditRTime" />
 
     <Switch
@@ -186,51 +173,41 @@
 
     <TextView
         android:id="@+id/EditRepeatType"
-        android:layout_width="358dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:onClick="selectRepeatType"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.615"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/ERepeatText"
         app:layout_constraintTop_toBottomOf="@+id/ERepeatText" />
 
 
     <TextView
         android:id="@+id/EditRDate"
-        android:layout_width="358dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:hint="Date dd/mm/yy"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/ENotificationsTextView"
         app:layout_constraintTop_toBottomOf="@+id/ENotificationsTextView" />
 
     <TextView
         android:id="@+id/EditRTime"
-        android:layout_width="358dp"
+        android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginStart="13dp"
         android:layout_marginTop="8dp"
         android:hint="Time 00:00"
         android:textColor="@color/colorBlack"
         android:textColorHint="@color/colorBlack"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.615"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/EditRDate"
         app:layout_constraintTop_toBottomOf="@+id/EditRDate" />
 
 
