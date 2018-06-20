@@ -110,12 +110,11 @@ public class OverviewFragment extends Fragment {
     //Fills data with all the user's todos
     private void fillDataToDo() {
 
-        allTodos.clear();
-
         AsyncHttpListener listener = new AsyncHttpListener() {
             @Override
             public void onBeforeExecute() {
-
+                allTodos.clear();
+                recyclerViewTest.setLayoutManager(null);
             }
 
             @Override
@@ -171,6 +170,11 @@ public class OverviewFragment extends Fragment {
 
                         recyclerViewAdapter newAdapter = new recyclerViewAdapter(allTodos);
                         recyclerViewTest.setAdapter(newAdapter);
+
+                        layoutManager = new LinearLayoutManager(getContext());
+                        recyclerViewTest.setLayoutManager(layoutManager);
+
+                        recyclerViewTest.getAdapter().notifyDataSetChanged();
                     }
                     catch (JSONException e) {
                         e.printStackTrace();
@@ -239,7 +243,12 @@ public class OverviewFragment extends Fragment {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        fillDataToDo();
+                        try {
+                            fillDataToDo();
+                        }
+                        catch(Exception o_O) {
+
+                        }
                     }
                 }
         );
@@ -248,7 +257,13 @@ public class OverviewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        fillDataToDo();
+
+        try {
+            fillDataToDo();
+        }
+        catch(Exception o_O) {
+
+        }
     }
 
     @Nullable

@@ -108,7 +108,6 @@ public class recyclerViewAdapter extends RecyclerView.Adapter<recyclerViewAdapte
                 view.getContext().startActivity(intent);
             }
         });
-
     }
 
     public int getItemCount() {
