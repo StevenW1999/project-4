@@ -52,7 +52,7 @@ import java.util.ArrayList;
 public class MainMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener , AdapterView.OnItemClickListener {
 
-    private Fragment fragmentToSet = null;
+    private Fragment fragmentToSet = null, currentFragment = null;
     //Our notification manager,
     private NotificationManager mNotificationManager;
     private Thread notificationThread;
@@ -72,12 +72,15 @@ public class MainMenu extends AppCompatActivity
         @Override
         public void onDrawerClosed(@NonNull View drawerView) {
             // If there is a fragment to set
-            if (fragmentToSet != null) {
+            if (fragmentToSet != null && (currentFragment == null || !fragmentToSet.getClass().equals(currentFragment.getClass()))) {
                 // Replace the framelayout with the fragment to set
                 getFragmentManager()
                         .beginTransaction()
                         .replace(R.id.frameLayout, fragmentToSet)
                         .commit();
+
+                // Store a copy
+                currentFragment = fragmentToSet;
 
                 // And reset the variable
                 fragmentToSet = null;
