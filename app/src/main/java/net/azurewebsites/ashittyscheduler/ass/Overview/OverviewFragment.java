@@ -1,5 +1,6 @@
 package net.azurewebsites.ashittyscheduler.ass.Overview;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -30,6 +31,7 @@ import net.azurewebsites.ashittyscheduler.ass.ToDo;
 import net.azurewebsites.ashittyscheduler.ass.addtodo;
 import net.azurewebsites.ashittyscheduler.ass.detailscreen;
 //import net.azurewebsites.ashittyscheduler.ass.edittodo;
+import net.azurewebsites.ashittyscheduler.ass.edittodo;
 import net.azurewebsites.ashittyscheduler.ass.http.AsyncHttpListener;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpMethod;
 import net.azurewebsites.ashittyscheduler.ass.http.HttpResponse;
@@ -108,13 +110,22 @@ public class OverviewFragment extends Fragment {
     }
 
     //Fills data with all the user's todos
-    private void fillDataToDo() {
+    private void fillDataToDo(final boolean showDialog) {
 
         AsyncHttpListener listener = new AsyncHttpListener() {
+
+            private ProgressDialog progressDialog;
+
             @Override
             public void onBeforeExecute() {
                 allTodos.clear();
                 recyclerViewTest.setLayoutManager(null);
+
+                if (showDialog) {
+                    progressDialog = ProgressDialog.show(getContext(),
+                            "Loading your todos",
+                            "Please wait ☺");
+                }
             }
 
             @Override
@@ -190,6 +201,10 @@ public class OverviewFragment extends Fragment {
             @Override
             public void onFinishExecuting() {
 
+                if (showDialog) {
+                    progressDialog.dismiss();
+                }
+
             }
         };
 
@@ -244,7 +259,8 @@ public class OverviewFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         try {
-                            fillDataToDo();
+                            // Fill data, but don't show a dialog(!)
+                            fillDataToDo(false);
                         }
                         catch(Exception o_O) {
 
@@ -259,7 +275,7 @@ public class OverviewFragment extends Fragment {
         super.onResume();
 
         try {
-            fillDataToDo();
+            fillDataToDo(true);
         }
         catch(Exception o_O) {
 
