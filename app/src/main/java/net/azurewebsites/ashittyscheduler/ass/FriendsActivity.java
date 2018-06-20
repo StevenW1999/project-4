@@ -69,23 +69,27 @@ public class FriendsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.friendsToolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Friends");
-        String token = getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE).getString("Token", null);
-
-        if(token == null || token.equals("")){
-            Log.d("EXCEPTION: ",  "NO TOKEN FOUND");
-
-            final AlertDialog.Builder messageBox = new AlertDialog.Builder(this);
-            messageBox.setTitle("CRASH");
-            messageBox.setMessage("No token found : " + token + " This crash has been caused cause you weren't logged in while clicking the notification");
-            messageBox.setCancelable(false);
-            messageBox.setNeutralButton("Ok" ,new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    finish();
-                    System.exit(0);
-                }
-            });
-            messageBox.show();
-        }
+//        String token = getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE).getString("Token", null);
+//
+//        if(token == null || token.equals("")){
+//            Log.d("EXCEPTION: ",  "NO TOKEN FOUND");
+//
+//            final AlertDialog.Builder messageBox = new AlertDialog.Builder(this);
+//            messageBox.setTitle("You are not logged in!");
+//            messageBox.setMessage("Please log back in.");
+//            messageBox.setCancelable(false);
+//            messageBox.setNeutralButton("OK" ,new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int id) {
+//
+//                    Intent intent = new Intent(FriendsActivity.this, LoginActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
+//
+//                    finish();
+//                }
+//            });
+//            messageBox.show();
+//        }
         AddFriend();
         FriendRequestPage();
         final ArrayList<User> users = new ArrayList<>();

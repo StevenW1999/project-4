@@ -2,6 +2,7 @@ package net.azurewebsites.ashittyscheduler.ass.Overview;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -10,9 +11,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +27,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import net.azurewebsites.ashittyscheduler.ass.Adapters.recyclerViewAdapter;
+import net.azurewebsites.ashittyscheduler.ass.ApplicationConstants;
+import net.azurewebsites.ashittyscheduler.ass.FriendsActivity;
 import net.azurewebsites.ashittyscheduler.ass.Intent_Constants;
+import net.azurewebsites.ashittyscheduler.ass.LoginActivity;
 import net.azurewebsites.ashittyscheduler.ass.MainMenu;
 import net.azurewebsites.ashittyscheduler.ass.R;
 import net.azurewebsites.ashittyscheduler.ass.ToDo;
@@ -86,6 +92,27 @@ public class OverviewFragment extends Fragment {
 
         layoutManager = new LinearLayoutManager(getContext());
         recyclerViewTest.setLayoutManager(layoutManager);
+
+//        String token = getContext().getSharedPreferences(ApplicationConstants.PREFERENCES,Context.MODE_PRIVATE).getString("Token", null);
+//        if(token == null || token.equals("")){
+//            Log.d("EXCEPTION: ",  "NO TOKEN FOUND");
+//
+//            final AlertDialog.Builder messageBox = new AlertDialog.Builder(getContext());
+//            messageBox.setTitle("You are not logged in!");
+//            messageBox.setMessage("Please log back in.");
+//            messageBox.setCancelable(false);
+//            messageBox.setNeutralButton("OK" ,new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int id) {
+//
+//                    Intent intent = new Intent(getContext(), LoginActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
+//
+//                    getActivity().finish();
+//                }
+//            });
+//            messageBox.show();
+//        }
 
         /*
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

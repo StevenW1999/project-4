@@ -92,6 +92,14 @@ public class MainMenu extends AppCompatActivity
     private ArrayList<String> messageIdNotificationsList;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        // CHECK IF TOKEN IS VALID
+        ApplicationConstants.tokenCheck(this, this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -113,6 +121,15 @@ public class MainMenu extends AppCompatActivity
         SetUpNotificationManager();
         SetUpNotificationThread();
         UnreadMessageNotification();
+
+        // START IN TODO SCREEN
+        getSupportActionBar().setTitle("To Do");
+        // Replace the framelayout with the overview fragment
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frameLayout, new OverviewFragment())
+                .commit();
+
     }
 
     /**
@@ -363,10 +380,10 @@ public class MainMenu extends AppCompatActivity
         return true;
     }
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -456,6 +473,7 @@ public class MainMenu extends AppCompatActivity
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         MainMenu.this.notificationThreadHandler.removeCallbacksAndMessages(null);
                         startActivity(i);
+                        finish();
                     }
                 });
 

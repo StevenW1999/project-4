@@ -1,17 +1,21 @@
 package net.azurewebsites.ashittyscheduler.ass;
 
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.StrictMode;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -197,6 +201,21 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
         task.execute();
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Is this farewell?")
+                .setMessage("Are you sure you wish to exit the application?")
+                .setPositiveButton("Yeah", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        LoginActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton("Nope", null)
+                .show();
     }
 
     /**

@@ -132,7 +132,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (code == HttpStatusCode.OK.getCode()) {
                     Toast.makeText(getApplicationContext(), "Account created.", Toast.LENGTH_SHORT).show();
-                    LoadNewPage(LoginActivity.class);
                     finish();
                 } else if (code == HttpStatusCode.BAD_REQUEST.getCode()) {
                     Toast.makeText(getApplicationContext(), httpResponse.getMessage(), Toast.LENGTH_SHORT).show();
